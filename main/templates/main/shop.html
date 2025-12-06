@@ -1,0 +1,2161 @@
+<!-- templates/main/shop.html -->
+<!-- prettier-ignore -->
+{% extends 'main/base.html' %} {% load static i18n %} {% block title %}{% trans "Shop - Browse Products" %}{% endblock %} {% block extra_head %}
+<style>
+  :root {
+    --shop-primary: #2563eb;
+    --shop-primary-dark: #1d4ed8;
+    --shop-bg: #fafafa;
+    --shop-card-bg: #ffffff;
+    --shop-border: #e0e0e0;
+    --shop-text: #333333;
+    --shop-text-light: #666666;
+  }
+
+  /* Shop Layout */
+  .shop-container {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 30px;
+    padding: 20px 0;
+  }
+
+  /* Filter Sidebar */
+  .filter-sidebar {
+    background: var(--shop-card-bg);
+    border-radius: 16px;
+    padding: 25px;
+    height: fit-content;
+    position: sticky;
+    top: 100px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--shop-border);
+  }
+
+  .filter-section {
+    margin-bottom: 30px;
+    padding-bottom: 25px;
+    border-bottom: 1px solid var(--shop-border);
+  }
+
+  .filter-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .filter-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--shop-text);
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .filter-title:hover .collapse-icon {
+    color: var(--shop-primary);
+  }
+
+  .collapse-icon {
+    transition: transform 0.3s ease;
+    color: var(--shop-text-light);
+  }
+
+  .collapse-icon.rotated {
+    transform: rotate(180deg);
+  }
+
+  .filter-content {
+    max-height: 1000px;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .filter-content.collapsed {
+    max-height: 0;
+  }
+
+  /* Category List */
+  .category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    padding-inline: 10px;
+  }
+
+  .category-item:hover {
+    background: rgba(255, 56, 92, 0.05);
+    color: var(--shop-primary);
+  }
+
+  .category-item.active {
+    background: rgba(255, 56, 92, 0.1);
+    color: var(--shop-primary);
+    font-weight: 600;
+  }
+
+  .category-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .category-count {
+    background: var(--shop-border);
+    color: var(--shop-text-light);
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    min-width: 30px;
+    text-align: center;
+  }
+
+  .category-item.active .category-count {
+    background: var(--shop-primary);
+    color: white;
+  }
+
+  /* Price Range Slider */
+  .price-range-container {
+    padding: 10px 0;
+  }
+
+  .price-inputs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .price-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid var(--shop-border);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+
+  .price-input:focus {
+    outline: none;
+    border-color: var(--shop-primary);
+  }
+
+  .price-slider {
+    height: 6px;
+    background: var(--shop-border);
+    border-radius: 3px;
+    position: relative;
+    margin: 20px 0;
+  }
+
+  .price-slider .track {
+    position: absolute;
+    height: 100%;
+    background: var(--shop-primary);
+    border-radius: 3px;
+  }
+
+  .price-slider .thumb {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background: white;
+    border: 2px solid var(--shop-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s ease;
+  }
+
+  .price-slider .thumb:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Checkbox Styles */
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 8px;
+    padding-left: 5px;
+  }
+
+  .checkbox-item:hover {
+    background: rgba(255, 56, 92, 0.05);
+  }
+
+  .custom-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--shop-border);
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .checkbox-item input:checked + .custom-checkbox {
+    background: var(--shop-primary);
+    border-color: var(--shop-primary);
+  }
+
+  .custom-checkbox::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 6px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .checkbox-item input:checked + .custom-checkbox::after {
+    opacity: 1;
+  }
+
+  .checkbox-item input {
+    display: none;
+  }
+
+  .checkbox-label {
+    color: var(--shop-text);
+    flex-grow: 1;
+  }
+
+  /* Shop Header */
+  .shop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: var(--shop-card-bg);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--shop-border);
+  }
+
+  .results-info {
+    font-size: 1rem;
+    color: var(--shop-text);
+  }
+
+  .results-info strong {
+    color: var(--shop-primary);
+  }
+
+  .sort-select {
+    padding: 12px 20px;
+    border: 2px solid var(--shop-border);
+    background: white;
+    color: var(--shop-text);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    min-width: 200px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .sort-select:focus {
+    outline: none;
+    border-color: var(--shop-primary);
+  }
+
+  /* Product Grid */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+  }
+
+  .product-card {
+    background: var(--shop-card-bg);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--shop-border);
+  }
+
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .product-media-container {
+    position: relative;
+    height: 320px;
+    overflow: hidden;
+    background: #f5f5f5;
+    cursor: pointer;
+  }
+
+  .media-slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .media-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+  }
+
+  .media-item.active {
+    opacity: 1;
+    z-index: 1;
+  }
+
+  .media-item img,
+  .media-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .media-item video {
+    background: #000;
+  }
+
+  .media-indicators {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    z-index: 2;
+  }
+
+  .media-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    padding: 0;
+  }
+
+  .media-indicator.active {
+    background: white;
+    transform: scale(1.2);
+  }
+
+  .media-indicator:hover {
+    background: white;
+    transform: scale(1.3);
+  }
+
+  .media-controls {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.4s ease;
+    z-index: 2;
+  }
+
+  .product-card:hover .media-controls {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .media-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: #333;
+  }
+
+  .media-btn:hover {
+    background: var(--shop-primary);
+    color: white;
+    transform: scale(1.1);
+  }
+
+  .play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 56, 92, 0.9);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 3;
+    transition: all 0.3s ease;
+    opacity: 0;
+  }
+
+  .media-item[data-type="video"]:hover .play-btn {
+    opacity: 1;
+  }
+
+  .play-btn i {
+    color: white;
+    font-size: 1.5rem;
+    margin-left: 4px;
+  }
+
+  .product-badges {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 2;
+  }
+
+  .badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-new {
+    background: #00c853;
+  }
+
+  .badge-sale {
+    background: #ff385c;
+  }
+
+  .badge-video {
+    background: #8a2be2;
+  }
+
+  .product-info {
+    padding: 20px;
+  }
+
+  .product-category {
+    font-size: 0.85rem;
+    color: var(--shop-text-light);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .product-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--shop-text);
+    margin-bottom: 12px;
+    line-height: 1.4;
+    height: 2.8em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .product-rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .stars {
+    color: #ffc107;
+    font-size: 0.9rem;
+  }
+
+  .rating-count {
+    font-size: 0.85rem;
+    color: var(--shop-text-light);
+  }
+
+  .product-price {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  .current-price {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--shop-primary);
+  }
+
+  .original-price {
+    font-size: 1rem;
+    color: var(--shop-text-light);
+    text-decoration: line-through;
+  }
+
+  .price-hidden {
+    font-size: 1rem;
+    color: var(--shop-text-light);
+    font-style: italic;
+  }
+
+  .product-stock {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .stock-in {
+    color: #00c853;
+  }
+
+  .stock-out {
+    color: #ff4444;
+  }
+
+  /* Product actions row: Qty + Add to Cart + eye */
+  .product-actions {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  /* Prevent flex children from forcing overflow */
+  .product-actions * {
+    min-width: 0;
+  }
+
+  /* Qty box */
+  .product-actions .product-qty-group {
+    flex: 0 0 70px; /* small fixed width */
+  }
+
+  .product-actions .product-qty-group .input-group-text {
+    font-size: 0.75rem;
+    padding-inline: 6px;
+  }
+
+  .product-actions .product-qty-group .form-control {
+    padding-inline: 6px;
+    text-align: center;
+  }
+
+  /* Add to Cart button */
+  .btn-add-cart {
+    flex: 1 1 auto;
+    padding: 10px;
+    background: var(--shop-primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    white-space: normal;
+  }
+
+  .btn-add-cart:hover:not(:disabled) {
+    background: var(--shop-primary-dark);
+    transform: translateY(-2px);
+  }
+
+  .btn-add-cart:disabled {
+    background: var(--shop-border);
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Quick view button */
+  .btn-quick-view {
+    flex: 0 0 38px;
+    background: var(--shop-text-light);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-quick-view:hover {
+    background: var(--shop-primary);
+    transform: translateY(-2px);
+  }
+
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 40px 0;
+  }
+
+  .page-btn {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--shop-border);
+    background: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--shop-text);
+  }
+
+  .page-btn:hover:not(:disabled) {
+    border-color: var(--shop-primary);
+    color: var(--shop-primary);
+    transform: translateY(-2px);
+  }
+
+  .page-btn.active {
+    background: var(--shop-primary);
+    border-color: var(--shop-primary);
+    color: white;
+  }
+
+  .page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .page-dots {
+    color: var(--shop-text-light);
+    padding: 0 5px;
+  }
+
+  /* Loading States */
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    backdrop-filter: blur(5px);
+  }
+
+  .loading-overlay.active {
+    display: flex;
+  }
+
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--shop-border);
+    border-top-color: var(--shop-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Video Modal */
+  .video-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9998;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+  }
+
+  .video-modal.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .video-modal-content {
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+  }
+
+  .video-modal-content video {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  .close-video {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 1.5rem;
+    transition: all 0.3s ease;
+  }
+
+  .close-video:hover {
+    background: var(--shop-primary);
+    transform: rotate(90deg);
+  }
+
+  /* Mobile Responsive */
+  @media (max-width: 1024px) {
+    .shop-container {
+      grid-template-columns: 1fr;
+    }
+
+    .filter-sidebar {
+      position: static;
+    }
+
+    .filter-mobile-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 20px;
+      background: var(--shop-primary);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .shop-header {
+      flex-direction: column;
+      gap: 15px;
+      align-items: stretch;
+    }
+
+    .sort-select {
+      width: 100%;
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+    }
+
+    .product-media-container {
+      height: 280px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .product-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .product-media-container {
+      height: 220px;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+  }
+</style>
+
+{% endblock %} {% block content %}
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+</div>
+
+<!-- Shop Container -->
+<div class="container-fluid px-4 py-4">
+  <div class="shop-container">
+    <!-- Filter Sidebar -->
+    <aside class="filter-sidebar" id="filterSidebar">
+      <div class="filter-section">
+        <div class="filter-title" onclick="toggleFilter('categories')">
+          <span>{% trans "Categories" %}</span>
+          <i class="fas fa-chevron-down collapse-icon" id="categoriesIcon"></i>
+        </div>
+        <div class="filter-content" id="categoriesContent">
+          <ul class="category-list" id="categoryList">
+            <!-- Categories will be loaded here -->
+          </ul>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title" onclick="toggleFilter('price')">
+          <span>{% trans "Price Range" %}</span>
+          <i class="fas fa-chevron-down collapse-icon" id="priceIcon"></i>
+        </div>
+        <div class="filter-content" id="priceContent">
+          <div class="price-range-container">
+            <div class="price-inputs">
+              <input
+                type="number"
+                id="minPriceInput"
+                class="price-input"
+                placeholder="Min"
+                min="0"
+              />
+              <input
+                type="number"
+                id="maxPriceInput"
+                class="price-input"
+                placeholder="Max"
+              />
+            </div>
+            <div class="price-slider" id="priceSlider">
+              <div class="track" id="priceTrack"></div>
+              <div class="thumb" id="minThumb"></div>
+              <div class="thumb" id="maxThumb"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-title" onclick="toggleFilter('availability')">
+          <span>{% trans "Availability" %}</span>
+          <i
+            class="fas fa-chevron-down collapse-icon"
+            id="availabilityIcon"
+          ></i>
+        </div>
+        <div class="filter-content" id="availabilityContent">
+          <label class="checkbox-item">
+            <input
+              type="checkbox"
+              id="inStockCheckbox"
+              onchange="applyFilters()"
+            />
+            <span class="custom-checkbox"></span>
+            <span class="checkbox-label">{% trans "In Stock Only" %}</span>
+          </label>
+        </div>
+      </div>
+
+      <button
+        class="btn-add-cart"
+        onclick="clearFilters()"
+        style="margin-top: 20px"
+      >
+        <i class="fas fa-times"></i> {% trans "Clear All Filters" %}
+      </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="shop-main">
+      <!-- Shop Header -->
+      <div class="shop-header">
+        <div class="results-info" id="resultsInfo">
+          {% trans "Loading products..." %}
+        </div>
+
+        <select class="sort-select" id="sortSelect" onchange="applyFilters()">
+          <option value="newest">{% trans "Newest First" %}</option>
+          <option value="price_low">{% trans "Price: Low to High" %}</option>
+          <option value="price_high">{% trans "Price: High to Low" %}</option>
+          <option value="name">{% trans "Name A-Z" %}</option>
+          <option value="popular">{% trans "Most Popular" %}</option>
+          <option value="rating">{% trans "Highest Rated" %}</option>
+        </select>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="product-grid" id="productsGrid">
+        <!-- Products will be loaded here -->
+        <div
+          class="loading-placeholder"
+          style="text-align: center; padding: 50px"
+        >
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">{% trans "Loading..." %}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination">
+        <!-- Pagination will be loaded here -->
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Video Modal -->
+<div class="video-modal" id="videoModal">
+  <div class="video-modal-content">
+    <button class="close-video" onclick="closeVideoModal()">
+      <i class="fas fa-times"></i>
+    </button>
+    <video controls id="productVideoPlayer">
+      {% trans "Your browser does not support the video tag." %}
+    </video>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script>
+  // Shop page specific JavaScript
+  // No cart functions here - they're in base.html
+
+  // Global State for shop page only
+  let shopState = {
+    products: [],
+    categories: [],
+    filters: {
+      category: "all",
+      minPrice: null,
+      maxPrice: null,
+      inStock: null,
+      sortBy: "newest",
+      search: "",
+    },
+    pagination: {
+      currentPage: 1,
+      totalPages: 1,
+      totalItems: 0,
+    },
+    priceRange: {
+      min: 0,
+      max: 1000,
+    },
+    mediaTimers: {}, // Store timers for auto-scrolling galleries
+  };
+
+  // Initialize on page load
+  document.addEventListener("DOMContentLoaded", async function () {
+    await loadShopData();
+    setupEventListeners();
+
+    // Close modals with ESC
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
+        closeVideoModal();
+      }
+    });
+  });
+
+  // Load shop data
+  async function loadShopData() {
+    showLoading(true);
+
+    try {
+      // Get URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const category = urlParams.get("category") || "all";
+      const search = urlParams.get("search") || "";
+
+      // Build API URL
+      let apiUrl = `/api/shop-page-data/?page=${shopState.pagination.currentPage}`;
+
+      if (category && category !== "all") {
+        apiUrl += `&category=${category}`;
+        shopState.filters.category = category;
+      }
+
+      if (search) {
+        apiUrl += `&search=${encodeURIComponent(search)}`;
+        shopState.filters.search = search;
+        document.getElementById("globalSearch").value = search;
+      }
+
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+
+      if (data.success) {
+        shopState.products = data.products;
+        shopState.categories = data.filters.categories;
+        shopState.pagination = {
+          currentPage:
+            data.pagination.current_page ||
+            data.pagination.currentPage ||
+            shopState.pagination.currentPage ||
+            1,
+          totalPages:
+            data.pagination.total_pages ||
+            data.pagination.totalPages ||
+            shopState.pagination.totalPages ||
+            1,
+          totalItems:
+            data.pagination.total_items ??
+            data.pagination.totalItems ??
+            data.pagination.count ??
+            shopState.products.length,
+        };
+        shopState.priceRange = data.filters.price_range;
+
+        // Update UI
+        updateCategories();
+        updateProducts();
+        updatePagination();
+        updateResultsInfo();
+        updatePriceSlider();
+
+        // Set sort select
+        document.getElementById("sortSelect").value =
+          data.filters.current.sort_by || "newest";
+      }
+    } catch (error) {
+      console.error("Error loading shop data:", error);
+      showNotification("Error loading products", "error");
+    }
+
+    showLoading(false);
+  }
+
+  // Update categories in sidebar
+  function updateCategories() {
+    const container = document.getElementById("categoryList");
+    let html = "";
+
+    // Add "All Categories" option
+    const isAllActive =
+      shopState.filters.category === "all" || !shopState.filters.category;
+    const totalCount =
+      shopState.pagination.totalItems ??
+      shopState.pagination.total_items ??
+      shopState.products.length;
+
+    html += `
+  <li class="category-item ${isAllActive ? "active" : ""}"
+      onclick="filterByCategory('all')">
+      <span class="category-name">
+          <i class="fas fa-boxes"></i>
+          {% trans "All Categories" %}
+      </span>
+      <span class="category-count">${totalCount}</span>
+  </li>
+`;
+
+    // Add actual categories
+    shopState.categories.forEach((category) => {
+      const isActive = shopState.filters.category === category.slug;
+      html += `
+                <li class="category-item ${isActive ? "active" : ""}"
+                    onclick="filterByCategory('${category.slug}')">
+                    <span class="category-name">
+                        <i class="fas fa-folder"></i>
+                        ${category.name}
+                    </span>
+                    <span class="category-count">${category.count}</span>
+                </li>
+            `;
+    });
+
+    container.innerHTML = html;
+  }
+
+  // Update products grid - uses base.html's cart functions
+ // Update products grid - uses base.html's cart functions
+function updateProducts() {
+  const container = document.getElementById("productsGrid");
+
+  if (!shopState.products.length) {
+    container.innerHTML = `
+      <div class="no-products" style="grid-column: 1 / -1; text-align: center; padding: 60px;">
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+        <h4>{% trans "No products found" %}</h4>
+        <p class="text-muted mb-4">{% trans "Try adjusting your filters or search terms" %}</p>
+        <button class="btn-add-cart" onclick="clearFilters()">
+          <i class="fas fa-times"></i> {% trans "Clear All Filters" %}
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  let html = "";
+
+  shopState.products.forEach((product) => {
+    const inStock = product.in_stock;
+    const canOrder = product.can_order;
+    const price = product.price
+      ? `$${product.price.toFixed(2)}`
+      : '<span class="price-hidden">{% trans "Price on request" %}</span>';
+
+    // Generate rating stars
+    const rating = product.rating || 4.5;
+    const stars = generateStars(rating);
+
+    // Check if product has video
+    const hasVideo =
+      product.media_items &&
+      product.media_items.some((item) => item.type === "video");
+
+    // Get cart quantity if exists
+    const cartItem = cart.find((item) => item.id === product.id);
+    const qtyInCart = cartItem ? cartItem.quantity : 0;
+    const safeName = product.name.replace(/'/g, "\\'");
+
+    // Action HTML with cart controls
+    let actionHtml = "";
+    if (qtyInCart > 0) {
+      actionHtml = `
+        <div class="cart-qty-control" data-product-id="${product.id}" 
+             style="display:flex;justify-content:center;align-items:center;gap:12px;margin-top:10px;width:100%;">
+          <button class="qty-btn minus" 
+                  style="background:#ff6b6b;color:white;border:none;border-radius:50%;width:36px;height:36px;font-weight:bold;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"
+                  onclick="event.stopPropagation(); changeCartQuantity(${product.id}, -1)">-</button>
+          <span class="qty-display" style="font-weight:bold;font-size:1.1rem;min-width:30px;text-align:center;">${qtyInCart}</span>
+          <button class="qty-btn plus" 
+                  style="background:#4caf50;color:white;border:none;border-radius:50%;width:36px;height:36px;font-weight:bold;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"
+                  onclick="event.stopPropagation(); changeCartQuantity(${product.id}, 1)">+</button>
+        </div>
+      `;
+    } else {
+      actionHtml = `
+        <button class="btn-add-cart"
+                onclick="event.stopPropagation(); handleAddToCart(${product.id}, '${safeName}', ${product.price || 0}, '${
+                  product.media_items && product.media_items[0]
+                    ? product.media_items[0].url
+                    : ""
+                }', ${canOrder})"
+                ${!canOrder ? "disabled" : ""}
+                style="display:block;margin:15px auto;padding:12px 24px;background:linear-gradient(135deg,#6a11cb,#2575fc);color:white;border:none;border-radius:25px;font-weight:bold;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.2);width:100%;">
+          <i class="fas fa-cart-plus"></i>
+          ${canOrder ? '{% trans "Add to Cart" %}' : '{% trans "Cannot Order" %}'}
+        </button>
+      `;
+    }
+
+    html += `
+      <div class="product-card" data-product-id="${product.id}">
+        <!-- Clickable Media Container -->
+        <a href="/product/${product.id}/" class="product-media-container"
+           onmouseenter="startMediaSlider(${product.id})"
+           onmouseleave="stopMediaSlider(${product.id})"
+           style="display:block;text-decoration:none;color:inherit;">
+          <div class="media-slider" id="mediaSlider-${product.id}">
+            ${
+              product.media_items && product.media_items.length > 0
+                ? product.media_items
+                    .map(
+                      (media, index) => `
+                      <div class="media-item ${index === 0 ? "active" : ""}"
+                           data-type="${media.type}"
+                           data-index="${index}">
+                        ${
+                          media.type === "video"
+                            ? `
+                            <video muted loop playsinline>
+                              <source src="${media.url}" type="video/mp4">
+                            </video>
+                            <button class="play-btn" onclick="event.stopPropagation(); playProductVideo('${media.url}', '${product.name}')">
+                              <i class="fas fa-play"></i>
+                            </button>
+                          `
+                            : `
+                            <img src="${media.url}" alt="${product.name}" loading="lazy" onerror="this.src='/static/main/img/product-default.jpg'">
+                          `
+                        }
+                      </div>
+                    `
+                    )
+                    .join("")
+                : `<div class="media-item active">
+                    <img src="/static/main/img/product-default.jpg" alt="${product.name}" loading="lazy">
+                  </div>`
+            }
+          </div>
+
+          ${
+            product.media_items && product.media_items.length > 1
+              ? `
+              <div class="media-indicators" id="indicators-${product.id}">
+                ${product.media_items
+                  .map(
+                    (_, index) => `
+                    <button class="media-indicator ${index === 0 ? "active" : ""}"
+                            data-index="${index}"
+                            onclick="event.stopPropagation(); goToMedia(${product.id}, ${index})"></button>
+                  `
+                  )
+                  .join("")}
+              </div>
+            `
+              : ""
+          }
+
+          <div class="media-controls">
+            <button class="media-btn" title="Add to wishlist" onclick="event.stopPropagation(); window.addToWishlist(${product.id})">
+              <i class="far fa-heart"></i>
+            </button>
+            <button class="media-btn" title="Quick view" onclick="event.stopPropagation(); showQuickView(${product.id})">
+              <i class="far fa-eye"></i>
+            </button>
+            <button class="media-btn" title="Compare" onclick="event.stopPropagation(); window.compareProduct(${product.id})">
+              <i class="fas fa-exchange-alt"></i>
+            </button>
+          </div>
+
+          <div class="product-badges">
+            ${hasVideo ? '<span class="badge badge-video">{% trans "Video" %}</span>' : ""}
+            ${product.is_new ? '<span class="badge badge-new">{% trans "New" %}</span>' : ""}
+            ${!inStock ? '<span class="badge badge-sale">{% trans "Out of Stock" %}</span>' : ""}
+          </div>
+        </a>
+
+        <div class="product-info">
+          <!-- Clickable Product Name -->
+          <a href="/product/${product.id}/" style="text-decoration:none;color:inherit;">
+            <div class="product-category">${product.category?.name || '{% trans "Uncategorized" %}'}</div>
+            <h3 class="product-title">${product.name}</h3>
+          </a>
+
+          <div class="product-rating">
+            <div class="stars">${stars}</div>
+            <span class="rating-count">(${product.review_count || 0})</span>
+          </div>
+
+          <div class="product-price">
+            ${price}
+          </div>
+
+          <div class="product-stock ${inStock ? "stock-in" : "stock-out"}">
+            <i class="fas ${inStock ? "fa-check-circle" : "fa-times-circle"}"></i>
+            ${
+              inStock
+                ? `${product.quantity_available || 0} {% trans "in stock" %}`
+                : '{% trans "Out of stock" %}'
+            }
+          </div>
+
+          <div class="product-actions">
+            ${actionHtml}
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  container.innerHTML = html;
+
+  // Initialize media sliders for each product
+  shopState.products.forEach((product) => {
+    if (product.media_items && product.media_items.length > 1) {
+      initializeMediaSlider(product.id);
+    }
+  });
+}
+
+// Handle add to cart - calls base.html function
+function handleAddToCart(
+  productId,
+  productName,
+  productPrice,
+  productImage,
+  canOrder
+) {
+  if (!canOrder) {
+    showNotification("This product cannot be ordered", "error");
+    return;
+  }
+
+  // Call base.html's addToCart (extra param quantity is safe even if ignored)
+  window.addToCart(
+    productId,
+    productName,
+    productPrice,
+    productImage,
+    canOrder,
+    1
+  );
+
+  // Replace Add to Cart button with qty controls
+  const card = document.querySelector(
+    `.product-card[data-product-id="${productId}"]`
+  );
+  if (!card) return;
+
+  const actionRow = card.querySelector(".product-actions");
+  if (!actionRow) return;
+
+  const cartItem = cart.find((item) => item.id === productId);
+  const qtyInCart = cartItem ? cartItem.quantity : 0;
+
+  actionRow.innerHTML = `
+    <div class="cart-qty-control" data-product-id="${productId}" 
+         style="display:flex;justify-content:center;align-items:center;gap:12px;margin-top:10px;width:100%;">
+      <button class="qty-btn minus" 
+              style="background:#ff6b6b;color:white;border:none;border-radius:50%;width:36px;height:36px;font-weight:bold;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"
+              onclick="event.stopPropagation(); changeCartQuantity(${productId}, -1)">-</button>
+      <span class="qty-display" style="font-weight:bold;font-size:1.1rem;min-width:30px;text-align:center;">${qtyInCart}</span>
+      <button class="qty-btn plus" 
+              style="background:#4caf50;color:white;border:none;border-radius:50%;width:36px;height:36px;font-weight:bold;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"
+              onclick="event.stopPropagation(); changeCartQuantity(${productId}, 1)">+</button>
+    </div>
+  `;
+}
+
+// Increment / Decrement quantity
+function changeCartQuantity(productId, change) {
+  const cartItem = cart.find((item) => item.id === productId);
+  if (!cartItem && change > 0) {
+    // if item doesn't exist and + pressed, add 1
+    const product = window.products.find((p) => p.id === productId);
+    if (!product) return;
+    
+    window.addToCart(
+      productId,
+      product.name,
+      product.price || 0,
+      product.image || "",
+      product.can_order,
+      1
+    );
+  } else if (cartItem) {
+    cartItem.quantity += change;
+    if (cartItem.quantity < 1) {
+      // remove from cart
+      const index = cart.indexOf(cartItem);
+      if (index > -1) cart.splice(index, 1);
+    }
+    saveCart();
+    updateCartModal();
+    updateCartUI();
+  }
+
+  // Update qty display or revert to Add to Cart button
+  const card = document.querySelector(
+    `.product-card[data-product-id="${productId}"]`
+  );
+  if (!card) return;
+
+  const actionRow = card.querySelector(".product-actions");
+  const cartItemUpdated = cart.find((item) => item.id === productId);
+
+  if (cartItemUpdated && cartItemUpdated.quantity > 0) {
+    const qtyDisplay = actionRow.querySelector(".qty-display");
+    if (qtyDisplay) {
+      qtyDisplay.textContent = cartItemUpdated.quantity;
+    }
+  } else {
+    // revert to Add to Cart button
+    const product = window.products.find((p) => p.id === productId);
+    if (!product) return;
+    const safeName = product.name.replace(/'/g, "\\'");
+    
+    actionRow.innerHTML = `
+      <button class="btn-add-cart"
+              onclick="event.stopPropagation(); handleAddToCart(${product.id}, '${safeName}', ${product.price || 0}, '${
+                product.media_items && product.media_items[0]
+                  ? product.media_items[0].url
+                  : ""
+              }', ${product.can_order})"
+              ${!product.can_order ? "disabled" : ""}
+              style="display:block;margin:15px auto;padding:12px 24px;background:linear-gradient(135deg,#6a11cb,#2575fc);color:white;border:none;border-radius:25px;font-weight:bold;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.2);width:100%;">
+        <i class="fas fa-cart-plus"></i>
+        ${product.can_order ? '{% trans "Add to Cart" %}' : '{% trans "Cannot Order" %}'}
+      </button>
+    `;
+  }
+}
+  // Initialize auto-scrolling media slider
+  function initializeMediaSlider(productId) {
+    const mediaItems = document.querySelectorAll(
+      `#mediaSlider-${productId} .media-item`
+    );
+    const indicators = document.querySelectorAll(
+      `#indicators-${productId} .media-indicator`
+    );
+
+    if (mediaItems.length <= 1) return;
+
+    // Store current index for this product
+    if (!shopState.mediaTimers[productId]) {
+      shopState.mediaTimers[productId] = {
+        currentIndex: 0,
+        timer: null,
+      };
+    }
+  }
+
+  function openProduct(id, event) {
+    // Don't trigger when clicking on interactive elements
+    if (
+      event.target.closest(
+        "button, .btn, input, select, textarea, .media-indicator"
+      )
+    ) {
+      return;
+    }
+
+    window.location.href = `/product/${id}/`;
+  }
+
+  // Start auto-scrolling for a product's media gallery
+  function startMediaSlider(productId) {
+    if (!shopState.mediaTimers[productId]) return;
+
+    const items = document.querySelectorAll(
+      `#mediaSlider-${productId} .media-item`
+    );
+    const indicators = document.querySelectorAll(
+      `#indicators-${productId} .media-indicator`
+    );
+
+    if (items.length <= 1) return;
+
+    // Clear any existing timer
+    if (shopState.mediaTimers[productId].timer) {
+      clearInterval(shopState.mediaTimers[productId].timer);
+    }
+
+    // Start new timer
+    shopState.mediaTimers[productId].timer = setInterval(() => {
+      const currentIndex = shopState.mediaTimers[productId].currentIndex;
+      const nextIndex = (currentIndex + 1) % items.length;
+
+      // Update media
+      updateMediaDisplay(productId, nextIndex);
+      shopState.mediaTimers[productId].currentIndex = nextIndex;
+    }, 3000); // Change every 3 seconds
+  }
+
+  // Stop auto-scrolling
+  function stopMediaSlider(productId) {
+    if (
+      shopState.mediaTimers[productId] &&
+      shopState.mediaTimers[productId].timer
+    ) {
+      clearInterval(shopState.mediaTimers[productId].timer);
+      shopState.mediaTimers[productId].timer = null;
+    }
+  }
+
+  // Go to specific media item
+  function goToMedia(productId, index) {
+    if (shopState.mediaTimers[productId]) {
+      shopState.mediaTimers[productId].currentIndex = index;
+      updateMediaDisplay(productId, index);
+
+      // Reset timer
+      if (shopState.mediaTimers[productId].timer) {
+        clearInterval(shopState.mediaTimers[productId].timer);
+        shopState.mediaTimers[productId].timer = null;
+        startMediaSlider(productId);
+      }
+    }
+  }
+
+  // Update media display
+  function updateMediaDisplay(productId, index) {
+    const items = document.querySelectorAll(
+      `#mediaSlider-${productId} .media-item`
+    );
+    const indicators = document.querySelectorAll(
+      `#indicators-${productId} .media-indicator`
+    );
+
+    // Remove active class from all items and indicators
+    items.forEach((item) => item.classList.remove("active"));
+    indicators.forEach((indicator) => indicator.classList.remove("active"));
+
+    // Add active class to current item and indicator
+    if (items[index]) {
+      items[index].classList.add("active");
+
+      // If it's a video, play it
+      if (items[index].dataset.type === "video") {
+        const video = items[index].querySelector("video");
+        if (video) {
+          video.currentTime = 0;
+          video.play().catch((e) => console.log("Autoplay prevented"));
+        }
+      }
+
+      // Pause other videos
+      items.forEach((item, i) => {
+        if (i !== index && item.dataset.type === "video") {
+          const video = item.querySelector("video");
+          if (video) {
+            video.pause();
+            video.currentTime = 0;
+          }
+        }
+      });
+    }
+
+    if (indicators[index]) {
+      indicators[index].classList.add("active");
+    }
+  }
+
+  // Play product video in modal
+  function playProductVideo(videoUrl, productName) {
+    const modal = document.getElementById("videoModal");
+    const videoPlayer = document.getElementById("productVideoPlayer");
+
+    videoPlayer.src = videoUrl;
+    videoPlayer.load();
+
+    modal.classList.add("active");
+    document.body.style.overflow = "hidden";
+
+    // Play the video
+    videoPlayer.play().catch((e) => {
+      console.log("Video autoplay prevented");
+    });
+  }
+
+  // Close video modal
+  function closeVideoModal() {
+    const modal = document.getElementById("videoModal");
+    const videoPlayer = document.getElementById("productVideoPlayer");
+
+    videoPlayer.pause();
+    videoPlayer.src = "";
+    modal.classList.remove("active");
+    document.body.style.overflow = "auto";
+  }
+
+  // Filter by category
+  function filterByCategory(categorySlug) {
+    shopState.filters.category = categorySlug;
+    shopState.pagination.currentPage = 1;
+    applyFilters();
+  }
+
+  // Apply all filters
+  async function applyFilters() {
+    showLoading(true);
+
+    // Get current filter values
+    shopState.filters.sortBy = document.getElementById("sortSelect").value;
+    shopState.filters.inStock = document.getElementById("inStockCheckbox")
+      .checked
+      ? "true"
+      : null;
+    shopState.filters.minPrice =
+      document.getElementById("minPriceInput").value || null;
+    shopState.filters.maxPrice =
+      document.getElementById("maxPriceInput").value || null;
+
+    // Build API URL with filters
+    let apiUrl = `/api/shop-page-data/?page=${shopState.pagination.currentPage}`;
+
+    // Add filters to URL
+    if (shopState.filters.category && shopState.filters.category !== "all") {
+      apiUrl += `&category=${shopState.filters.category}`;
+    }
+
+    if (shopState.filters.search) {
+      apiUrl += `&search=${encodeURIComponent(shopState.filters.search)}`;
+    }
+
+    if (shopState.filters.minPrice) {
+      apiUrl += `&min_price=${shopState.filters.minPrice}`;
+    }
+
+    if (shopState.filters.maxPrice) {
+      apiUrl += `&max_price=${shopState.filters.maxPrice}`;
+    }
+
+    if (shopState.filters.inStock) {
+      apiUrl += `&in_stock=${shopState.filters.inStock}`;
+    }
+
+    if (shopState.filters.sortBy) {
+      apiUrl += `&sort_by=${shopState.filters.sortBy}`;
+    }
+
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+
+      if (data.success) {
+        shopState.products = data.products;
+        shopState.pagination = {
+          currentPage:
+            data.pagination.current_page ||
+            data.pagination.currentPage ||
+            shopState.pagination.currentPage ||
+            1,
+          totalPages:
+            data.pagination.total_pages ||
+            data.pagination.totalPages ||
+            shopState.pagination.totalPages ||
+            1,
+          totalItems:
+            data.pagination.total_items ??
+            data.pagination.totalItems ??
+            data.pagination.count ??
+            shopState.products.length,
+        };
+
+        // Update URL without reloading page
+        updateURL();
+
+        // Update UI
+        updateProducts();
+        updatePagination();
+        updateResultsInfo();
+        updateCategories();
+      }
+    } catch (error) {
+      console.error("Error applying filters:", error);
+      // Use base.html notification if available
+      if (window.showNotification) {
+        window.showNotification("Error applying filters", "error");
+      }
+    }
+
+    showLoading(false);
+  }
+
+  // Clear all filters
+  function clearFilters() {
+    shopState.filters = {
+      category: "all",
+      minPrice: null,
+      maxPrice: null,
+      inStock: null,
+      sortBy: "newest",
+      search: "",
+    };
+
+    shopState.pagination.currentPage = 1;
+
+    // Reset UI elements
+    document.getElementById("sortSelect").value = "newest";
+    document.getElementById("inStockCheckbox").checked = false;
+    document.getElementById("minPriceInput").value = "";
+    document.getElementById("maxPriceInput").value = "";
+
+    // Update price slider
+    updatePriceSlider();
+
+    // Apply cleared filters
+    applyFilters();
+  }
+
+  // Update URL with current filters
+  function updateURL() {
+    const params = new URLSearchParams();
+
+    if (shopState.filters.category && shopState.filters.category !== "all") {
+      params.set("category", shopState.filters.category);
+    }
+
+    if (shopState.filters.search) {
+      params.set("search", shopState.filters.search);
+    }
+
+    if (shopState.filters.minPrice) {
+      params.set("min_price", shopState.filters.minPrice);
+    }
+
+    if (shopState.filters.maxPrice) {
+      params.set("max_price", shopState.filters.maxPrice);
+    }
+
+    if (shopState.filters.inStock) {
+      params.set("in_stock", shopState.filters.inStock);
+    }
+
+    if (shopState.filters.sortBy && shopState.filters.sortBy !== "newest") {
+      params.set("sort_by", shopState.filters.sortBy);
+    }
+
+    // Update URL without page reload
+    const newUrl = `${window.location.pathname}${
+      params.toString() ? "?" + params.toString() : ""
+    }`;
+    window.history.pushState({}, "", newUrl);
+  }
+
+  // Update pagination
+  function updatePagination() {
+    const container = document.getElementById("pagination");
+    const { currentPage, totalPages } = shopState.pagination;
+
+    if (totalPages <= 1) {
+      container.innerHTML = "";
+      return;
+    }
+
+    let html = "";
+
+    // Previous button
+    html += `
+            <button class="page-btn" ${
+              currentPage === 1 ? "disabled" : ""
+            } onclick="goToPage(${currentPage - 1})">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        `;
+
+    // Page numbers
+    const maxVisible = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+    if (endPage - startPage + 1 < maxVisible) {
+      startPage = Math.max(1, endPage - maxVisible + 1);
+    }
+
+    // First page
+    if (startPage > 1) {
+      html += `<button class="page-btn" onclick="goToPage(1)">1</button>`;
+      if (startPage > 2) {
+        html += `<span class="page-dots">...</span>`;
+      }
+    }
+
+    // Visible pages
+    for (let i = startPage; i <= endPage; i++) {
+      html += `
+                <button class="page-btn ${
+                  i === currentPage ? "active" : ""
+                }" onclick="goToPage(${i})">
+                    ${i}
+                </button>
+            `;
+    }
+
+    // Last page
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        html += `<span class="page-dots">...</span>`;
+      }
+      html += `<button class="page-btn" onclick="goToPage(${totalPages})">${totalPages}</button>`;
+    }
+
+    // Next button
+    html += `
+            <button class="page-btn" ${
+              currentPage === totalPages ? "disabled" : ""
+            } onclick="goToPage(${currentPage + 1})">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        `;
+
+    container.innerHTML = html;
+  }
+
+  // Go to specific page
+  function goToPage(page) {
+    if (page < 1 || page > shopState.pagination.totalPages) return;
+
+    shopState.pagination.currentPage = page;
+    applyFilters();
+
+    // Scroll to top of products
+    document
+      .getElementById("productsGrid")
+      .scrollIntoView({ behavior: "smooth" });
+  }
+
+  // Update results info
+  function updateResultsInfo() {
+    const totalItems = shopState.pagination.totalItems || 0;
+    const currentPage = shopState.pagination.currentPage || 1;
+    const itemsPerPage = 20;
+
+    const start = (currentPage - 1) * itemsPerPage + 1;
+    const end = Math.min(start + itemsPerPage - 1, totalItems);
+
+    const text =
+      totalItems === 0
+        ? '{% trans "No products found" %}'
+        : `{% trans "Showing" %} ${start}-${end} {% trans "of" %} ${totalItems} {% trans "products" %}`;
+
+    document.getElementById(
+      "resultsInfo"
+    ).innerHTML = `<strong>${text}</strong>`;
+  }
+
+  // Update price slider
+  function updatePriceSlider() {
+    const { min, max } = shopState.priceRange;
+    const minPrice = shopState.filters.minPrice || min;
+    const maxPrice = shopState.filters.maxPrice || max;
+
+    // Update inputs
+    document.getElementById("minPriceInput").value =
+      minPrice === min ? "" : minPrice;
+    document.getElementById("minPriceInput").placeholder = `Min: $${min}`;
+
+    document.getElementById("maxPriceInput").value =
+      maxPrice === max ? "" : maxPrice;
+    document.getElementById("maxPriceInput").placeholder = `Max: $${max}`;
+
+    // Update slider track
+    const slider = document.getElementById("priceSlider");
+    const track = document.getElementById("priceTrack");
+    const minThumb = document.getElementById("minThumb");
+    const maxThumb = document.getElementById("maxThumb");
+
+    const range = max - min;
+    const minPercent = ((minPrice - min) / range) * 100;
+    const maxPercent = ((maxPrice - min) / range) * 100;
+
+    track.style.left = `${minPercent}%`;
+    track.style.width = `${maxPercent - minPercent}%`;
+
+    minThumb.style.left = `${minPercent}%`;
+    maxThumb.style.left = `${maxPercent}%`;
+  }
+
+  // Setup price slider interaction
+  function setupPriceSlider() {
+    const slider = document.getElementById("priceSlider");
+    const minThumb = document.getElementById("minThumb");
+    const maxThumb = document.getElementById("maxThumb");
+    const track = document.getElementById("priceTrack");
+    const minInput = document.getElementById("minPriceInput");
+    const maxInput = document.getElementById("maxPriceInput");
+
+    const { min, max } = shopState.priceRange;
+    const range = max - min;
+    let activeThumb = null;
+
+    function updateFromThumb(thumb, clientX) {
+      const rect = slider.getBoundingClientRect();
+      let percent = (clientX - rect.left) / rect.width;
+      percent = Math.max(0, Math.min(1, percent));
+
+      const value = min + percent * range;
+      const roundedValue = Math.round(value);
+
+      if (thumb === minThumb) {
+        const maxValue = shopState.filters.maxPrice || max;
+        if (roundedValue >= maxValue) return;
+
+        shopState.filters.minPrice = roundedValue;
+        minInput.value = roundedValue === min ? "" : roundedValue;
+      } else {
+        const minValue = shopState.filters.minPrice || min;
+        if (roundedValue <= minValue) return;
+
+        shopState.filters.maxPrice = roundedValue;
+        maxInput.value = roundedValue === max ? "" : roundedValue;
+      }
+
+      updatePriceSlider();
+    }
+
+    function handleMouseDown(e) {
+      activeThumb = e.target;
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    }
+
+    function handleMouseMove(e) {
+      if (activeThumb) {
+        updateFromThumb(activeThumb, e.clientX);
+      }
+    }
+
+    function handleMouseUp() {
+      activeThumb = null;
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+
+      // Apply filters after a short delay
+      setTimeout(() => applyFilters(), 300);
+    }
+
+    // Add event listeners
+    minThumb.addEventListener("mousedown", handleMouseDown);
+    maxThumb.addEventListener("mousedown", handleMouseDown);
+
+    // Update on input change
+    minInput.addEventListener("change", () => {
+      let value = parseFloat(minInput.value);
+      if (isNaN(value)) value = min;
+      value = Math.max(min, Math.min(value, max));
+
+      const maxValue = shopState.filters.maxPrice || max;
+      if (value >= maxValue) {
+        value = maxValue - 1;
+        minInput.value = value;
+      }
+
+      shopState.filters.minPrice = value === min ? null : value;
+      updatePriceSlider();
+      applyFilters();
+    });
+
+    maxInput.addEventListener("change", () => {
+      let value = parseFloat(maxInput.value);
+      if (isNaN(value)) value = max;
+      value = Math.max(min, Math.min(value, max));
+
+      const minValue = shopState.filters.minPrice || min;
+      if (value <= minValue) {
+        value = minValue + 1;
+        maxInput.value = value;
+      }
+
+      shopState.filters.maxPrice = value === max ? null : value;
+      updatePriceSlider();
+      applyFilters();
+    });
+  }
+
+  // Toggle filter section
+  function toggleFilter(section) {
+    const content = document.getElementById(`${section}Content`);
+    const icon = document.getElementById(`${section}Icon`);
+
+    content.classList.toggle("collapsed");
+    icon.classList.toggle("rotated");
+  }
+
+  // Show loading overlay
+  function showLoading(show) {
+    const overlay = document.getElementById("loadingOverlay");
+    overlay.classList.toggle("active", show);
+  }
+
+  // Quick view function
+  async function showQuickView(productId) {
+    try {
+      const response = await fetch(`/api/get-product/${productId}/`);
+      const data = await response.json();
+
+      if (data.success) {
+        const product = data.product;
+
+        // Create modal HTML
+        const modalHTML = `
+                    <div class="modal fade" id="quickViewModal-${productId}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content modern-card">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title">${product.name}</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            ${
+                                              product.image_url
+                                                ? `<img src="${product.image_url}" class="img-fluid rounded-3 mb-3" alt="${product.name}" style="max-height: 300px; width: 100%; object-fit: cover;">`
+                                                : `<div class="bg-light rounded-3 d-flex align-items-center justify-content-center" style="height: 300px;">
+                                                    <i class="fas fa-box fa-3x text-muted"></i>
+                                                </div>`
+                                            }
+                                            ${
+                                              product.video_url
+                                                ? `<div class="mt-3">
+                                                    <video controls class="w-100 rounded-3" style="max-height: 200px;">
+                                                        <source src="${product.video_url}" type="video/mp4">
+                                                    </video>
+                                                </div>`
+                                                : ""
+                                            }
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>Description:</strong> ${
+                                              product.description ||
+                                              "No description available"
+                                            }</p>
+                                            <p><strong>Category:</strong> ${
+                                              product.category?.name ||
+                                              "Uncategorized"
+                                            }</p>
+                                            <p><strong>Available:</strong> ${
+                                              product.quantity_available !==
+                                              null
+                                                ? product.quantity_available
+                                                : "N/A"
+                                            }</p>
+                                            <p><strong>Price:</strong> ${
+                                              product.price !== null
+                                                ? `$${product.price.toFixed(2)}`
+                                                : "Price on request"
+                                            }</p>
+                                            <div class="d-grid gap-2 mt-4">
+                                                <button class="btn btn-primary"
+                                                        onclick="handleAddToCart(${
+                                                          product.id
+                                                        }, '${product.name.replace(
+          /'/g,
+          "\\'"
+        )}', ${product.price || 0}, '${product.image_url || ""}', ${
+          product.can_order || false
+        })"
+                                                        ${
+                                                          !product.can_order
+                                                            ? "disabled"
+                                                            : ""
+                                                        }>
+                                                    <i class="fas fa-cart-plus me-2"></i>
+                                                    ${
+                                                      product.can_order
+                                                        ? "Add to Cart"
+                                                        : "Cannot Order"
+                                                    }
+                                                </button>
+                                                <button class="btn btn-outline-primary" onclick="window.addToWishlist(${
+                                                  product.id
+                                                })">
+                                                    <i class="far fa-heart me-2"></i>Add to Wishlist
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+        // Add modal to body
+        const modalContainer = document.createElement("div");
+        modalContainer.innerHTML = modalHTML;
+        document.body.appendChild(modalContainer);
+
+        // Show modal
+        const modalElement = document.getElementById(
+          `quickViewModal-${productId}`
+        );
+        const modal = new bootstrap.Modal(modalElement);
+        modal.show();
+
+        // Remove modal from DOM when hidden
+        modalElement.addEventListener("hidden.bs.modal", function () {
+          modalElement.remove();
+        });
+      }
+    } catch (error) {
+      console.error("Error in quick view:", error);
+      // Use base.html notification if available
+      if (window.showNotification) {
+        window.showNotification("Error loading product details", "error");
+      }
+    }
+  }
+
+  // Helper function for star rating
+  function generateStars(rating) {
+    let stars = "";
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+
+    for (let i = 1; i <= 5; i++) {
+      if (i <= fullStars) {
+        stars += '<i class="fas fa-star"></i>';
+      } else if (i === fullStars + 1 && hasHalfStar) {
+        stars += '<i class="fas fa-star-half-alt"></i>';
+      } else {
+        stars += '<i class="far fa-star"></i>';
+      }
+    }
+
+    return stars;
+  }
+
+  // Setup event listeners
+  function setupEventListeners() {
+    setupPriceSlider();
+
+    // Close modals when clicking outside
+    const videoModal = document.getElementById("videoModal");
+    if (videoModal) {
+      videoModal.addEventListener("click", function (e) {
+        if (e.target === this) closeVideoModal();
+      });
+    }
+
+    // Handle browser back/forward buttons
+    window.addEventListener("popstate", function () {
+      loadShopData();
+    });
+  }
+
+  // Expose shop functions to window
+  window.filterByCategory = filterByCategory;
+  window.applyFilters = applyFilters;
+  window.clearFilters = clearFilters;
+  window.goToPage = goToPage;
+  window.toggleFilter = toggleFilter;
+  window.showQuickView = showQuickView;
+  window.playProductVideo = playProductVideo;
+  window.closeVideoModal = closeVideoModal;
+  window.handleAddToCart = handleAddToCart;
+  window.startMediaSlider = startMediaSlider;
+  window.stopMediaSlider = stopMediaSlider;
+  window.goToMedia = goToMedia;
+  window.openProduct = openProduct;
+</script>
+{% endblock %}

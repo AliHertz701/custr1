@@ -1,0 +1,2708 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-12-01 15:14+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
+"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#: .\main\templates copy\main\footer.html:6
+#: .\main\templates\main\footer.html:6
+msgid "Copyright &copy; 2020 Company Name"
+msgstr "حقوق النشر &copy; 2020 اسم الشركة"
+
+#: .\main\templates copy\main\footer.html:7
+#: .\main\templates\main\footer.html:7
+msgid "Designed by TOOPLATE"
+msgstr "تصميم TOOPLATE"
+
+#: .\main\templates\main\about.html:3
+msgid "About Us - InnovateTech Solutions"
+msgstr "من نحن - InnovateTech Solutions"
+
+#: .\main\templates\main\about.html:9
+msgid "About InnovateTech"
+msgstr "InnovateTech حول"
+
+#: .\main\templates\main\about.html:12
+msgid ""
+"\n"
+"          Pioneering the future of technology solutions since 2019\n"
+"          "
+msgstr "نواكب مستقبل التكنولوجيا منذ 2019"
+
+#: .\main\templates\main\about.html:26
+msgid "Our Story"
+msgstr "قصتنا"
+
+#: .\main\templates\main\about.html:30
+msgid ""
+"\n"
+"          Founded in 2019, InnovateTech Solutions emerged from a simple "
+"vision:\n"
+"          to bridge the gap between cutting-edge technology and business "
+"needs.\n"
+"          What started as a small team of passionate developers has grown "
+"into\n"
+"          a full-service technology partner for businesses worldwide.\n"
+"          "
+msgstr ""
+"\n"
+"تأسست شركة InnovateTech Solutions في عام 2019 من رؤية بسيطة:\n"
+"سد الفجوة بين أحدث التقنيات واحتياجات الأعمال.\n"
+"وبدأت بفريق صغير من المطورين الشغوفين، ثم نمت لتصبح شريكًا تقنيًا "
+"متكامل الخدمات للشركات حول العالم.\n"
+""
+
+
+#: .\main\templates\main\about.html:40
+msgid ""
+"\n"
+"          We believe that technology should empower businesses, not "
+"complicate\n"
+"          them. Our approach combines deep technical expertise with a clear\n"
+"          understanding of business objectives to deliver solutions that "
+"drive\n"
+"          real results.\n"
+"          "
+msgstr ""
+"\n"
+"نؤمن بأن التكنولوجيا يجب أن تمكّن الأعمال لا أن تعقّدها.\n"
+"فنحن نمزج بين الخبرة التقنية العميقة والفهم الواضح لأهداف الأعمال\n"
+"لتقديم حلول تحقق نتائج حقيقية وفعّالة.\n"
+""
+
+
+#: .\main\templates\main\about.html:51 .\main\templates\main\home.html:126
+msgid "Years Experience"
+msgstr "سنوات من الخبرة"
+
+#: .\main\templates\main\about.html:55
+msgid "Projects"
+msgstr "المشاريع"
+
+#: .\main\templates\main\about.html:59
+msgid "Clients"
+msgstr "العملاء"
+
+#: .\main\templates\main\about.html:68 .\main\templates\main\home.html:216
+msgid "Our Team"
+msgstr "فريقنا"
+
+#: .\main\templates\main\about.html:85
+msgid "Our Mission"
+msgstr "هدفنا"
+
+#: .\main\templates\main\about.html:89
+msgid ""
+"\n"
+"            To empower businesses with innovative, scalable, and secure\n"
+"            technology solutions that drive growth, efficiency, and "
+"competitive\n"
+"            advantage in the digital age.\n"
+"            "
+msgstr ""
+"\n"
+"لتمكين الأعمال من خلال حلول تقنية مبتكرة وقابلة للتوسع وآمنة،\n"
+"تعزز النمو والكفاءة وتوفر ميزة تنافسية في العصر الرقمي.\n"
+""
+
+#: .\main\templates\main\about.html:98
+msgid "Deliver exceptional value"
+msgstr "تقديم قيمة استثنائية"
+
+#: .\main\templates\main\about.html:102
+msgid "Foster innovation"
+msgstr "تعزيز الابتكار"
+
+#: .\main\templates\main\about.html:106
+msgid "Ensure client success"
+msgstr "ضمان نجاح العملاء"
+
+
+#: .\main\templates\main\about.html:116
+msgid "Our Vision"
+msgstr "رؤيتنا"
+
+#: .\main\templates\main\about.html:120
+msgid ""
+"\n"
+"            To be the leading technology partner for businesses seeking "
+"digital\n"
+"            transformation, recognized for our innovation, reliability, and\n"
+"            commitment to client success.\n"
+"            "
+msgstr ""
+"\n"
+"أن نكون الشريك التقني الرائد للأعمال الساعية إلى التحول الرقمي،\n"
+"وأن نحظى بالاعتراف بتميزنا في الابتكار والموثوقية والتزامنا بنجاح العملاء.\n"
+""
+
+#: .\main\templates\main\about.html:129
+msgid "Global technology leadership"
+msgstr "الريادة التقنية العالمية"
+
+#: .\main\templates\main\about.html:133
+msgid "Sustainable innovation"
+msgstr "الابتكار المستدام"
+
+#: .\main\templates\main\about.html:137
+msgid "Industry transformation"
+msgstr "تحويل الصناعة"
+
+
+#: .\main\templates\main\about.html:150
+msgid "Our Values"
+msgstr "قيمنا"
+
+#: .\main\templates\main\about.html:153
+msgid ""
+"\n"
+"        The principles that guide everything we do\n"
+"        "
+msgstr ""
+"\n"
+"المبادئ التي تقود كل ما نقوم به\n"
+""
+
+#: .\main\templates\main\about.html:163
+msgid "Innovation"
+msgstr "الابتكار"
+
+#: .\main\templates\main\about.html:166
+msgid ""
+"\n"
+"            We constantly push boundaries and explore new technologies to\n"
+"            deliver cutting-edge solutions.\n"
+"            "
+msgstr ""
+"\n"
+"نحن ندفع باستمرار حدود الممكن ونستكشف التقنيات الحديثة\n"
+"لتقديم حلول مبتكرة ومتقدمة.\n"
+""
+
+#: .\main\templates\main\about.html:177
+msgid "Integrity"
+msgstr "النزاهة"
+
+#: .\main\templates\main\about.html:180
+msgid ""
+"\n"
+"            We build trust through transparency, honesty, and delivering on "
+"our\n"
+"            promises.\n"
+"            "
+msgstr ""
+"\n"
+"نحن نبني الثقة من خلال الشفافية والصدق والوفاء بوعودنا.\n"
+""
+
+#: .\main\templates\main\about.html:191
+msgid "Collaboration"
+msgstr "التعاون"
+
+#: .\main\templates\main\about.html:194
+msgid ""
+"\n"
+"            We work as partners with our clients, fostering strong "
+"relationships\n"
+"            for mutual success.\n"
+"            "
+msgstr ""
+"\n"
+"نعمل كشركاء مع عملائنا، ونبني علاقات قوية لتحقيق النجاح المتبادل.\n"
+""
+
+#: .\main\templates\main\about.html:210
+msgid "Join Our Journey"
+msgstr "انضم إلى رحلتنا"
+
+#: .\main\templates\main\about.html:213
+msgid ""
+"\n"
+"          Be part of our success story. Let's build something amazing "
+"together.\n"
+"          "
+msgstr ""
+"\n"
+"كن جزءًا من قصة نجاحنا. لنبنِ معًا شيئًا رائعًا.\n"
+""
+
+#: .\main\templates\main\about.html:222
+msgid "Get Started"
+msgstr "ابدأ الآن"
+
+
+#: .\main\templates\main\base.html:11 .\main\templates\main\home.html:41
+msgid "InnovateTech Solutions"
+msgstr "InnovateTech Solutions"
+
+#: .\main\templates\main\base.html:258 .\main\templates\main\base.html:367
+msgid "Home"
+msgstr "الرئيسية"
+
+#: .\main\templates\main\base.html:265 .\main\templates\main\home.html:141
+msgid "About Us"
+msgstr "من نحن"
+
+#: .\main\templates\main\base.html:272 .\main\templates\main\base.html:381
+#: .\main\templates\main\dashboard.html:97
+msgid "Products"
+msgstr "منتجاتنا"
+
+#: .\main\templates\main\base.html:279
+msgid "Our Clients"
+msgstr "عملاؤنا"
+
+#: .\main\templates\main\base.html:286
+msgid "Contact Us"
+msgstr "تواصل معنا"
+
+#: .\main\templates\main\base.html:294
+msgid "Dashboard"
+msgstr "التحكم"
+
+#: .\main\templates\main\base.html:299
+msgid "Logout"
+msgstr "تسجيل الخروج"
+
+#: .\main\templates\main\base.html:307
+msgid "Login"
+msgstr "تسجيل الدخول"
+
+#: .\main\templates\main\base.html:357
+msgid ""
+"Leading the way in innovative software solutions and technology services for "
+"businesses worldwide."
+msgstr ""
+"رائدة في مجال حلول البرمجيات والخدمات التكنولوجية المبتكرة للشركات حول "
+"العالم."
+
+#: .\main\templates\main\base.html:361
+msgid "Quick Links"
+msgstr "انتقال سريع"
+
+#: .\main\templates\main\base.html:374
+msgid "About"
+msgstr "من نحن"
+
+#: .\main\templates\main\base.html:388
+msgid "Contact"
+msgstr "تواصل معنا"
+
+#: .\main\templates\main\base.html:394
+msgid "Contact Info"
+msgstr "معلومات الاتصال"
+
+#: .\main\templates\main\base.html:398
+msgid "Loading address..."
+msgstr "جاري تحميل العنوان"
+
+#: .\main\templates\main\base.html:402
+msgid "Loading phone..."
+msgstr "جاري تحميل الهاتف"
+
+#: .\main\templates\main\base.html:406
+msgid "Loading email..."
+msgstr "جاري تحميل الايميل"
+
+#: .\main\templates\main\base.html:412 .\main\templates\main\contact.html:170
+msgid "Follow Us"
+msgstr "تابعنا!"
+
+#: .\main\templates\main\base.html:457
+msgid "All rights reserved."
+msgstr "جميع الحقوق محفوظة"
+
+#: .\main\templates\main\clients.html:4
+msgid "Our Clients - InnovateTech Solutions"
+msgstr "الرئيسية - InnovateTech Solutions"
+
+#: .\main\templates\main\clients.html:12
+msgid "Our Valued Clients"
+msgstr "عملاؤنا"
+
+#: .\main\templates\main\clients.html:15
+msgid ""
+"\n"
+"          Trusted by industry leaders and innovative startups worldwide\n"
+"          "
+msgstr ""
+"\n"
+"موثوق بنا من قبل روّاد الصناعة والشركات الناشئة المبتكرة حول العالم\n"
+""
+
+#: .\main\templates\main\clients.html:31
+msgid ""
+"\n"
+"          We take pride in the strong relationships we've built with our "
+"clients.\n"
+"          Their success stories inspire us to continue delivering "
+"exceptional\n"
+"          technology solutions.\n"
+"          "
+msgstr ""
+"\n"
+"نفخر بالعلاقات القوية التي بنيناها مع عملائنا.\n"
+"قِصص نجاحهم تُلهمنا للاستمرار في تقديم حلول تقنية استثنائية.\n"
+""
+
+#: .\main\templates\main\clients.html:52
+msgid "TechCorp Global"
+msgstr "TechCorp Global"
+
+#: .\main\templates\main\clients.html:54
+msgid "Enterprise Software Solutions"
+msgstr "حلول برمجيات المؤسسات"
+
+#: .\main\templates\main\clients.html:59
+#, python-format
+msgid ""
+"\n"
+"              \"InnovateTech transformed our legacy systems into modern, "
+"scalable\n"
+"              solutions that boosted our efficiency by 40%%.\"\n"
+"              "
+msgstr ""
+"\n"
+"\"حوّلت InnovateTech أنظمتنا القديمة إلى حلول حديثة وقابلة للتوسع،\n"
+" مما عزز كفاءتنا بنسبة 40%%.\"\n"
+""
+
+#: .\main\templates\main\clients.html:67
+msgid "Technology"
+msgstr "التقنية"
+
+#: .\main\templates\main\clients.html:79
+msgid "RetailPlus"
+msgstr "RetailPlus"
+
+#: .\main\templates\main\clients.html:80
+msgid "E-commerce Platform"
+msgstr "منصة تجارة إلكترونية"
+
+#: .\main\templates\main\clients.html:84
+#, python-format
+msgid ""
+"\n"
+"              \"Their custom e-commerce solution helped us scale to handle "
+"500%% more\n"
+"              transactions during peak seasons.\"\n"
+"              "
+msgstr ""
+"\n"
+"\"ساعدنا حلّ التجارة الإلكترونية المخصص الذي قدّموه على التوسع\n"
+"للتعامل مع زيادة بنسبة 500%% في المعاملات خلال مواسم الذروة.\"\n"
+""
+
+#: .\main\templates\main\clients.html:92
+msgid "Retail"
+msgstr "البيع بالتجزئة"
+
+
+#: .\main\templates\main\clients.html:104
+msgid "MediCare Solutions"
+msgstr "MediCare Solutions"
+
+#: .\main\templates\main\clients.html:105
+msgid "Healthcare Technology"
+msgstr "تقنيات الرعاية الصحية"
+
+#: .\main\templates\main\clients.html:109
+msgid ""
+"\n"
+"              \"The secure patient management system they developed "
+"revolutionized\n"
+"              how we handle medical records.\"\n"
+"              "
+msgstr ""
+"\n"
+"\"لقد أحدث نظام إدارة المرضى الآمن الذي قاموا بتطويره ثورة في كيفية تعاملنا\n"
+"مع السجلات الطبية.\"\n"
+""
+
+#: .\main\templates\main\clients.html:117
+msgid "Healthcare"
+msgstr "الرعاية الصحية"
+
+#: .\main\templates\main\clients.html:129
+msgid "EduTech Pro"
+msgstr "EduTech Pro"
+
+#: .\main\templates\main\clients.html:130
+msgid "Educational Platform"
+msgstr "منصة تعليمية"
+
+#: .\main\templates\main\clients.html:134
+#, python-format
+msgid ""
+"\n"
+"              \"Their learning management system supports over 50,000 "
+"students with\n"
+"              99.9%% uptime.\"\n"
+"              "
+msgstr ""
+"\n"
+"\"يدعم نظام إدارة التعلم الخاص بهم أكثر من 50,000 طالب\n"
+"مع توفر تشغيل بنسبة 99.9%%.\"\n"
+""
+
+#: .\main\templates\main\clients.html:142
+msgid "Education"
+msgstr "التعليم"
+
+#: .\main\templates\main\clients.html:154
+msgid "FinSecure"
+msgstr "FinSecure"
+
+#: .\main\templates\main\clients.html:155
+msgid "Financial Services"
+msgstr "الخدمات المالية"
+
+#: .\main\templates\main\clients.html:159
+msgid ""
+"\n"
+"              \"The security and compliance features in their financial "
+"platform are\n"
+"              industry-leading.\"\n"
+"              "
+msgstr ""
+"\n"
+"\"ميزات الأمان والامتثال في منصتهم المالية تعتبر من بين الأفضل على مستوى القطاع.\"\n"
+""
+
+#: .\main\templates\main\clients.html:167
+msgid "Finance"
+msgstr "التمويل"
+
+#: .\main\templates\main\clients.html:179
+msgid "LogiChain"
+msgstr "LogiChain"
+
+#: .\main\templates\main\clients.html:180
+msgid "Supply Chain Management"
+msgstr "إدارة سلسلة التوريد"
+
+#: .\main\templates\main\clients.html:184
+#, python-format
+msgid ""
+"\n"
+"              \"Their logistics optimization software reduced our delivery "
+"times by\n"
+"              30%% while cutting costs.\"\n"
+"              "
+msgstr ""
+"\n"
+"\"ساهم برنامج تحسين العمليات اللوجستية الخاص بهم في تقليل أوقات التسليم بنسبة\n"
+"30%% مع خفض التكاليف.\"\n"
+""
+
+#: .\main\templates\main\clients.html:192
+msgid "Logistics"
+msgstr "اللوجستيات"
+
+#: .\main\templates\main\clients.html:212
+msgid "Client Retention Rate"
+msgstr "معدل احتفاظ العملاء"
+
+#: .\main\templates\main\clients.html:216
+msgid "Satisfied Clients"
+msgstr "عملاء راضون"
+
+#: .\main\templates\main\clients.html:220
+msgid "Client Support"
+msgstr "دعم العملاء"
+
+#: .\main\templates\main\clients.html:224 .\main\templates\main\home.html:104
+msgid "Client Satisfaction"
+msgstr "رضا العملاء"
+
+#: .\main\templates\main\clients.html:236
+msgid "Ready to Join Our Success Stories?"
+msgstr "هل أنت مستعد لتنضم إلى قصص نجاحنا؟"
+
+#: .\main\templates\main\clients.html:240
+msgid ""
+"\n"
+"          Let's discuss how we can help your business achieve its "
+"technology\n"
+"          goals.\n"
+"          "
+msgstr ""
+"\n"
+"دعنا نناقش كيف يمكننا مساعدة عملك في تحقيق أهدافه التقنية.\n"
+""
+
+#: .\main\templates\main\clients.html:251
+msgid "Start Your Project"
+msgstr "ابدأ مشروعك"
+
+#: .\main\templates\main\clients.html:258
+msgid "View Our Products"
+msgstr "عرض منتجاتنا"
+
+#: .\main\templates\main\contact.html:3
+msgid "Contact Us - InnovateTech Solutions"
+msgstr "اتصل بنا - InnovateTech Solutions"
+
+#: .\main\templates\main\contact.html:11 .\main\templates\main\home.html:479
+msgid "Get In Touch"
+msgstr "تواصل معنا"
+
+#: .\main\templates\main\contact.html:14
+msgid ""
+"\n"
+"          We'd love to hear from you. Send us a message and we'll respond as "
+"soon as possible.\n"
+"          "
+msgstr ""
+"\n"
+"يسعدنا سماعك. أرسل لنا رسالة وسنقوم بالرد عليك في أقرب وقت ممكن.\n"
+""
+
+#: .\main\templates\main\contact.html:32
+msgid "Send Us a Message"
+msgstr "أرسل لنا رسالة"
+
+#: .\main\templates\main\contact.html:49
+#: .\main\templates\main\contact.html:145
+#: .\main\templates\main\dashboard.html:826
+#: .\main\templates\main\dashboard.html:828
+#: .\main\templates\main\dashboard.html:1067
+#: .\main\templates\main\dashboard.html:1069
+msgid "Email Address"
+msgstr "عنوان البريد الإلكتروني"
+
+#: .\main\templates\main\contact.html:60
+msgid "your.email@example.com"
+msgstr "your.email@example.com"
+
+#: .\main\templates\main\contact.html:68
+msgid "Your Message"
+msgstr "رسالتك"
+
+#: .\main\templates\main\contact.html:81
+msgid "Tell us how we can help you..."
+msgstr "أخبرنا كيف يمكننا مساعدتك..."
+
+#: .\main\templates\main\contact.html:94
+msgid "Send Message"
+msgstr "إرسال الرسالة"
+
+#: .\main\templates\main\contact.html:106
+msgid "Contact Information"
+msgstr "معلومات الاتصال"
+
+#: .\main\templates\main\contact.html:117
+msgid "Our Headquarters"
+msgstr "مقرّنا الرئيسي"
+
+#: .\main\templates\main\contact.html:119
+msgid "Loading address from primary branch..."
+msgstr "جاري تحميل العنوان من الفرع الرئيسي..."
+
+#: .\main\templates\main\contact.html:131
+#: .\main\templates\main\dashboard.html:814
+#: .\main\templates\main\dashboard.html:816
+#: .\main\templates\main\dashboard.html:1055
+#: .\main\templates\main\dashboard.html:1057
+#: .\main\templates\main\products.html:127
+msgid "Phone Number"
+msgstr "رقم الهاتف"
+
+
+#: .\main\templates\main\contact.html:133
+msgid "Loading phone number..."
+msgstr "جاري تحميل الهاتف"
+
+#: .\main\templates\main\contact.html:147
+msgid "Loading email address..."
+msgstr "جاري تحميل البريد الالكتروني"
+
+#: .\main\templates\main\contact.html:159
+msgid "Business Hours"
+msgstr "ساعات العمل"
+
+#: .\main\templates\main\contact.html:161
+msgid "Loading business hours..."
+msgstr "جاري تحميل ساعات العمل"
+
+#: .\main\templates\main\contact.html:212
+msgid "Our Branches"
+msgstr "فروعنا"
+
+#: .\main\templates\main\contact.html:214
+msgid "Visit us at any of our locations worldwide"
+msgstr "قم بزيارتنا في أي من فروعنا حول العالم"
+
+#: .\main\templates\main\contact.html:222
+msgid "Loading branches..."
+msgstr "جاري تحميل الفروع..."
+
+#: .\main\templates\main\contact.html:235
+msgid "Branch Details"
+msgstr "تفاصيل الفرع"
+
+#: .\main\templates\main\contact.html:271
+msgid "Coordinates:"
+msgstr "الإحداثيات:"
+
+#: .\main\templates\main\contact.html:303
+msgid "Address not set"
+msgstr "لم يتم تحديد العنوان"
+
+#: .\main\templates\main\contact.html:309
+msgid "Phone number not set"
+msgstr "لم يتم تحديد رقم الهاتف"
+
+#: .\main\templates\main\contact.html:315
+msgid "Email not set"
+msgstr "لم يتم تحديد البريد الإلكتروني"
+
+#: .\main\templates\main\contact.html:338
+msgid "Business hours not set"
+msgstr "لم يتم تحديد ساعات العمل"
+
+#: .\main\templates\main\contact.html:382
+msgid "No branches available"
+msgstr "لا توجد فروع متاحة"
+
+#: .\main\templates\main\contact.html:385
+msgid "Check back later for branch information."
+msgstr "يرجى العودة لاحقًا للاطلاع على معلومات الفروع."
+
+#: .\main\templates\main\contact.html:428
+msgid "No valid branch locations"
+msgstr "لا توجد مواقع صحيحة للفروع"
+
+#: .\main\templates\main\contact.html:431
+msgid "Please check branch coordinate data."
+msgstr "يرجى التحقق من بيانات إحداثيات الفروع."
+
+#: .\main\templates\main\contact.html:466
+msgid "Details"
+msgstr "التفاصيل"
+
+#: .\main\templates\main\contact.html:484
+msgid "Error loading branches"
+msgstr "حدث خطأ أثناء تحميل الفروع"
+
+#: .\main\templates\main\contact.html:487
+msgid "Please try refreshing the page."
+msgstr "يرجى محاولة تحديث الصفحة."
+
+#: .\main\templates\main\contact.html:635
+msgid "Sending..."
+msgstr "جاري الإرسال..."
+
+#: .\main\templates\main\dashboard.html:3
+msgid "Admin Dashboard - InnovateTech Solutions"
+msgstr "لوحة التحكم الإدارية - InnovateTech Solutions"
+
+#: .\main\templates\main\dashboard.html:13
+msgid "Admin Dashboard"
+msgstr "لوحة التحكم الإدارية"
+
+#: .\main\templates\main\dashboard.html:16
+msgid "Manage products, inquiries, messages, and branches"
+msgstr "إدارة المنتجات والاستفسارات والرسائل والفروع"
+
+#: .\main\templates\main\dashboard.html:27
+#: .\main\templates\main\dashboard.html:105
+#: .\main\templates\main\dashboard.html:760
+#: .\main\templates\main\dashboard.html:1397
+msgid "Add Product"
+msgstr "إضافة منتج"
+
+#: .\main\templates\main\dashboard.html:35
+#: .\main\templates\main\dashboard.html:347
+#: .\main\templates\main\dashboard.html:1234
+#: .\main\templates\main\dashboard.html:1411
+msgid "Add Branch"
+msgstr "إضافة فرع"
+
+#: .\main\templates\main\dashboard.html:51
+msgid "Total Products"
+msgstr "إجمالي المنتجات"
+
+#: .\main\templates\main\dashboard.html:62
+#: .\main\templates\main\dashboard.html:200
+msgid "Product Inquiries"
+msgstr "استفسارات المنتجات"
+
+#: .\main\templates\main\dashboard.html:73
+#: .\main\templates\main\dashboard.html:269
+#: .\venv\Lib\site-packages\django\contrib\messages\apps.py:15
+msgid "Messages"
+msgstr "الرسائل"
+
+#: .\main\templates\main\dashboard.html:84
+#: .\main\templates\main\dashboard.html:339
+msgid "Branches"
+msgstr "الفروع"
+
+#: .\main\templates\main\dashboard.html:113
+#: .\main\templates\main\dashboard.html:209
+msgid "Product"
+msgstr "المنتج"
+
+#: .\main\templates\main\dashboard.html:114
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:393
+msgid "Image"
+msgstr "الصورة"
+
+#: .\main\templates\main\dashboard.html:115
+#: .\main\templates\main\products.html:66
+msgid "Available"
+msgstr "متاح"
+
+#: .\main\templates\main\dashboard.html:116
+#: .\main\templates\main\dashboard.html:488
+#: .\main\templates\main\dashboard.html:656
+msgid "Price"
+msgstr "السعر"
+
+#: .\main\templates\main\dashboard.html:117
+#: .\main\templates\main\dashboard.html:280
+#: .\main\templates\main\dashboard.html:359
+msgid "Actions"
+msgstr "الإجراءات"
+
+#: .\main\templates\main\dashboard.html:163
+#: .\main\templates\main\dashboard.html:406
+msgid "Edit"
+msgstr "تعديل"
+
+#: .\main\templates\main\dashboard.html:171
+#: .\main\templates\main\dashboard.html:413
+#: .\venv\Lib\site-packages\django\forms\formsets.py:499
+msgid "Delete"
+msgstr "حذف"
+
+#: .\main\templates\main\dashboard.html:184
+msgid "No products available"
+msgstr "لا توجد منتجات متاحة"
+
+#: .\main\templates\main\dashboard.html:208
+msgid "User"
+msgstr "المستخدم"
+
+#: .\main\templates\main\dashboard.html:210
+#: .\main\templates\main\products.html:85
+msgid "Quantity"
+msgstr "الكمية"
+
+#: .\main\templates\main\dashboard.html:211
+#: .\main\templates\main\dashboard.html:356
+#: .\main\templates\main\dashboard.html:837
+#: .\main\templates\main\dashboard.html:840
+#: .\main\templates\main\dashboard.html:1078
+#: .\main\templates\main\dashboard.html:1081
+msgid "Address"
+msgstr "العنوان"
+
+#: .\main\templates\main\dashboard.html:212
+#: .\main\templates\main\dashboard.html:279
+msgid "Date"
+msgstr "التاريخ"
+
+#: .\main\templates\main\dashboard.html:213
+msgid "Status"
+msgstr "الحالة"
+
+#: .\main\templates\main\dashboard.html:247
+msgid "Pending"
+msgstr "قيد الانتظار"
+
+#: .\main\templates\main\dashboard.html:254
+msgid "No inquiries yet"
+msgstr "لا توجد استفسارات حتى الآن"
+
+#: .\main\templates\main\dashboard.html:277
+msgid "Email"
+msgstr "البريد الإلكتروني"
+
+#: .\main\templates\main\dashboard.html:278
+msgid "Message"
+msgstr "الرسالة"
+
+#: .\main\templates\main\dashboard.html:312
+msgid "View"
+msgstr "عرض"
+
+#: .\main\templates\main\dashboard.html:322
+msgid "No messages yet"
+msgstr "لا توجد رسائل حتى الآن"
+
+#: .\main\templates\main\dashboard.html:355
+msgid "Name"
+msgstr "الاسم"
+
+#: .\main\templates\main\dashboard.html:357
+msgid "Coordinates"
+msgstr "الإحداثيات"
+
+#: .\main\templates\main\dashboard.html:358
+msgid "Primary"
+msgstr "رئيسي"
+
+#: .\main\templates\main\dashboard.html:385
+#: .\main\templates\main\dashboard.html:390
+msgid "Not Set"
+msgstr "غير محدد"
+
+#: .\main\templates\main\dashboard.html:396
+#: .\venv\Lib\site-packages\django\forms\widgets.py:771
+msgid "Yes"
+msgstr "نعم"
+
+#: .\main\templates\main\dashboard.html:398
+#: .\venv\Lib\site-packages\django\forms\widgets.py:772
+msgid "No"
+msgstr "لا"
+
+#: .\main\templates\main\dashboard.html:426
+msgid "No branches added yet"
+msgstr "لم تتم إضافة أي فروع بعد"
+
+#: .\main\templates\main\dashboard.html:451
+msgid "Edit Product"
+msgstr "تعديل المنتج"
+
+#: .\main\templates\main\dashboard.html:457
+#: .\main\templates\main\dashboard.html:629
+#: .\main\templates\main\dashboard.html:787
+#: .\main\templates\main\dashboard.html:1029
+msgid "Close"
+msgstr "إغلاق"
+
+#: .\main\templates\main\dashboard.html:473
+#: .\main\templates\main\dashboard.html:476
+#: .\main\templates\main\dashboard.html:643
+#: .\main\templates\main\dashboard.html:646
+msgid "Product Name"
+msgstr "اسم المنتج"
+
+#: .\main\templates\main\dashboard.html:490
+#: .\main\templates\main\dashboard.html:659
+msgid "Price ($)"
+msgstr "السعر ($)"
+
+#: .\main\templates\main\dashboard.html:500
+#: .\main\templates\main\dashboard.html:504
+#: .\main\templates\main\dashboard.html:668
+#: .\main\templates\main\dashboard.html:673
+msgid "Description"
+msgstr "الوصف"
+
+#: .\main\templates\main\dashboard.html:516
+#: .\main\templates\main\dashboard.html:519
+#: .\main\templates\main\dashboard.html:684
+#: .\main\templates\main\dashboard.html:688
+msgid "Quantity Available"
+msgstr "الكمية المتاحة"
+
+#: .\main\templates\main\dashboard.html:532
+#: .\main\templates\main\dashboard.html:693
+msgid "Show Price"
+msgstr "إظهار السعر"
+
+#: .\main\templates\main\dashboard.html:546
+#: .\main\templates\main\dashboard.html:704
+msgid "Show Quantity"
+msgstr "إظهار الكمية"
+
+#: .\main\templates\main\dashboard.html:560
+#: .\main\templates\main\dashboard.html:715
+msgid "Place Orders"
+msgstr "السماح بالطلبات"
+
+#: .\main\templates\main\dashboard.html:569
+#: .\main\templates\main\dashboard.html:728
+msgid "Product Image"
+msgstr "صورة المنتج"
+
+#: .\main\templates\main\dashboard.html:579
+#: .\main\templates\main\dashboard.html:738
+msgid "Upload a product image (optional)"
+msgstr "قم برفع صورة للمنتج (اختياري)"
+
+#: .\main\templates\main\dashboard.html:600
+#: .\main\templates\main\dashboard.html:751
+#: .\main\templates\main\dashboard.html:999
+#: .\main\templates\main\dashboard.html:1225
+#: .\main\templates\main\products.html:158
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: .\main\templates\main\dashboard.html:604
+msgid "Save changes"
+msgstr "حفظ التغييرات"
+
+#: .\main\templates\main\dashboard.html:623
+msgid "Add New Product"
+msgstr "إضافة منتج جديد"
+
+#: .\main\templates\main\dashboard.html:781
+msgid "Edit Branch"
+msgstr "تعديل الفرع"
+
+#: .\main\templates\main\dashboard.html:801
+#: .\main\templates\main\dashboard.html:804
+#: .\main\templates\main\dashboard.html:1043
+#: .\main\templates\main\dashboard.html:1045
+msgid "Branch Name"
+msgstr "اسم الفرع"
+
+#: .\main\templates\main\dashboard.html:851
+#: .\main\templates\main\dashboard.html:853
+#: .\main\templates\main\dashboard.html:1092
+#: .\main\templates\main\dashboard.html:1094
+msgid "Latitude"
+msgstr "خط العرض"
+
+#: .\main\templates\main\dashboard.html:864
+#: .\main\templates\main\dashboard.html:866
+#: .\main\templates\main\dashboard.html:1105
+#: .\main\templates\main\dashboard.html:1107
+msgid "Longitude"
+msgstr "خط الطول"
+
+#: .\main\templates\main\dashboard.html:876
+#: .\main\templates\main\dashboard.html:879
+#: .\main\templates\main\dashboard.html:1117
+#: .\main\templates\main\dashboard.html:1119
+msgid "Opening Hours"
+msgstr "وقت الافتتاح"
+
+#: .\main\templates\main\dashboard.html:890
+#: .\main\templates\main\dashboard.html:893
+#: .\main\templates\main\dashboard.html:1129
+#: .\main\templates\main\dashboard.html:1131
+msgid "Closing Hours"
+msgstr "وقت الإغلاق"
+
+#: .\main\templates\main\dashboard.html:904
+#: .\main\templates\main\dashboard.html:906
+#: .\main\templates\main\dashboard.html:1141
+#: .\main\templates\main\dashboard.html:1143
+msgid "Day From"
+msgstr "من يوم"
+
+#: .\main\templates\main\dashboard.html:916
+#: .\main\templates\main\dashboard.html:918
+#: .\main\templates\main\dashboard.html:1153
+#: .\main\templates\main\dashboard.html:1155
+msgid "Day To"
+msgstr "إلى يوم"
+
+#: .\main\templates\main\dashboard.html:929
+#: .\main\templates\main\dashboard.html:932
+#: .\main\templates\main\dashboard.html:1165
+#: .\main\templates\main\dashboard.html:1167
+msgid "Facebook Link"
+msgstr "رابط فيسبوك"
+
+#: .\main\templates\main\dashboard.html:943
+#: .\main\templates\main\dashboard.html:946
+#: .\main\templates\main\dashboard.html:1176
+#: .\main\templates\main\dashboard.html:1178
+msgid "Instagram Link"
+msgstr "رابط إنستغرام"
+
+#: .\main\templates\main\dashboard.html:957
+#: .\main\templates\main\dashboard.html:960
+#: .\main\templates\main\dashboard.html:1187
+#: .\main\templates\main\dashboard.html:1189
+msgid "Twitter Link"
+msgstr "رابط تويتر"
+
+#: .\main\templates\main\dashboard.html:971
+#: .\main\templates\main\dashboard.html:974
+#: .\main\templates\main\dashboard.html:1198
+#: .\main\templates\main\dashboard.html:1200
+msgid "LinkedIn Link"
+msgstr "رابط لينكدإن"
+
+#: .\main\templates\main\dashboard.html:987
+#: .\main\templates\main\dashboard.html:1212
+msgid "Primary Branch"
+msgstr "فرع رئيسي"
+
+#: .\main\templates\main\dashboard.html:1003
+msgid "Save Changes"
+msgstr "حفظ التغييرات"
+
+#: .\main\templates\main\dashboard.html:1023
+msgid "Add New Branch"
+msgstr "إضافة فرع جديد"
+
+#: .\main\templates\main\dashboard.html:1303
+msgid "Saving..."
+msgstr "جاري الحفظ..."
+
+#: .\main\templates\main\dashboard.html:1476
+#: .\main\templates\main\dashboard.html:1583
+msgid "Adding..."
+msgstr "جاري الإضافة..."
+
+#: .\main\templates\main\dashboard.html:1487
+#: .\main\templates\main\dashboard.html:1594
+msgid "Success!"
+msgstr "تم بنجاح!"
+
+#: .\main\templates\main\dashboard.html:1493
+msgid "Error creating product:"
+msgstr "خطأ في إنشاء المنتج:"
+
+#: .\main\templates\main\dashboard.html:1522
+msgid "Failed to load product data."
+msgstr "فشل في تحميل بيانات المنتج."
+
+#: .\main\templates\main\dashboard.html:1541
+msgid "Failed to save product."
+msgstr "فشل في حفظ المنتج."
+
+#: .\main\templates\main\dashboard.html:1545
+msgid "Error saving product:"
+msgstr "خطأ أثناء حفظ المنتج:"
+
+#: .\main\templates\main\dashboard.html:1551
+msgid "Are you sure you want to delete this product?"
+msgstr "هل أنت متأكد أنك تريد حذف هذا المنتج؟"
+
+#: .\main\templates\main\dashboard.html:1564
+msgid "Failed to delete product."
+msgstr "فشل في حذف المنتج."
+
+#: .\main\templates\main\dashboard.html:1568
+msgid "Error deleting product:"
+msgstr "خطأ أثناء حذف المنتج:"
+
+#: .\main\templates\main\dashboard.html:1600
+msgid "Error creating branch:"
+msgstr "خطأ في إنشاء الفرع:"
+
+#: .\main\templates\main\dashboard.html:1629
+msgid "Failed to load branch data."
+msgstr "فشل في تحميل بيانات الفرع."
+
+#: .\main\templates\main\dashboard.html:1649
+msgid "Failed to save branch."
+msgstr "فشل في حفظ الفرع."
+
+#: .\main\templates\main\dashboard.html:1653
+msgid "Error saving branch:"
+msgstr "خطأ أثناء حفظ الفرع:"
+
+#: .\main\templates\main\dashboard.html:1659
+msgid "Are you sure you want to delete this branch?"
+msgstr "هل أنت متأكد أنك تريد حذف هذا الفرع؟"
+
+#: .\main\templates\main\dashboard.html:1672
+msgid "Failed to delete branch."
+msgstr "فشل في حذف الفرع."
+
+#: .\main\templates\main\dashboard.html:1676
+msgid "Error deleting branch:"
+msgstr "خطأ أثناء حذف الفرع:"
+
+
+#: .\main\templates\main\home.html:3
+msgid "Home - InnovateTech Solutions"
+msgstr "الرئيسية - InnovateTech Solutions"
+
+#: .\main\templates\main\home.html:15
+msgid "Transforming Ideas Into Digital Reality"
+msgstr "نحوّل الأفكار إلى واقع رقمي"
+
+#: .\main\templates\main\home.html:18
+msgid ""
+" InnovateTech Solutions delivers cutting-edge\n"
+"          technology products and services that empower businesses to thrive "
+"in\n"
+"          the digital age. "
+msgstr ""
+"تقدّم شركة InnovateTech Solutions حلولًا ومنتجات تقنية متطورة تمكّن الشركات من "
+"الازدهار في العصر الرقمي."
+
+#: .\main\templates\main\home.html:27
+msgid "Explore Products"
+msgstr "استكشف المنتجات"
+
+#: .\main\templates\main\home.html:33
+msgid "Watch Our Story"
+msgstr "شاهد قصتنا"
+
+#: .\main\templates\main\home.html:50
+#, python-format
+msgid "+45%% Growth"
+msgstr "+45%% نمو"
+
+#: .\main\templates\main\home.html:51
+msgid "Client ROI"
+msgstr "العائد على استثمار العملاء"
+
+#: .\main\templates\main\home.html:61
+msgid "Award 2025"
+msgstr "جائزة 2025"
+
+#: .\main\templates\main\home.html:62
+msgid "Tech Excellence"
+msgstr "التميّز التقني"
+
+#: .\main\templates\main\home.html:92
+msgid "Projects Completed"
+msgstr "المشاريع المكتملة"
+
+#: .\main\templates\main\home.html:115
+msgid "Team Members"
+msgstr "أفراد الفريق"
+
+#: .\main\templates\main\home.html:144
+msgid "Leading Technology Solutions Provider Since 2013"
+msgstr "مزود رائد للحلول التقنية منذ عام 2013"
+
+#: .\main\templates\main\home.html:148
+msgid ""
+" At InnovateTech Solutions, we combine innovative\n"
+"          thinking with technical excellence to deliver solutions that "
+"drive\n"
+"          business transformation. "
+msgstr ""
+"في InnovateTech Solutions نمزج بين التفكير الابتكاري والتميّز التقني لتقديم "
+"حلول تدفع نحو تحوّل حقيقي في أعمال الشركات."
+
+#: .\main\templates\main\home.html:160
+msgid "Custom Solutions"
+msgstr "حلول مخصّصة"
+
+#: .\main\templates\main\home.html:162
+msgid "Tailored to your specific business needs"
+msgstr "مصمّمة خصيصًا لتلبية احتياجات عملك"
+
+#: .\main\templates\main\home.html:173
+msgid "24/7 Support"
+msgstr "دعم على مدار الساعة"
+
+#: .\main\templates\main\home.html:175
+msgid "Round-the-clock technical assistance"
+msgstr "مساندة تقنية متواصلة طوال الوقت"
+
+#: .\main\templates\main\home.html:186
+msgid "Future-Proof Tech"
+msgstr "تقنيات جاهزة للمستقبل"
+
+#: .\main\templates\main\home.html:188
+msgid "Solutions designed for tomorrow's challenges"
+msgstr "حلول مصمّمة لمواجهة تحديات الغد"
+
+#: .\main\templates\main\home.html:199
+msgid "Agile Methodology"
+msgstr "منهجية أجايل (Agile)"
+
+#: .\main\templates\main\home.html:201
+msgid "Fast, iterative development approach"
+msgstr "أسلوب تطوير سريع وتدريجي"
+
+#: .\main\templates\main\home.html:209
+msgid "Read Our Story"
+msgstr "اقرأ قصتنا"
+
+#: .\main\templates\main\home.html:222
+msgid "12+ Years"
+msgstr "أكثر من 12 سنة"
+
+#: .\main\templates\main\home.html:223
+msgid "Industry Experience"
+msgstr "خبرة في القطاع"
+
+#: .\main\templates\main\home.html:236
+msgid "Our Services"
+msgstr "خدماتنا"
+
+#: .\main\templates\main\home.html:239
+msgid "Comprehensive Technology Solutions"
+msgstr "حلول تقنية متكاملة"
+
+#: .\main\templates\main\home.html:243
+msgid ""
+" We offer end-to-end technology services to help your\n"
+"        business innovate, scale, and succeed in the digital landscape.\n"
+"        "
+msgstr ""
+"نقدّم خدمات تقنية متكاملة من البداية إلى النهاية لمساعدة أعمالك على الابتكار "
+"والتوسع والنجاح في العالم الرقمي."
+
+#: .\main\templates\main\home.html:260
+msgid "Custom Software Development"
+msgstr "تطوير برمجيات مخصّصة"
+
+#: .\main\templates\main\home.html:263
+msgid ""
+" Tailored applications designed to solve your unique\n"
+"            business challenges and streamline operations. "
+msgstr "تطبيقات مخصّصة صُممت لمعالجة تحديات عملك الفريدة وتبسيط سير العمليات."
+
+#: .\main\templates\main\home.html:267 .\main\templates\main\home.html:285
+#: .\main\templates\main\home.html:303 .\main\templates\main\home.html:321
+#: .\main\templates\main\home.html:339 .\main\templates\main\home.html:357
+msgid "Learn More"
+msgstr "اعرف المزيد"
+
+#: .\main\templates\main\home.html:279
+msgid "Cloud Solutions"
+msgstr "حلول مخصّصة"
+
+#: .\main\templates\main\home.html:282
+msgid ""
+"Scalable cloud infrastructure and migration services to enhance flexibility "
+"and reduce costs."
+msgstr ""
+"بنية تحتية سحابية قابلة للتوسع وخدمات ترحيل إلى السحابة لتعزيز المرونة "
+"وتقليل التكاليف."
+
+#: .\main\templates\main\home.html:297
+msgid "Cybersecurity"
+msgstr "الأمن السيبراني"
+
+#: .\main\templates\main\home.html:300
+msgid ""
+"Comprehensive security solutions to protect your digital assets and ensure "
+"regulatory compliance."
+msgstr ""
+"حلول أمنية متكاملة لحماية أصولك الرقمية وضمان الامتثال للمتطلبات التنظيمية."
+
+#: .\main\templates\main\home.html:315
+msgid "Mobile Applications"
+msgstr "تطبيقات الجوال"
+
+#: .\main\templates\main\home.html:318
+msgid ""
+"Engaging native and cross-platform mobile apps that deliver exceptional user "
+"experiences."
+msgstr ""
+"تطبيقات جوال أصلية وعبر منصات متعددة توفر تجارب مستخدم استثنائية وجذابة."
+
+#: .\main\templates\main\home.html:333
+msgid "AI & Machine Learning"
+msgstr "الذكاء الاصطناعي وتعلم الآلة"
+
+#: .\main\templates\main\home.html:336
+msgid ""
+"Intelligent solutions that leverage data to automate processes and generate "
+"valuable insights."
+msgstr "حلول ذكية تستفيد من البيانات لأتمتة العمليات واستخلاص رؤى قيّمة."
+
+#: .\main\templates\main\home.html:351
+msgid "Data Analytics"
+msgstr "تحليلات البيانات"
+
+#: .\main\templates\main\home.html:354
+msgid ""
+"Transform raw data into actionable intelligence to drive informed business "
+"decisions."
+msgstr ""
+"تحويل البيانات الخام إلى معلومات قابلة للتنفيذ تدعم اتخاذ قرارات أعمال "
+"مدروسة."
+
+#: .\main\templates\main\home.html:370 .\main\templates\main\products.html:13
+msgid "Our Products"
+msgstr "منتجاتنا"
+
+#: .\main\templates\main\home.html:373
+msgid "Featured Technology Solutions"
+msgstr "حلول تقنية مميّزة"
+
+#: .\main\templates\main\home.html:377
+msgid ""
+" Explore our cutting-edge products designed to solve\n"
+"        complex business challenges and drive digital transformation.\n"
+"        "
+msgstr ""
+"استكشف منتجاتنا المتطورة المصمّمة لحل التحديات التجارية المعقّدة ودفع مسيرة "
+"التحوّل الرقمي."
+
+#: .\main\templates\main\home.html:389
+msgid "View All Products"
+msgstr "عرض كل المنتجات"
+
+#: .\main\templates\main\home.html:400
+msgid "Testimonials"
+msgstr "آراء العملاء"
+
+#: .\main\templates\main\home.html:402
+msgid "What Our Clients Say"
+msgstr "ماذا يقول عملاؤنا"
+
+#: .\main\templates\main\home.html:405
+msgid ""
+" Discover how InnovateTech Solutions has helped\n"
+"        businesses transform their operations and achieve remarkable "
+"results.\n"
+"        "
+msgstr ""
+"اكتشف كيف ساعدت InnovateTech Solutions الشركات على تطوير عملياتها وتحقيق "
+"نتائج استثنائية."
+
+#: .\main\templates\main\home.html:422
+msgid "Client"
+msgstr "عميل"
+
+#: .\main\templates\main\home.html:433
+msgid "Sarah Johnson"
+msgstr "سارة جونسون"
+
+#: .\main\templates\main\home.html:434
+msgid "CTO, TechForward Inc."
+msgstr "المدير التقني في شركة تك فوروارد"
+
+#: .\main\templates\main\home.html:440
+msgid ""
+" InnovateTech delivered a custom software solution\n"
+"            that transformed our workflow. Their team was professional,\n"
+"            responsive, and truly understood our business needs.\n"
+"            "
+msgstr ""
+"قدّمت InnovateTech Solutions حلاً برمجيًا مخصّصًا غيّر طريقة عملنا بالكامل. كان "
+"فريقهم محترفًا ومتجاوبًا وفهم احتياجات عملنا بشكل عميق."
+
+#: .\main\templates\main\home.html:467
+msgid "Ready to Transform Your Business?"
+msgstr "هل أنت مستعد لتحويل عملك؟"
+
+#: .\main\templates\main\home.html:470
+msgid ""
+" Contact us today to discuss how our technology\n"
+"          solutions can drive your success. "
+msgstr "تواصل معنا اليوم لمناقشة كيفية مساهمة حلولنا التقنية في دفع نجاح عملك."
+
+#: .\main\templates\main\login.html:3
+msgid "Login - InnovateTech Solutions"
+msgstr "تسجيل الدخول - InnovateTech Solutions"
+
+#: .\main\templates\main\login.html:15
+msgid "Welcome Back"
+msgstr "مرحبا بك"
+
+#: .\main\templates\main\login.html:17
+msgid "Sign in to your account to continue"
+msgstr "للاستمرار , سجل الدخول لحسابك"
+
+#: .\main\templates\main\login.html:37
+msgid "Username"
+msgstr "اسم المستخدم"
+
+#: .\main\templates\main\login.html:49
+msgid "Enter your username"
+msgstr "الرجاء ادخال اسم المستخدم"
+
+#: .\main\templates\main\login.html:57
+msgid "Password"
+msgstr "كلمة السر"
+
+#: .\main\templates\main\login.html:69
+msgid "Enter your password"
+msgstr "الرجاء ادخال كلمة السر"
+
+#: .\main\templates\main\login.html:86
+msgid "Remember me"
+msgstr "تذكرني"
+
+#: .\main\templates\main\login.html:90
+msgid "Forgot password?"
+msgstr "نسيت كلمة السر ؟"
+
+#: .\main\templates\main\login.html:101
+msgid "Sign In"
+msgstr "تسجيل الدخول"
+
+#: .\main\templates\main\login.html:112
+msgid "Or continue with"
+msgstr "أو استمر باستخدام"
+
+#: .\main\templates\main\login.html:132
+msgid "Don't have an account?"
+msgstr "ليس لديك حساب ؟"
+
+#: .\main\templates\main\login.html:134
+msgid "Contact administrator"
+msgstr "ادارة الاتصال"
+
+#: .\main\templates\main\login.html:146
+msgid "Your login information is securely encrypted"
+msgstr "معلوماتك أمنة ومشفرة"
+
+#: .\main\templates\main\login.html:174
+msgid "Signing in..."
+msgstr "جاري تسجيل الدخول"
+
+#: .\main\templates\main\products.html:4
+msgid "Our Products - InnovateTech Solutions"
+msgstr "منتجاتنا - InnovateTech Solutions"
+
+#: .\main\templates\main\products.html:15
+msgid "Discover our comprehensive suite of technology solutions"
+msgstr "حلول تقنية متكاملة"
+
+#: .\main\templates\main\products.html:44
+msgid "No image"
+msgstr "لا يوجد صورة"
+
+#: .\main\templates\main\products.html:69
+msgid "Custom"
+msgstr "مخصص"
+
+#: .\main\templates\main\products.html:99
+msgid "Delivery Address"
+msgstr "عنوان التوصيل"
+
+#: .\main\templates\main\products.html:106
+msgid "Enter complete delivery address"
+msgstr "ادخل عنوان التوصيل بالكامل"
+
+#: .\main\templates\main\products.html:114
+msgid "City"
+msgstr "المدينة"
+
+#: .\main\templates\main\products.html:141
+msgid "Pick Location on Map"
+msgstr "اختر موقع من الخريطة"
+
+#: .\main\templates\main\products.html:172
+msgid "No Products Available"
+msgstr "لا منتجات متوفرة"
+
+#: .\main\templates\main\products.html:174
+msgid "Check back later for our latest offerings."
+msgstr "اطلع على جديدنا لاحقا."
+
+#: .\main\templates\main\products.html:266
+msgid "Processing..."
+msgstr "جاري المعالجة"
+
+#: .\main\templates\main\products.html:284
+msgid "Inquiry Submitted Successfully!"
+msgstr "تم تقديم الطلب!"
+
+#: .\main\templates\main\products.html:285
+msgid "We'll contact you shortly."
+msgstr "سنتواصل معك قريبا!"
+
+#: .\main\templates\main\products.html:287
+msgid "Submit Another"
+msgstr "تقديم أخر"
+
+#: .\main\templates\main\products.html:308
+msgid "An error occurred while submitting your inquiry."
+msgstr "حدث خطأ اثناء تقديم الطلب."
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_form_helper.py:130
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_form_helper.py:140
+#: .\venv\Lib\site-packages\django\forms\fields.py:91
+msgid "This field is required."
+msgstr "هذا الحقل مطلوب"
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_layout.py:392
+msgid "i18n text"
+msgstr "نص i18n"
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_layout.py:394
+msgid "i18n legend"
+msgstr ""
+
+#: .\venv\Lib\site-packages\crispy_forms\tests\test_layout_objects.py:143
+#: .\venv\Lib\site-packages\django\core\validators.py:22
+msgid "Enter a valid value."
+msgstr "ادخل قيمة صحيحة"
+
+#: .\venv\Lib\site-packages\django\contrib\sitemaps\apps.py:8
+msgid "Site Maps"
+msgstr "خرائط الموقع"
+
+#: .\venv\Lib\site-packages\django\contrib\staticfiles\apps.py:9
+msgid "Static Files"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\contrib\syndication\apps.py:7
+msgid "Syndication"
+msgstr ""
+
+#. Translators: String used to replace omitted page numbers in elided page
+#. range generated by paginators, e.g. [1, 2, '…', 5, 6, 7, '…', 9, 10].
+#: .\venv\Lib\site-packages\django\core\paginator.py:30
+msgid "…"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:50
+msgid "That page number is not an integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:52
+msgid "That page number is less than 1"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\paginator.py:54
+msgid "That page contains no results"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:104
+#: .\venv\Lib\site-packages\django\forms\fields.py:749
+msgid "Enter a valid URL."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:164
+msgid "Enter a valid integer."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:175
+msgid "Enter a valid email address."
+msgstr ""
+
+#. Translators: "letters" means latin letters: a-z and A-Z.
+#: .\venv\Lib\site-packages\django\core\validators.py:256
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:264
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:276
+#: .\venv\Lib\site-packages\django\core\validators.py:284
+#: .\venv\Lib\site-packages\django\core\validators.py:313
+msgid "Enter a valid IPv4 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:293
+#: .\venv\Lib\site-packages\django\core\validators.py:314
+msgid "Enter a valid IPv6 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:305
+#: .\venv\Lib\site-packages\django\core\validators.py:312
+msgid "Enter a valid IPv4 or IPv6 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:348
+msgid "Enter only digits separated by commas."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:354
+#, python-format
+msgid "Ensure this value is %(limit_value)s (it is %(show_value)s)."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:389
+#, python-format
+msgid "Ensure this value is less than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:398
+#, python-format
+msgid "Ensure this value is greater than or equal to %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:407
+#, python-format
+msgid "Ensure this value is a multiple of step size %(limit_value)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:417
+#, python-format
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:435
+#, python-format
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:458
+#: .\venv\Lib\site-packages\django\forms\fields.py:347
+#: .\venv\Lib\site-packages\django\forms\fields.py:386
+msgid "Enter a number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:460
+#, python-format
+msgid "Ensure that there are no more than %(max)s digit in total."
+msgid_plural "Ensure that there are no more than %(max)s digits in total."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:465
+#, python-format
+msgid "Ensure that there are no more than %(max)s decimal place."
+msgid_plural "Ensure that there are no more than %(max)s decimal places."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:470
+#, python-format
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:541
+#, python-format
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\core\validators.py:602
+msgid "Null characters are not allowed."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1423
+#: .\venv\Lib\site-packages\django\forms\models.py:893
+msgid "and"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\base.py:1425
+#, python-format
+msgid "%(model_name)s with this %(field_labels)s already exists."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\constraints.py:17
+#, python-format
+msgid "Constraint “%(name)s” is violated."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:128
+#, python-format
+msgid "Value %(value)r is not a valid choice."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:129
+msgid "This field cannot be null."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:130
+msgid "This field cannot be blank."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:131
+#, python-format
+msgid "%(model_name)s with this %(field_label)s already exists."
+msgstr ""
+
+#. Translators: The 'lookup_type' is one of 'date', 'year' or
+#. 'month'. Eg: "Title must be unique for pub_date year"
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:135
+#, python-format
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:173
+#, python-format
+msgid "Field of type: %(field_type)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1094
+#, python-format
+msgid "“%(value)s” value must be either True or False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1095
+#, python-format
+msgid "“%(value)s” value must be either True, False, or None."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1097
+msgid "Boolean (Either True or False)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1147
+#, python-format
+msgid "String (up to %(max_length)s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1149
+msgid "String (unlimited)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1253
+msgid "Comma-separated integers"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1354
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1358
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1493
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1362
+msgid "Date (without time)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1489
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[."
+"uuuuuu]][TZ] format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1497
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1502
+msgid "Date (with time)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1626
+#, python-format
+msgid "“%(value)s” value must be a decimal number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1628
+msgid "Decimal number"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1791
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[."
+"uuuuuu] format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1795
+msgid "Duration"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1847
+msgid "Email address"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1872
+msgid "File path"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1950
+#, python-format
+msgid "“%(value)s” value must be a float."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1952
+msgid "Floating point number"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1992
+#, python-format
+msgid "“%(value)s” value must be an integer."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:1994
+msgid "Integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2090
+msgid "Big (8 byte) integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2107
+msgid "Small integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2115
+msgid "IPv4 address"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2146
+msgid "IP address"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2239
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2240
+#, python-format
+msgid "“%(value)s” value must be either None, True or False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2242
+msgid "Boolean (Either True, False or None)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2293
+msgid "Positive big integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2308
+msgid "Positive integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2323
+msgid "Positive small integer"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2339
+#, python-format
+msgid "Slug (up to %(max_length)s)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2375
+msgid "Text"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2450
+#, python-format
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2454
+#, python-format
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2458
+msgid "Time"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2566
+msgid "URL"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2590
+msgid "Raw binary data"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2655
+#, python-format
+msgid "“%(value)s” is not a valid UUID."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\__init__.py:2657
+msgid "Universally unique identifier"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\files.py:232
+msgid "File"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:26
+msgid "A JSON object"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\json.py:28
+msgid "Value must be valid JSON."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:919
+#, python-format
+msgid "%(model)s instance with %(field)s %(value)r does not exist."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:921
+msgid "Foreign Key (type determined by related field)"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1212
+msgid "One-to-one relationship"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1269
+#, python-format
+msgid "%(from)s-%(to)s relationship"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1271
+#, python-format
+msgid "%(from)s-%(to)s relationships"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\db\models\fields\related.py:1319
+msgid "Many-to-many relationship"
+msgstr ""
+
+#. Translators: If found as last label character, these punctuation
+#. characters will prevent the default label_suffix to be appended to the label
+#: .\venv\Lib\site-packages\django\forms\boundfield.py:184
+msgid ":?.!"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:298
+msgid "Enter a whole number."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:467
+#: .\venv\Lib\site-packages\django\forms\fields.py:1238
+msgid "Enter a valid date."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:490
+#: .\venv\Lib\site-packages\django\forms\fields.py:1239
+msgid "Enter a valid time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:517
+msgid "Enter a valid date/time."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:551
+msgid "Enter a valid duration."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:552
+#, python-brace-format
+msgid "The number of days must be between {min_days} and {max_days}."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:618
+msgid "No file was submitted. Check the encoding type on the form."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:619
+msgid "No file was submitted."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:620
+msgid "The submitted file is empty."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:622
+#, python-format
+msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:627
+msgid "Please either submit a file or check the clear checkbox, not both."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:691
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:854
+#: .\venv\Lib\site-packages\django\forms\fields.py:946
+#: .\venv\Lib\site-packages\django\forms\models.py:1566
+#, python-format
+msgid "Select a valid choice. %(value)s is not one of the available choices."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:948
+#: .\venv\Lib\site-packages\django\forms\fields.py:1067
+#: .\venv\Lib\site-packages\django\forms\models.py:1564
+msgid "Enter a list of values."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1068
+msgid "Enter a complete value."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1307
+msgid "Enter a valid UUID."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\fields.py:1337
+msgid "Enter a valid JSON."
+msgstr ""
+
+#. Translators: This is the default suffix added to form field labels
+#: .\venv\Lib\site-packages\django\forms\forms.py:98
+msgid ":"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\forms.py:244
+#: .\venv\Lib\site-packages\django\forms\forms.py:328
+#, python-format
+msgid "(Hidden field %(name)s) %(error)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:63
+#, python-format
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:67
+#, python-format
+msgid "Please submit at most %(num)d form."
+msgid_plural "Please submit at most %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:72
+#, python-format
+msgid "Please submit at least %(num)d form."
+msgid_plural "Please submit at least %(num)d forms."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\forms\formsets.py:484
+#: .\venv\Lib\site-packages\django\forms\formsets.py:491
+msgid "Order"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:886
+#, python-format
+msgid "Please correct the duplicate data for %(field)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:891
+#, python-format
+msgid "Please correct the duplicate data for %(field)s, which must be unique."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:898
+#, python-format
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:907
+msgid "Please correct the duplicate values below."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1338
+msgid "The inline value did not match the parent instance."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1429
+msgid "Select a valid choice. That choice is not one of the available choices."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\models.py:1568
+#, python-format
+msgid "“%(pk)s” is not a valid value."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\utils.py:226
+#, python-format
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:439
+msgid "Clear"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:440
+msgid "Currently"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:441
+msgid "Change"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\forms\widgets.py:770
+msgid "Unknown"
+msgstr ""
+
+#. Translators: Please do not add spaces around commas.
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:861
+msgid "yes,no,maybe"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:891
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:908
+#, python-format
+msgid "%(size)d byte"
+msgid_plural "%(size)d bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:910
+#, python-format
+msgid "%s KB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:912
+#, python-format
+msgid "%s MB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:914
+#, python-format
+msgid "%s GB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:916
+#, python-format
+msgid "%s TB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\template\defaultfilters.py:918
+#, python-format
+msgid "%s PB"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:73
+msgid "p.m."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:74
+msgid "a.m."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:79
+msgid "PM"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:80
+msgid "AM"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:152
+msgid "midnight"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dateformat.py:154
+msgid "noon"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:7
+msgid "Monday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:8
+msgid "Tuesday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:9
+msgid "Wednesday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:10
+msgid "Thursday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:11
+msgid "Friday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:12
+msgid "Saturday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:13
+msgid "Sunday"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:16
+msgid "Mon"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:17
+msgid "Tue"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:18
+msgid "Wed"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:19
+msgid "Thu"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:20
+msgid "Fri"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:21
+msgid "Sat"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:22
+msgid "Sun"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:25
+msgid "January"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:26
+msgid "February"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:27
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:28
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:29
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:30
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:31
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:32
+msgid "August"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:33
+msgid "September"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:34
+msgid "October"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:35
+msgid "November"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:36
+msgid "December"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:39
+msgid "jan"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:40
+msgid "feb"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:41
+msgid "mar"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:42
+msgid "apr"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:43
+msgid "may"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:44
+msgid "jun"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:45
+msgid "jul"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:46
+msgid "aug"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:47
+msgid "sep"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:48
+msgid "oct"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:49
+msgid "nov"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:50
+msgid "dec"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:53
+msgctxt "abbrev. month"
+msgid "Jan."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:54
+msgctxt "abbrev. month"
+msgid "Feb."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:55
+msgctxt "abbrev. month"
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:56
+msgctxt "abbrev. month"
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:57
+msgctxt "abbrev. month"
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:58
+msgctxt "abbrev. month"
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:59
+msgctxt "abbrev. month"
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:60
+msgctxt "abbrev. month"
+msgid "Aug."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:61
+msgctxt "abbrev. month"
+msgid "Sept."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:62
+msgctxt "abbrev. month"
+msgid "Oct."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:63
+msgctxt "abbrev. month"
+msgid "Nov."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:64
+msgctxt "abbrev. month"
+msgid "Dec."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:67
+msgctxt "alt. month"
+msgid "January"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:68
+msgctxt "alt. month"
+msgid "February"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:69
+msgctxt "alt. month"
+msgid "March"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:70
+msgctxt "alt. month"
+msgid "April"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:71
+msgctxt "alt. month"
+msgid "May"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:72
+msgctxt "alt. month"
+msgid "June"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:73
+msgctxt "alt. month"
+msgid "July"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:74
+msgctxt "alt. month"
+msgid "August"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:75
+msgctxt "alt. month"
+msgid "September"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:76
+msgctxt "alt. month"
+msgid "October"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:77
+msgctxt "alt. month"
+msgid "November"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\dates.py:78
+msgctxt "alt. month"
+msgid "December"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\ipv6.py:8
+msgid "This is not a valid IPv6 address."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\text.py:78
+#, python-format
+msgctxt "String to return when truncating text"
+msgid "%(truncated_text)s…"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\text.py:254
+msgid "or"
+msgstr ""
+
+#. Translators: This string is used as a separator between list elements
+#: .\venv\Lib\site-packages\django\utils\text.py:273
+#: .\venv\Lib\site-packages\django\utils\timesince.py:131
+msgid ", "
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:8
+#, python-format
+msgid "%(num)d year"
+msgid_plural "%(num)d years"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:9
+#, python-format
+msgid "%(num)d month"
+msgid_plural "%(num)d months"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:10
+#, python-format
+msgid "%(num)d week"
+msgid_plural "%(num)d weeks"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:11
+#, python-format
+msgid "%(num)d day"
+msgid_plural "%(num)d days"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:12
+#, python-format
+msgid "%(num)d hour"
+msgid_plural "%(num)d hours"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\utils\timesince.py:13
+#, python-format
+msgid "%(num)d minute"
+msgid_plural "%(num)d minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:111
+msgid "Forbidden"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:112
+msgid "CSRF verification failed. Request aborted."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:116
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:122
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:127
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+"including the “Referrer-Policy: no-referrer” header, please remove them. The "
+"CSRF protection requires the “Referer” header to do strict referer checking. "
+"If you’re concerned about privacy, use alternatives like <a rel=\"noreferrer"
+"\" …> for links to third-party sites."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:136
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:142
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\csrf.py:148
+msgid "More information is available with DEBUG=True."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:44
+msgid "No year specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:64
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:115
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:214
+msgid "Date out of range"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:94
+msgid "No month specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:147
+msgid "No day specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:194
+msgid "No week specified"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:349
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:380
+#, python-format
+msgid "No %(verbose_name_plural)s available"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:652
+#, python-format
+msgid ""
+"Future %(verbose_name_plural)s not available because %(class_name)s."
+"allow_future is False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\dates.py:692
+#, python-format
+msgid "Invalid date string “%(datestr)s” given format “%(format)s”"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\detail.py:56
+#, python-format
+msgid "No %(verbose_name)s found matching the query"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:70
+msgid "Page is not “last”, nor can it be converted to an int."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:77
+#, python-format
+msgid "Invalid page (%(page_number)s): %(message)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\generic\list.py:169
+#, python-format
+msgid "Empty list and “%(class_name)s.allow_empty” is False."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:38
+msgid "Directory indexes are not allowed here."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:40
+#, python-format
+msgid "“%(path)s” does not exist"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\static.py:79
+#, python-format
+msgid "Index of %(directory)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:7
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:221
+msgid "The install worked successfully! Congratulations!"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:207
+#, python-format
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:222
+#, python-format
+msgid ""
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" rel=\"noopener"
+"\">DEBUG=True</a> is in your settings file and you have not configured any "
+"URLs."
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:230
+msgid "Django Documentation"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:231
+msgid "Topics, references, &amp; how-to’s"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:239
+msgid "Tutorial: A Polling App"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:240
+msgid "Get started with Django"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:248
+msgid "Django Community"
+msgstr ""
+
+#: .\venv\Lib\site-packages\django\views\templates\default_urlconf.html:249
+msgid "Connect, get help, or contribute"
+msgstr ""
