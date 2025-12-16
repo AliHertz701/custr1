@@ -48,6 +48,12 @@ urlpatterns = [
     path("cities/api/<int:pk>/delete/", api_views.city_delete_api, name="city_delete_api"),
     path("cities/create/", api_views.create_city, name="create_city"),
     path("cities/api/list/", api_views.city_list_api, name="city_list_api"),
+    path('brand/add/', api_views.brand_add, name='brand_add'),
+    path('brand/update/<int:brand_id>/', api_views.brand_update, name='brand_update'),
+    path('brand/delete/<int:brand_id>/', api_views.brand_delete, name='brand_delete'),
+    path('api/brands/', api_views.get_brands, name='get_brands'),
+
+
 
 
 ]

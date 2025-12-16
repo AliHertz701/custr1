@@ -23,13 +23,14 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
 
-from .models import Product, Category, images  # note: `images` model
+from .models import Product, Category, images ,brand # note: `images` model
 from .serializers import ProductSerializer
 from rest_framework.decorators import api_view, permission_classes, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
 from rest_framework import status
 from django.db import transaction
+from .utils import send_wa_message
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
@@ -465,7 +466,6 @@ def api_products_by_category(request):
     serializer = ProductSerializer1(products, many=True, context={'request': request})
     return Response(serializer.data, status=status.HTTP_200_OK)
 
-
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def home_data(request):
@@ -481,17 +481,13 @@ def home_data(request):
             product_count=Count('products')
         ).filter(product_count__gt=0).order_by('-product_count')[:8]
 
-        # New arrivals (latest products)
-        new_arrivals = Product.objects.order_by('-id')[:8]
-
         # All categories for filter
         all_categories = Category.objects.all()
 
         # Banners from database
         banners_qs = Banner.objects.filter(is_active=True).order_by('order')
-        banners = []
-        for b in banners_qs:
-            banners.append({
+        banners = [
+            {
                 'id': b.id,
                 'title': b.title,
                 'subtitle': b.subtitle,
@@ -499,7 +495,9 @@ def home_data(request):
                 'button_text': b.button_text,
                 'button_link': b.button_link,
                 'text_color': b.text_color,
-            })
+            }
+            for b in banners_qs
+        ]
 
         # 🔹 FEATURED PRODUCTS
         featured_data = [
@@ -512,7 +510,7 @@ def home_data(request):
                     else product.description
                 ),
                 'price': float(product.price) if product.price and product.show_price else None,
-                'discount_percentage': float(product.discount_percentage or 0),  # 👈 NEW
+                'discount_percentage': float(product.discount_percentage or 0),
                 'image': product.image.url if product.image else None,
                 'category': product.category.name if product.category else None,
                 'category_slug': product.category.slug if product.category else None,
@@ -550,36 +548,26 @@ def home_data(request):
             for category in popular_categories
         ]
 
-        # 🔹 NEW ARRIVALS
-        new_arrivals_data = [
+        # 🔹 BRANDS
+        # 🔹 BRANDS
+        brands_qs = brand.objects.all().order_by('name')
+        brands_data = [
             {
-                'id': product.id,
-                'name': product.name,
-                'description': (
-                    product.description[:100] + '...'
-                    if product.description and len(product.description) > 100
-                    else product.description
-                ),
-                'price': float(product.price) if product.price and product.show_price else None,
-                'discount_percentage': float(product.discount_percentage or 0),  # 👈 NEW
-                'image': product.image.url if product.image else None,
-                'category': product.category.name if product.category else None,
-                'category_slug': product.category.slug if product.category else None,
-                'in_stock': product.place_orders and product.quantity_available > 0,
-                'stock_quantity': product.quantity_available if product.show_quantity else None,
-                'can_order': product.place_orders,
-                'show_price': product.show_price,
-                'show_quantity': product.show_quantity,
+                'id': brand.id,
+                'name': brand.name,
+                'description': brand.description,
+                'image': brand.image.url if brand.image else None,
             }
-            for product in new_arrivals
+            for brand in brands_qs
         ]
+
 
         response_data = {
             'success': True,
             'featured_products': featured_data,
             'categories': categories_data,
             'popular_categories': popular_categories_data,
-            'new_arrivals': new_arrivals_data,
+            'brands': brands_data,  # ✅ added brands
             'banners': banners,
             'stats': {
                 'total_products': Product.objects.count(),
@@ -595,6 +583,7 @@ def home_data(request):
             'success': False,
             'error': str(e)
         }, status=500)
+
 
 
 @api_view(['POST'])
@@ -935,6 +924,8 @@ def shop_page_data(request):
             page = 1
 
         product_list = current_page.object_list
+        total_products_count = Product.objects.count()  # total items in the model
+
 
         # Get categories for filter sidebar
         all_categories = Category.objects.annotate(
@@ -1037,7 +1028,7 @@ def shop_page_data(request):
                 }
             },
             'stats': {
-                'total_products': paginator.count,
+                'total_products': total_products_count,
                 'showing': len(products_data),
             }
         }
@@ -1080,7 +1071,20 @@ def get_shop_filters(request):
             'max': float(price_range['max_price'] or 1000),
         }
     })
-
+# utils/phone.py
+def format_libyan_number(number: str) -> str:
+    """
+    Normalize Libyan mobile numbers to international format +2189xxxxxxx
+    Example: 0912345678 -> +218912345678
+             912345678 -> +218912345678
+    """
+    number = number.strip()
+    if number.startswith("0"):
+        number = number[1:]
+    if not number.startswith("9"):
+        # assume user forgot leading 9
+        number = "9" + number
+    return f"+218{number}"
 
 from decimal import Decimal, InvalidOperation
 
@@ -1113,60 +1117,52 @@ def create_invoice(request):
     delivery_fee = city_obj.delivery_fee or Decimal("0.00")
 
     # 2) Build items + subtotal + discount
-    subtotal = Decimal("0.00")              # total after discount
-    total_discount_amount = Decimal("0.00") # total discount for the invoice
+    subtotal = Decimal("0.00")
+    total_discount_amount = Decimal("0.00")
     invoice_items = []
 
     try:
         for item in items:
             product_id = item["product_id"]
             quantity = int(item["quantity"])
-            # original unit price
             price = Decimal(str(item["price"]))
             item_name = (item.get("name") or "").strip()
-
-            # discount percentage (optional)
             raw_discount = item.get("discount_percentage", 0)
             discount_pct = Decimal(str(raw_discount or 0))
 
             if quantity <= 0:
                 return JsonResponse({"error": "Quantity must be positive"}, status=400)
-
             if discount_pct < 0 or discount_pct > 100:
                 return JsonResponse(
                     {"error": "Discount percentage must be between 0 and 100"},
                     status=400,
                 )
 
-            # discounted unit price
             discount_multiplier = (Decimal("100") - discount_pct) / Decimal("100")
             discounted_price = (price * discount_multiplier).quantize(Decimal("0.01"))
 
             line_total = discounted_price * quantity
             subtotal += line_total
-
-            # line discount amount = (original - discounted) * quantity
             line_discount_amount = (price - discounted_price) * quantity
             total_discount_amount += line_discount_amount
 
             invoice_items.append(
                 InvoiceItem(
-                    invoice=None,  # attach later
+                    invoice=None,
                     product_id=product_id,
                     name=item_name,
                     quantity=quantity,
-                    original_price=price,            # store original unit price
-                    price=discounted_price,          # store discounted unit price
-                    discount_percentage=discount_pct # snapshot of discount used
+                    original_price=price,
+                    price=discounted_price,
+                    discount_percentage=discount_pct
                 )
             )
     except (KeyError, ValueError, TypeError, InvalidOperation) as e:
         return JsonResponse({"error": f"Invalid item data: {e}"}, status=400)
 
-    # 3) Total = subtotal(after discount) + delivery fee
     total = subtotal + delivery_fee
 
-    # 4) Create Invoice
+    # 3) Create Invoice
     invoice = Invoice.objects.create(
         name=name,
         city=city_obj.name,
@@ -1174,24 +1170,53 @@ def create_invoice(request):
         phone=phone,
         delivery_fee=delivery_fee,
         total=total,
-        discount_amount=total_discount_amount,  # 👈 use the field on Invoice
+        discount_amount=total_discount_amount,
     )
 
-    # 5) Attach items
+    # 4) Attach items
     for inv_item in invoice_items:
         inv_item.invoice = invoice
     InvoiceItem.objects.bulk_create(invoice_items)
 
+    # 5) Prepare and send WhatsApp messages
+  # Prepare and send WhatsApp messages
+    client_number = format_libyan_number(phone)
+    employee_number = "+218942434823"  # single employee number
+
+    # Arabic messages
+    client_message = f"مرحبا {name or 'العميل'}!\nتم استلام طلبك بنجاح.\nرقم الفاتورة: {invoice.id}\nالإجمالي: {total} د.ل\nشكراً لتعاملكم معنا ❤️"
+
+    # Employee message with safe fallback for missing fields
+    employee_message = (
+        f"تنبيه: لديك طلب جديد جاهز للمعالجة.\n"
+        f"رقم الفاتورة: {invoice.id}\n"
+        f"العميل: {name or 'غير محدد'}\n"
+        f"العنوان: {address or 'غير محدد'}\n"
+        f"المدينة: {city_obj.name or 'غير محدد'}\n"
+        f"الهاتف: {client_number or 'غير محدد'}"
+    )
+
+    # Send messages via Wawp, but catch exceptions so it doesn't break invoice creation
+    try:
+        send_wa_message(client_number, client_message)
+    except Exception as e:
+        print(f"Failed to send message to client {client_number}: {e}")
+
+    try:
+        send_wa_message(employee_number, employee_message)
+    except Exception as e:
+        print(f"Failed to send message to employee {employee_number}: {e}")
+
+
     return JsonResponse({
         "success": True,
         "invoice_id": invoice.id,
-        "subtotal": str(subtotal),                  # after discount
+        "subtotal": str(subtotal),
         "delivery_fee": str(delivery_fee),
         "discount_amount": str(total_discount_amount),
         "total": str(total),
+        "client_number": client_number,
     })
-
-
 
 @require_http_methods(["GET", "POST"])
 def banner_detail_api(request, pk):
@@ -1345,3 +1370,83 @@ def city_list_api(request):
         for c in cities
     ]
     return JsonResponse({"cities": data})
+
+
+# Add brand
+@csrf_exempt
+def brand_add(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+        image = request.FILES.get("image")
+
+        if not name:
+            return JsonResponse({"success": False, "error": "Brand name is required"})
+
+        b = brand.objects.create(
+            name=name,
+            description=description,
+            image=image
+        )
+        return JsonResponse({"success": True, "brand_id": b.id})
+    return JsonResponse({"success": False, "error": "Invalid request method"})
+
+
+# Update brand
+@csrf_exempt
+def brand_update(request, brand_id):
+    try:
+        b = brand.objects.get(id=brand_id)
+    except brand.DoesNotExist:
+        return JsonResponse({"success": False, "error": "Brand not found"})
+
+    if request.method == "POST":
+        name = request.POST.get("name")
+        description = request.POST.get("description")
+        image = request.FILES.get("image")
+
+        if name:
+            b.name = name
+        if description is not None:
+            b.description = description
+        if image:
+            b.image = image
+
+        b.save()
+        return JsonResponse({"success": True})
+    return JsonResponse({"success": False, "error": "Invalid request method"})
+
+
+# Delete brand
+@csrf_exempt
+def brand_delete(request, brand_id):
+    if request.method != "POST":
+        return JsonResponse({"success": False, "error": "Invalid request method"})
+
+    try:
+        b = brand.objects.get(id=brand_id)
+        b.delete()
+        return JsonResponse({"success": True})
+    except brand.DoesNotExist:
+        return JsonResponse({"success": False, "error": "Brand not found"})
+    except Exception as e:
+        return JsonResponse({"success": False, "error": str(e)})
+
+
+def get_brands(request):
+    """
+    API to fetch all brands in JSON.
+    Returns: [{"id": 1, "name": "...", "description": "...", "image": "..."}]
+    """
+    brands = brand.objects.all()
+    data = []
+
+    for b in brands:
+        data.append({
+            "id": b.id,
+            "name": b.name,
+            "description": b.description or "",
+            "image": b.image.url if b.image else None
+        })
+
+    return JsonResponse({"brands": data})

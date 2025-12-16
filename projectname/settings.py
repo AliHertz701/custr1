@@ -32,6 +32,7 @@ handler404 = 'main.views.t404_view'
 
 ALLOWED_HOSTS = [
     '192.168.0.37',
+    '127.0.0.1',
 ]
 
 

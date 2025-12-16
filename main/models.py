@@ -36,6 +36,15 @@ class Category(models.Model):
             # Or if you want slugify (works with Arabic too):
             # self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+        
+class brand(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to='brands/', blank=True, null=True)
+
+    def __str__(self):
+        return self.name        
 # Product
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -49,7 +58,7 @@ class Product(models.Model):
     place_orders = models.BooleanField(default=True)  # New field to control if orders can be placed
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
     discount_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True,default=0.00)  # New field
-
+    brand = models.ForeignKey(brand, on_delete=models.SET_NULL, null=True, blank=True, related_name='products')
     @property
     def discounted_price(self):
         """

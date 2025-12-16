@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect , get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from .models import Product, Branch, Inquiry,Invoice, ContactMessage,Banner, Category, City
+from .models import Product, Branch, Inquiry,Invoice, ContactMessage,Banner, Category, City , brand
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET
 
@@ -68,6 +68,8 @@ def dashboard(request):
     categories = Category.objects.all()
     banners = Banner.objects.all()
     cities = City.objects.all()
+    brands = brand.objects.all()  # <-- new line
+
     invoices = Invoice.objects.prefetch_related('items').all()
 
     return render(
@@ -82,6 +84,8 @@ def dashboard(request):
             'invoices': invoices,  # use lowercase variable
             'banners': banners,
             'cities': cities,
+            'brands': brands,  # <-- pass to template
+
 
         }
     )

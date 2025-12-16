@@ -1,1429 +1,1345 @@
-<!-- templates/main/home.html -->
+{% extends 'main/base.html' %} 
+{% load static i18n %}
 <!-- prettier-ignore -->
-{% extends 'main/base.html' %} {% load static i18n %}
-{% block title %}{% trans "AWFERLK - Modern Online Shopping" %}
-{% endblock %} {% block extra_head %}
-<style>
-  
-
-  /* Hero Banner Carousel */
-  .hero-banner {
-    position: relative;
-    height: 600px;
-    overflow: hidden;
-    border-radius: var(--radius-lg);
-    margin-bottom: 40px;
-  }
-
-  .banner-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 1s ease;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .banner-slide.active {
-    opacity: 1;
-  }
-
-  .banner-content {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 80px;
-    max-width: 500px;
-    z-index: 2;
-  }
-
-  .banner-content.dark h1,
-  .banner-content.dark p {
-    color: var(--dark);
-  }
-
-  .banner-content h1 {
-    font-size: 3.5rem;
-    font-weight: 800;
-    color: white;
-    margin-bottom: 20px;
-    line-height: 1.2;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  }
-
-  .banner-content p {
-    font-size: 1.2rem;
-    color: white;
-    margin-bottom: 30px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  }
-
-  .banner-btn {
-    background: white;
-    color: var(--primary);
-    border: none;
-    padding: 15px 40px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-radius: var(--radius-full);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-md);
-  }
-
-  .banner-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
-    background: var(--primary);
-    color: white;
-  }
-
-  .banner-dots {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 10px;
-    z-index: 2;
-  }
-
-  .banner-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .banner-dot.active {
-    background: white;
-    transform: scale(1.2);
-  }
-
-  /* Category Grid */
-  .category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
-    margin: 40px 0;
-  }
-
-  .category-card {
-    position: relative;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    height: 350px;
-    cursor: pointer;
-    transition: all 0.4s ease;
-  }
-
-  .category-card:hover {
-    transform: translateY(-10px);
-    box-shadow: var(--shadow-xl);
-  }
-
-  .category-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-  }
-
-  .category-card:hover .category-image {
-    transform: scale(1.1);
-  }
-
-  .category-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-    padding: 30px;
-    color: white;
-  }
-
-  .category-name {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 5px;
-  }
-
-  .category-count {
-    font-size: 0.9rem;
-    opacity: 0.9;
-  }
-
-  /* Product Grid */
-  .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 30px;
-    margin: 40px 0;
-  }
-
-  /* Product Card */
-  /* Product Card */
-  .product-card {
-    background: var(--card-bg);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    position: relative;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--card-border-color);
-    color: var(--text-color); /* dynamic text color */
-  }
-
-  .product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
-  }
-
-  /* Image Container */
-  .product-image-container {
-    position: relative;
-    height: 320px;
-    overflow: hidden;
-    background: var(--card-bg); /* dynamic */
-  }
-
-  .product-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s ease;
-  }
-
-  .product-card:hover .product-image {
-    transform: scale(1.05);
-  }
-
-  /* Badges */
-  .product-badges {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    z-index: 2;
-  }
-
-  .badge {
-    padding: 6px 12px;
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .badge-new {
-    background: #00c853;
-  }
-
-  .badge-sale {
-    background: var(--primary);
-  }
-
-  .badge-hot {
-    background: var(--warning);
-  }
-
-  /* Product Info */
-
-  .product-category {
-    font-size: 0.85rem;
-    color: var(--text-color);
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .product-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-color);
-    margin-bottom: 10px;
-    line-height: 1.4;
-    height: 2.8em;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-
-  /* Price */
-  .product-price {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
-
-  .current-price {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--primary);
-  }
-
-  .original-price {
-    font-size: 1rem;
-    color: var(--text-color);
-    text-decoration: line-through;
-  }
-
-  /* Add to Cart Button */
-  .add-to-cart-btn {
-    width: 100%;
-    padding: 12px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .add-to-cart-btn:hover:not(:disabled) {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-  }
-
-  .add-to-cart-btn:disabled {
-    background: var(--secondary);
-    cursor: not-allowed;
-  }
-
-  .badge {
-    padding: 6px 12px;
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .badge-new {
-    background: var(--success);
-  }
-
-  .badge-sale {
-    background: var(--primary);
-  }
-
-  .badge-hot {
-    background: var(--warning);
-  }
-
-  /* Product Info */
-  .product-info {
-    padding: 20px;
-    color: var(--text-color); /* dynamic text color */
-    background-color: var(--bg-color);
-  }
-
-  .product-category {
-    font-size: 0.85rem;
-    color: var(--text-color);
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .product-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-color);
-    margin-bottom: 10px;
-    line-height: 1.4;
-    height: 2.8em;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-
-  .product-price {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
-
-  .current-price {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--primary);
-  }
-
-  .original-price {
-    font-size: 1rem;
-    color: var(--text-color);
-    text-decoration: line-through;
-  }
-
-  /* Add to Cart Button */
-  .add-to-cart-btn {
-    width: 100%;
-    padding: 12px;
-    background: var(--primary);
-    color: white;
-    border: none;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .add-to-cart-btn:hover:not(:disabled) {
-    background: var(--primary-dark);
-    transform: translateY(-2px);
-  }
-
-  .add-to-cart-btn:disabled {
-    background: var(--secondary);
-    cursor: not-allowed;
-  }
-
-  .badge {
-    padding: 6px 12px;
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .badge-new {
-    background: var(--success);
-  }
-
-  .badge-sale {
-    background: var(--primary);
-  }
-
-  .badge-hot {
-    background: var(--warning);
-  }
-
-  .product-actions {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    opacity: 0;
-    transform: translateX(20px);
-    transition: all 0.4s ease;
-  }
-
-  .product-card:hover .product-actions {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .action-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: white;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-md);
-    color: var(--gray-700);
-  }
-
-  .action-btn:hover {
-    background: var(--primary);
-    color: white;
-    transform: scale(1.1);
-  }
-
-  .product-info {
-    padding: 20px;
-  }
-
-  /* Modern Search Bar */
-  .modern-search {
-    position: relative;
-    max-width: 800px;
-    margin: 0 auto 50px;
-  }
-
-  .search-container {
-    position: relative;
-  }
-
-  .search-input {
-    width: 100%;
-    padding: 22px 30px;
-    padding-left: 60px;
-    font-size: 1.1rem;
-    border: 2px solid var(--gray-200);
-    border-radius: var(--radius-full);
-    background: var(--bg-search);
-    color: var(--text-color);
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-sm);
-  }
-
-  .search-input:focus {
-    outline: none;
-    border-color: var(--primary);
-    box-shadow: 0 0 0 4px rgba(255, 56, 92, 0.1);
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 25px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--gray-500);
-    font-size: 1.2rem;
-    pointer-events: none;
-  }
-
-  .search-btn {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 14px 30px;
-    border-radius: var(--radius-full);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .search-btn:hover {
-    background: var(--primary-dark);
-    transform: translateY(-50%) scale(1.05);
-  }
-
-  /* Quick View Modal */
-  .quick-view-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    padding: 20px;
-    backdrop-filter: blur(10px);
-  }
-
-  .quick-view-modal.active {
-    display: flex;
-    animation: fadeIn 0.3s ease;
-  }
-
-  .quick-view-content {
-    background: white;
-    border-radius: var(--radius-xl);
-    width: 100%;
-    max-width: 1000px;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    animation: slideUp 0.4s ease;
-  }
-
-  .close-quick-view {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: white;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    font-size: 1.5rem;
-    color: var(--gray-700);
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-md);
-  }
-
-  .close-quick-view:hover {
-    background: var(--primary);
-    color: white;
-    transform: rotate(90deg);
-  }
-
-  /* Animations */
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(50px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Section Headers */
-  .section-header {
-    text-align: center;
-    margin: 60px 0 40px;
-  }
-
-  .section-bg {
-    background-color: var(--section-bg, #f8f9fa); /* default light */
-    color: var(--section-text, #000);
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  /* Dark theme overrides */
-  html[data-theme="dark"] .section-bg {
-    --section-bg: #1e293b; /* dark background */
-    --section-text: #fff; /* light text */
-  }
-
-  .section-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: var(--section-title-color, var(--gray-900));
-    margin-bottom: 15px;
-    position: relative;
-    display: inline-block;
-    transition: color 0.3s ease;
-  }
-
-  html[data-theme="dark"] .section-title {
-    --section-title-color: #f8f8f8;
-  }
-
-  .section-title::after {
-    content: "";
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 4px;
-    background: var(--primary);
-    border-radius: 2px;
-  }
-
-  .section-subtitle {
-    font-size: 1.1rem;
-    color: var(--section-subtitle-color, var(--gray-600));
-    max-width: 600px;
-    margin: 0 auto;
-    transition: color 0.3s ease;
-  }
-
-  html[data-theme="dark"] .section-subtitle {
-    --section-subtitle-color: #cfd5e0;
-  }
-
-  /* Product Actions Row (Home page) */
-  .product-actions-row {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 8px;
-    align-items: stretch;
-    margin-top: 8px;
-  }
-
-  .product-actions-row * {
-    min-width: 0;
-  }
-
-  /* Responsive Design */
-  @media (max-width: 1200px) {
-    .product-grid {
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-
-    .category-grid {
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-  }/* =============================
-   TABLET & SMALL SCREENS
-   max-width: 768px
-============================= */
-@media (max-width: 768px) {
-  .hero-banner {
-    height: 350px;
-  }
-
-  .banner-content {
-    left: 20px;
-    right: 20px;
-    text-align: center;
-  }
-
-  .banner-content h1 {
-    font-size: 2.2rem;
-  }
-
-  /* Smaller product grid */
-  .product-grid {
-    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-    gap: 15px;
-  }
-
-  /* Smaller images */
-  .product-image-container {
-    height: 200px;
-  }
-
-  .category-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .category-card {
-    height: 200px;
-  }
-
-  .modern-search {
-    margin-bottom: 25px;
-  }
-
-  .search-input {
-    padding: 16px 20px;
-    padding-left: 45px;
-    font-size: 0.95rem;
-    background: var(--bg-search);
-    color: var(--text-color);
-
-  }
-}
-
-/* =============================
-   MOBILE PHONES
-   max-width: 480px
-============================= */
-@media (max-width: 480px) {
-  /* Perfect 2-column layout */
-  .product-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
-  /* shorter product images */
-  .product-image-container {
-    height: 170px;
-  }
-
-  .category-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-  }
-
-  .category-card {
-    height: 170px;
-  }
-
-  .section-title {
-    font-size: 1.8rem;
-  }
-}
-
-</style>
-{% endblock %} {% block content %}
-<!-- Hero Banner Carousel -->
-<div class="hero-banner" id="heroBanner">
-  <!-- Banners will be loaded via JavaScript -->
-</div>
-
-<!-- Modern Search Bar -->
-<div class="modern-search">
-  <div class="search-container">
-    <i class="fas fa-search search-icon"></i>
-    <input
-      type="text"
-      class="search-input"
-      id="globalSearch"
-      placeholder="{% trans 'Search for products, categories, brands...' %}"
-      autocomplete="off"
-    />
-    <button class="search-btn" onclick="performSearch()">
-      <i class="fas fa-search me-2"></i>{% trans "Search" %}
-    </button>
+{% block title %}{% trans "Home - HeavyDuty Parts Hub" %}{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="hero-section position-relative overflow-hidden pt-6" 
+         style="background-color: var(--bg-color); color: var(--text-color);">
+  <div class="container-fluid">
+    <div class="row min-vh-75 py-5 g-0">
+      
+      <!-- Left: Banner / Carousel -->
+      <div class="col-lg-6 position-relative" data-aos="fade-right">
+        <div class="hero-image-container w-100 h-100 position-relative">
+          <div id="homeBannerCarousel" class="carousel slide rounded-3 shadow-lg overflow-hidden h-100" data-bs-ride="carousel">
+            <div class="carousel-inner h-100" id="bannerCarouselInner">
+              <!-- Banners will be loaded here via JS -->
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#homeBannerCarousel" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right: Text / CTA -->
+      <div class="col-lg-6 d-flex flex-column justify-content-center px-5" data-aos="fade-left" data-aos-delay="200">
+        <span class="badge rounded-pill mb-3 px-3 py-2" style="background-color: var(--primary); color: var(--light);">
+          <i class="fas fa-truck me-2"></i>{% trans "Premium Parts Supplier" %}
+        </span>
+
+        <h1 class="display-3 fw-bold mb-4" style="color: var(--text-color);">
+          {% trans "Premium Truck Parts for Every Major Brand" %}
+        </h1>
+
+        <p class="lead mb-5 opacity-75" style="color: var(--text-color);">
+          {% blocktrans %} Your trusted partner for heavy-duty truck parts, 
+          engine components, and industrial equipment. Quality guaranteed, 
+          delivery across the Middle East. {% endblocktrans %}
+        </p>
+
+        <div class="d-flex flex-wrap gap-3 mb-5">
+          <a href="#featured-products" class="btn btn-lg px-4 py-3" 
+             style="background-color: var(--primary); color: var(--light); border: none;">
+            <i class="fas fa-tools me-2"></i>{% trans "Browse Parts" %}
+          </a>
+          <a href="{% url 'contact' %}" class="btn btn-lg px-4 py-3" 
+             style="background-color: transparent; border: 2px solid var(--primary); color: var(--primary);">
+            <i class="fas fa-headset me-2"></i>{% trans "Get Quote" %}
+          </a>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-6">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-shipping-fast fa-2x me-3" style="color: var(--accent);"></i>
+              <div>
+                <h4 class="mb-0" style="color: var(--text-color);">24/7</h4>
+                <small class="opacity-75" style="color: var(--text-color);">{% trans "Express Delivery" %}</small>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-check-circle fa-2x me-3" style="color: var(--success);"></i>
+              <div>
+                <h4 class="mb-0" style="color: var(--text-color);">100%</h4>
+                <small class="opacity-75" style="color: var(--text-color);">{% trans "Quality Guaranteed" %}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
-</div>
 
-<!-- Featured Categories -->
-<section>
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">{% trans "Shop By Category" %}</h2>
-      <p class="section-subtitle">
-        {% trans "Browse our wide range of categories" %}
+  <!-- Optional floating shapes -->
+  <div class="floating-shape shape-1">
+    <i class="fas fa-cog fa-spin" style="color: var(--primary)"></i>
+  </div>
+  <div class="floating-shape shape-2">
+    <i class="fas fa-truck" style="color: var(--secondary)"></i>
+  </div>
+  <div class="floating-shape shape-3">
+    <i class="fas fa-tools" style="color: var(--accent)"></i>
+  </div>
+</section>
+
+
+
+<!-- Company Statistics Section -->
+<section class="py-5 position-relative overflow-hidden" 
+         style="background: var(--bg-color); color: var(--text-color);">
+  <div class="container position-relative z-1">
+    <div class="section-header text-center mb-5">
+      <span class="badge" 
+            style="background-color: var(--primary); color: var(--light); margin-bottom: 1rem; padding: 0.5rem 1rem; border-radius: 50px;">
+        <i class="fas fa-chart-line me-2"></i>{% trans "Company Excellence" %}
+      </span>
+      <h2 class="display-5 fw-bold mb-4" style="color: var(--text-color);">
+        {% trans "Driving Excellence Since 2008" %}
+      </h2>
+      <p class="lead mx-auto opacity-75" style="max-width: 600px; color: var(--text-color);">
+        {% blocktrans %} With over 15 years of industry leadership, we've built 
+        a reputation for reliability, quality, and exceptional service across 
+        the GCC region. {% endblocktrans %}
       </p>
     </div>
-    <div class="category-grid" id="categoriesGrid">
-      <!-- Categories will be loaded via JavaScript -->
+
+    <div class="row g-4">
+      <!-- Client Satisfaction -->
+      <div class="col-md-3 col-6 text-center" data-aos="fade-up">
+        <div class="company-stat-card p-4 position-relative" 
+             style="background: var(--card-bg); border: 1px solid var(--card-border-color); box-shadow: var(--card-shadow);">
+          <div class="stat-icon-wrapper mb-3">
+            <i class="fas fa-smile-beam fa-3x" style="color: var(--accent);"></i>
+          </div>
+          <h2 class="display-3 fw-bold mb-2" style="color: var(--text-color);">
+            <span class="counter" data-target="98">98</span>%
+          </h2>
+          <p class="fw-semibold mb-2" style="color: var(--text-color);">{% trans "Client Satisfaction" %}</p>
+          <small class="opacity-75" style="color: var(--text-color);">{% trans "Based on 500+ client reviews" %}</small>
+          <div class="progress mt-2" style="height: 4px; background-color: var(--card-border-color);">
+            <div class="progress-bar" role="progressbar" style="width: 98%; background-color: var(--accent);" 
+                 aria-valuenow="98" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- On-Time Delivery -->
+      <div class="col-md-3 col-6 text-center" data-aos="fade-up" data-aos-delay="100">
+        <div class="company-stat-card p-4 position-relative" 
+             style="background: var(--card-bg); border: 1px solid var(--card-border-color); box-shadow: var(--card-shadow);">
+          <div class="stat-icon-wrapper mb-3">
+            <i class="fas fa-shipping-fast fa-3x" style="color: var(--success);"></i>
+          </div>
+          <h2 class="display-3 fw-bold mb-2" style="color: var(--text-color);">
+            <span class="counter" data-target="99.5">99.5</span>%
+          </h2>
+          <p class="fw-semibold mb-2" style="color: var(--text-color);">{% trans "On-Time Delivery" %}</p>
+          <small class="opacity-75" style="color: var(--text-color);">{% trans "Across GCC countries" %}</small>
+          <div class="progress mt-2" style="height: 4px; background-color: var(--card-border-color);">
+            <div class="progress-bar" role="progressbar" style="width: 99.5%; background-color: var(--success);" 
+                 aria-valuenow="99.5" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quality Assurance -->
+      <div class="col-md-3 col-6 text-center" data-aos="fade-up" data-aos-delay="200">
+        <div class="company-stat-card p-4 position-relative" 
+             style="background: var(--card-bg); border: 1px solid var(--card-border-color); box-shadow: var(--card-shadow);">
+          <div class="stat-icon-wrapper mb-3">
+            <i class="fas fa-award fa-3x" style="color: var(--warning);"></i>
+          </div>
+          <h2 class="display-3 fw-bold mb-2" style="color: var(--text-color);">
+            <span class="counter" data-target="100">100</span>%
+          </h2>
+          <p class="fw-semibold mb-2" style="color: var(--text-color);">{% trans "Quality Assurance" %}</p>
+          <small class="opacity-75" style="color: var(--text-color);">{% trans "Zero defect policy" %}</small>
+          <div class="progress mt-2" style="height: 4px; background-color: var(--card-border-color);">
+            <div class="progress-bar" role="progressbar" style="width: 100%; background-color: var(--warning);" 
+                 aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Repeat Business -->
+      <div class="col-md-3 col-6 text-center" data-aos="fade-up" data-aos-delay="300">
+        <div class="company-stat-card p-4 position-relative" 
+             style="background: var(--card-bg); border: 1px solid var(--card-border-color); box-shadow: var(--card-shadow);">
+          <div class="stat-icon-wrapper mb-3">
+            <i class="fas fa-handshake fa-3x" style="color: var(--primary);"></i>
+          </div>
+          <h2 class="display-3 fw-bold mb-2" style="color: var(--text-color);">
+            <span class="counter" data-target="85">85</span>%
+          </h2>
+          <p class="fw-semibold mb-2" style="color: var(--text-color);">{% trans "Repeat Business" %}</p>
+          <small class="opacity-75" style="color: var(--text-color);">{% trans "Loyal customer base" %}</small>
+          <div class="progress mt-2" style="height: 4px; background-color: var(--card-border-color);">
+            <div class="progress-bar" role="progressbar" style="width: 85%; background-color: var(--primary);" 
+                 aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Stats Row -->
+    <div class="row g-4 mt-2">
+      <!-- Technical Support -->
+      <div class="col-md-4 col-6 text-center" data-aos="fade-up" data-aos-delay="400">
+        <div class="company-stat-card p-4 position-relative" 
+             style="background: var(--card-bg); border: 1px solid var(--card-border-color); box-shadow: var(--card-shadow);">
+          <div class="stat-icon-wrapper mb-3">
+            <i class="fas fa-headset fa-3x" style="color: var(--info);"></i>
+          </div>
+          <h2 class="display-4 fw-bold mb-2" style="color: var(--text-color);">
+            <span class="counter" data-target="24">24</span>/7
+          </h2>
+          <p class="fw-semibold mb-2" style="color: var(--text-color);">{% trans "Technical Support" %}</p>
+          <small class="opacity-75" style="color: var(--text-color);">{% trans "Average response time: 15min" %}</small>
+        </div>
+      </div>
+
+      <!-- Emergency Response -->
+      <div class="col-md-4 col-6 text-center" data-aos="fade-up" data-aos-delay="500">
+        <div class="company-stat-card p-4 position-relative" 
+             style="background: var(--card-bg); border: 1px solid var(--card-border-color); box-shadow: var(--card-shadow);">
+          <div class="stat-icon-wrapper mb-3">
+            <i class="fas fa-ambulance fa-3x" style="color: var(--danger);"></i>
+          </div>
+          <h2 class="display-4 fw-bold mb-2" style="color: var(--text-color);">
+            <span class="counter" data-target="2">2</span>h
+          </h2>
+          <p class="fw-semibold mb-2" style="color: var(--text-color);">{% trans "Emergency Response" %}</p>
+          <small class="opacity-75" style="color: var(--text-color);">{% trans "Critical parts dispatch" %}</small>
+        </div>
+      </div>
+
+      <!-- Warranty Coverage -->
+      <div class="col-md-4 col-6 text-center" data-aos="fade-up" data-aos-delay="600">
+        <div class="company-stat-card p-4 position-relative" 
+             style="background: var(--card-bg); border: 1px solid var(--card-border-color); box-shadow: var(--card-shadow);">
+          <div class="stat-icon-wrapper mb-3">
+            <i class="fas fa-shield-alt fa-3x" style="color: var(--success);"></i>
+          </div>
+          <h2 class="display-4 fw-bold mb-2" style="color: var(--text-color);">
+            <span class="counter" data-target="12">12</span>+
+          </h2>
+          <p class="fw-semibold mb-2" style="color: var(--text-color);">{% trans "Months Warranty" %}</p>
+          <small class="opacity-75" style="color: var(--text-color);">{% trans "On all genuine parts" %}</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Certifications Badge -->
+    <div class="row mt-5 pt-3">
+      <div class="col-12 text-center">
+        <div class="d-flex flex-wrap justify-content-center align-items-center gap-4">
+          <div class="cert-badge rounded-pill px-4 py-2 d-flex align-items-center" style="background-color: rgba(255,255,255,0.1);">
+            <i class="fas fa-certificate text-warning me-2"></i>
+            <span>{% trans "ISO 9001:2015 Certified" %}</span>
+          </div>
+          <div class="cert-badge rounded-pill px-4 py-2 d-flex align-items-center" style="background-color: rgba(255,255,255,0.1);">
+            <i class="fas fa-check-circle text-success me-2"></i>
+            <span>{% trans "Authorized Distributor" %}</span>
+          </div>
+          <div class="cert-badge rounded-pill px-4 py-2 d-flex align-items-center" style="background-color: rgba(255,255,255,0.1);">
+            <i class="fas fa-globe-americas text-info me-2"></i>
+            <span>{% trans "GCC Wide Operations" %}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Background Pattern -->
+  <div class="position-absolute top-0 start-0 w-100 h-100 opacity-5">
+    <div class="pattern-dots"></div>
+  </div>
+
+  <!-- Floating Elements -->
+  <div class="floating-shape shape-1">
+    <i class="fas fa-cog fa-spin" style="color: var(--primary)"></i>
+  </div>
+  <div class="floating-shape shape-2">
+    <i class="fas fa-truck" style="color: var(--secondary)"></i>
+  </div>
+  <div class="floating-shape shape-3">
+    <i class="fas fa-tools" style="color: var(--accent)"></i>
+  </div>
+</section>
+
+<!-- Categories Section -->
+<section id="categories" class="py-5">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <span class="badge bg-primary-industrial bg-opacity-10 text-primary-industrial mb-3 px-3 py-2 rounded-pill">
+        {% trans "Parts Categories" %}
+      </span>
+      <h2 class="display-5 fw-bold mb-4 section-title-home">
+        {% trans "Explore Our Parts Collection" %}
+      </h2>
+      <p class="lead text-muted mx-auto" style="max-width: 600px">
+        {% blocktrans %} From engine components to electrical systems, 
+        we have everything you need to keep your fleet running. 
+        {% endblocktrans %}
+      </p>
+    </div>
+
+    <div class="row g-4" id="categoriesContainer">
+      <!-- Categories will be loaded here via JS -->
+    </div>
+  </div>
+</section>
+<!-- Brands Section -->
+<section class="py-5">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <span class="badge bg-primary-industrial bg-opacity-10 text-primary-industrial mb-3 px-3 py-2 rounded-pill">
+        {% trans "Trusted Brands" %}
+      </span>
+      <h2 class="display-5 fw-bold mb-4 section-title-home">
+        {% trans "Our Premium Brand Partners" %}
+      </h2>
+      <p class="lead text-muted mx-auto" style="max-width: 600px">
+        {% blocktrans %} We supply genuine parts from the world's leading 
+        manufacturers and trusted aftermarket brands. {% endblocktrans %}
+      </p>
+    </div>
+    
+    <div class="row g-4 align-items-center" id="brandsContainer">
+      <!-- Brands will be loaded here via JS -->
     </div>
   </div>
 </section>
 
-<!-- Featured Products -->
-<section class="section-bg py-5">
+<!-- Featured Products Section -->
+<section id="featured-products" class="py-5 section-alt">
   <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">{% trans "Featured Products" %}</h2>
-      <p class="section-subtitle">
-        {% trans "Discover our most popular items" %}
+    <div class="section-header text-center mb-5">
+      <span class="badge bg-primary-industrial bg-opacity-10 text-primary-industrial mb-3 px-3 py-2 rounded-pill">
+        {% trans "Featured Products" %}
+      </span>
+      <h2 class="display-5 fw-bold mb-4 section-title-home">
+        {% trans "Top Quality Parts" %}
+      </h2>
+      <p class="lead text-muted mx-auto" style="max-width: 600px">
+        {% blocktrans %} Explore our selection of premium truck and heavy equipment parts. 
+        {% endblocktrans %}
       </p>
     </div>
-    <div class="product-grid" id="featuredProducts">
-      <!-- Products will be loaded via JavaScript -->
+
+    <div class="row g-4" id="featuredProductsContainer">
+      <!-- Featured products will be loaded here via JS -->
     </div>
+
     <div class="text-center mt-5">
-      <a href="{% url 'shop' %}" class="btn btn-primary btn-lg px-5">
-        <i class="fas fa-shopping-bag me-2"></i>{% trans "View All Products" %}
+      <a href="{% url 'products' %}" class="btn btn-industrial btn-primary-industrial btn-lg px-5">
+        <i class="fas fa-eye me-2"></i>{% trans "View All Products" %}
       </a>
     </div>
   </div>
 </section>
 
-<!-- New Arrivals
-<
-<section>
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-title">{% trans "New Arrivals" %}</h2>
-      <p class="section-subtitle">{% trans "Fresh picks just for you" %}</p>
-    </div>
-    <div class="product-grid" id="newArrivals">
-      Products will be loaded via JavaScript
-    </div>
-  </div>
-</section>
- -->
-<!-- Quick View Modal -->
-<div class="quick-view-modal" id="quickViewModal">
-  <div class="quick-view-content" id="quickViewContent">
-    <button class="close-quick-view" onclick="closeQuickView()">
-      <i class="fas fa-times"></i>
-    </button>
-    <!-- Content loaded via JavaScript -->
-  </div>
-</div>
-{% endblock %} {% block extra_js %}
-<script>
-  // Home page specific JavaScript
-  // Cart functions (cart, addToCart, saveCart, updateCartModal, updateCartUI, showNotification)
-  // are defined in base.html
 
-  let homeData = null;
-  let currentBannerIndex = 0;
-  let bannerInterval = null;
 
-  document.addEventListener("DOMContentLoaded", async function () {
-    await loadHomeData();
-    setupEventListeners();
-    startBannerCarousel();
-  });
+<!-- Popular Categories Section -->
 
-  // Load home data from API
-  async function loadHomeData() {
-    try {
-      const response = await fetch("/api/home-data/");
-      const data = await response.json();
 
-      if (data.success) {
-        homeData = data;
-        renderHeroBanners(data.banners || []);
-        renderCategories(data.categories || []);
-        renderFeaturedProducts(data.featured_products || []);
-        /* renderNewArrivals(data.new_arrivals || []);*/
-      }
-    } catch (error) {
-      console.error("Error loading home data:", error);
-    }
+<!-- Rest of the template remains the same (Why Choose Us, Testimonials, CTA) -->
+<!-- ... [Keep all the remaining sections exactly as they are] ... -->
+
+<style>
+  /* Add this new style for banner carousel */
+  .banner-item {
+    height: 400px;
+    position: relative;
+    overflow: hidden;
   }
 
-  // Render hero banners
-  function renderHeroBanners(banners) {
-    const container = document.getElementById("heroBanner");
-    if (!container) return;
-
-    let html = "";
-
-    banners.forEach((banner, index) => {
-      const activeClass = index === 0 ? "active" : "";
-      html += `
-          <div class="banner-slide ${activeClass}"
-               style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('${
-                 banner.image
-               }')">
-            <div class="banner-content ${banner.text_color || ""}">
-              <h1>${banner.title || ""}</h1>
-              <p>${banner.subtitle || ""}</p>
-              ${
-                banner.button_link
-                  ? `<button class="banner-btn" onclick="window.location.href='${
-                      banner.button_link
-                    }'">
-                       ${banner.button_text || "Shop Now"}
-                     </button>`
-                  : ""
-              }
-            </div>
-          </div>
-        `;
-    });
-
-    if (banners.length > 0) {
-      html += `<div class="banner-dots">`;
-      banners.forEach((_, index) => {
-        const activeClass = index === 0 ? "active" : "";
-        html += `<div class="banner-dot ${activeClass}" data-index="${index}" onclick="goToBanner(${index})"></div>`;
-      });
-      html += `</div>`;
-    }
-
-    container.innerHTML = html;
+  .banner-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  function startBannerCarousel() {
-    if (bannerInterval) clearInterval(bannerInterval);
-
-    bannerInterval = setInterval(() => {
-      const banners = document.querySelectorAll(".banner-slide");
-      const dots = document.querySelectorAll(".banner-dot");
-
-      if (banners.length > 0) {
-        banners.forEach((banner) => banner.classList.remove("active"));
-        dots.forEach((dot) => dot.classList.remove("active"));
-
-        currentBannerIndex = (currentBannerIndex + 1) % banners.length;
-
-        banners[currentBannerIndex].classList.add("active");
-        if (dots[currentBannerIndex]) {
-          dots[currentBannerIndex].classList.add("active");
-        }
-      }
-    }, 5000);
+  .banner-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    color: white;
   }
 
-  function goToBanner(index) {
-    const banners = document.querySelectorAll(".banner-slide");
-    const dots = document.querySelectorAll(".banner-dot");
-
-    banners.forEach((banner) => banner.classList.remove("active"));
-    dots.forEach((dot) => dot.classList.remove("active"));
-
-    if (banners[index]) banners[index].classList.add("active");
-    if (dots[index]) dots[index].classList.add("active");
-
-    currentBannerIndex = index;
-    clearInterval(bannerInterval);
-    startBannerCarousel();
+  /* Product Card Styles */
+  .product-card {
+    transition: all 0.3s ease;
+    height: 100%;
+    border: 1px solid var(--card-border-color);
   }
 
-  // Render categories
-  function renderCategories(categories) {
-    const container = document.getElementById("categoriesGrid");
-    if (!container) return;
-
-    let html = "";
-
-    categories.slice(0, 6).forEach((category) => {
-      const bgImage = category.image || "/static/main/img/category-default.jpg";
-      const name = category.name || "";
-      const count = category.product_count || 0;
-
-      html += `
-          <div class="category-card" onclick="filterByCategory('${name}')">
-            <img src="${bgImage}" alt="${name}" class="category-image">
-            <div class="category-overlay">
-              <div class="category-name">${name}</div>
-              <div class="category-count">${count} products</div>
-            </div>
-          </div>
-        `;
-    });
-
-    container.innerHTML = html;
+  .product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border-color: var(--primary-industrial);
   }
 
-  function renderFeaturedProducts(products) {
-    const container = document.getElementById("featuredProducts");
-    renderProductGrid(container, products);
-  }
-  /*
-    function renderNewArrivals(products) {
-      const container = document.getElementById("newArrivals");
-      renderProductGrid(container, products);
-    }*/
-
-  // Render product grid (Featured & New Arrivals)
-  function renderProductGrid(container, products) {
-  if (!container) return;
-
-  let html = "";
-
-  // Determine responsive sizes
-  let gridGap = "30px";
-  let cardHeight = "320px";
-  let productMinWidth = "280px";
-
-  const w = window.innerWidth;
-  if (w <= 480) { // mobile
-    gridGap = "10px";
-    cardHeight = "170px";
-    productMinWidth = "50%";
-  } else if (w <= 768) { // tablet
-    gridGap = "15px";
-    cardHeight = "200px";
-    productMinWidth = "170px";
-  } else if (w <= 1024) { // small desktop
-    gridGap = "20px";
-    cardHeight = "280px";
-    productMinWidth = "240px";
+  .product-image {
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f9fa;
   }
 
-  // Set container grid styles inline
-  container.style.display = "grid";
-  container.style.gridTemplateColumns = `repeat(auto-fill, minmax(${productMinWidth}, 1fr))`;
-  container.style.gap = gridGap;
-  container.style.margin = "40px 0";
+  .product-image img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+  }
 
-  products.forEach((product) => {
-    const inStock = product.in_stock;
-    const canOrder = product.can_order;
+  .product-price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--primary-industrial);
+  }
 
-    const basePrice = Number(product.price) || 0;
-    const discountPct = Number(product.discount_percentage) || 0;
-    let effectivePrice = basePrice;
-    if (discountPct > 0 && discountPct <= 100) {
-      effectivePrice = basePrice * (1 - discountPct / 100);
-    }
-    const priceNum = basePrice;
-    const price = basePrice ? `$${effectivePrice.toFixed(2)}` : "Price on request";
+  .discount-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--danger);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+  }
 
-    const safeName = (product.name || "").replace(/'/g, "\\'");
-    const category = product.category || "Uncategorized";
-    const image = product.image || "/static/main/img/product-default.jpg";
+  /* Add to existing styles */
+  .category-card {
+    transition: all 0.3s ease;
+    color: var(--text-color);
+  }
 
-    const cartItem = cart.find((item) => item.id === product.id);
-    const qtyInCart = cartItem ? cartItem.quantity : 0;
+  .category-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary-industrial);
+    color: var(--primary-industrial);
+  }
 
-    let actionHtml = "";
-    if (qtyInCart > 0) {
-      actionHtml = `
-        <div class="cart-qty-control" data-product-id="${product.id}"
-             style="display:flex;justify-content:center;align-items:center;gap:12px;margin-top:10px;width:100%;">
-          <button class="qty-btn minus"
-                  style="background:#ff6b6b;color:white;border:none;border-radius:50%;width:36px;height:36px;font-weight:bold;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"
-                  onclick="event.stopPropagation(); changeCartQuantity(${product.id}, -1)">-</button>
-          <button class="qty-btn plus"
-                  style="background:#4caf50;color:white;border:none;border-radius:50%;width:36px;height:36px;font-weight:bold;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"
-                  onclick="event.stopPropagation(); changeCartQuantity(${product.id}, 1)">+</button>
-        </div>
-      `;
-    } else {
-      actionHtml = `
-        <button class="add-to-cart-btn"
-                style="display:block;margin:15px auto;padding:12px 24px;background:linear-gradient(135deg,#6a11cb,#2575fc);color:white;border:none;border-radius:25px;font-weight:bold;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.2);width:100%;"
-                onclick="event.stopPropagation(); handleAddToCartFromCard(this, ${product.id}, '${safeName}', ${priceNum}, '${image}', ${canOrder ? "true" : "false"}, ${discountPct})"
-                ${!canOrder ? "disabled" : ""}>
-          <i class="fas fa-cart-plus me-2"></i>${canOrder ? "Add to Cart" : "Cannot Order"}
-        </button>
-      `;
-    }
+  .category-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+  }
 
-    html += `
-      <div class="product-card"
-           data-product-id="${product.id}"
-           data-product-name="${safeName}"
-           data-product-price="${priceNum}"
-           data-product-discount="${discountPct}"
-           data-product-image="${image}"
-           data-product-can-order="${canOrder ? "1" : "0"}"
-           style="border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1);transition:transform 0.2s;display:flex;flex-direction:column;background:white;">
-
-        <a href="/product/${product.id}/" class="product-image-container"
-           style="position:relative;overflow:hidden;display:block;text-decoration:none;height:${cardHeight};">
-          <img src="${image}"
-               alt="${product.name || ""}"
-               class="product-image"
-               style="
-                  width: 100%;
-                  height: 100%;
-                  object-fit: contain;
-                  object-position: center;
-                  background-color: #f5f5f5;
-                  transition: transform 0.3s;
-               ">
-          <div class="product-badges" style="position:absolute;top:10px;left:10px;display:flex;gap:5px;">
-            ${inStock ? '<span style="background:#28a745;padding:3px 7px;border-radius:5px;font-size:0.7rem;">New</span>' : ""}
-          </div>
-        </a>
-
-        <div class="product-info" style="padding:15px;flex:1;display:flex;flex-direction:column;">
-          <a href="/product/${product.id}/" style="text-decoration:none;">
-            <div class="product-category" style="font-size:0.8rem; margin-bottom:5px;">${category}</div>
-            <h3 class="product-title" style="font-size:1rem; font-weight:600; margin:5px 0; height:2.8em; overflow:hidden; line-height:1.4;">${product.name || ""}</h3>
-          </a>
-
-          <div class="product-price" style="margin:8px 0;">
-            <span class="current-price" style="font-size:1.2rem;font-weight:700;">${price}</span>
-            ${discountPct > 0 && basePrice ? `
-              <span style="text-decoration:line-through;color:#aaa;margin-left:8px;font-size:0.9rem;">$${basePrice.toFixed(2)}</span>
-              <span style="margin-left:6px;font-size:0.8rem;color:#ff5252;font-weight:bold;">-${discountPct}%</span>
-            ` : ""}
-          </div>
-
-          <div class="product-actions-row" style="margin-top:auto;pt-15">
-            ${actionHtml}
-          </div>
-        </div>
-      </div>
-    `;
-  });
-
-  container.innerHTML = html;
+  /* Category Cards Hover Effects */
+.category-card-wrapper {
+  perspective: 1000px;
 }
 
-// Optionally, re-render on window resize
-window.addEventListener("resize", () => {
-  const container = document.querySelector(".product-grid");
-  if (container && window.products) {
-    renderProductGrid(container, window.products);
-  }
-});
+.category-card {
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 12px;
+}
 
-  // Handle Add to Cart from card
-  function handleAddToCartFromCard(
-    btn,
-    productId,
-    name,
-    price,
-    image,
-    canOrder,
-    discountPercentage = 0
-  ) {
-    if (!canOrder) {
-      if (window.showNotification) {
-        window.showNotification("This product cannot be ordered", "error");
+.category-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.category-image-container {
+  height: 280px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.category-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.5s ease;
+  filter: brightness(0.9);
+}
+
+.category-card:hover .category-image {
+  transform: scale(1.1);
+  filter: brightness(0.7) blur(1px);
+}
+
+.category-overlay {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 100%);
+  opacity: 0;
+  transition: all 0.5s ease;
+  padding: 2rem;
+  backdrop-filter: blur(5px);
+}
+
+.category-card:hover .category-overlay {
+  opacity: 1;
+}
+
+.category-name {
+  font-size: 1.5rem;
+  transform: translateY(20px);
+  transition: all 0.4s ease 0.1s;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.category-description {
+  font-size: 0.9rem;
+  transform: translateY(20px);
+  transition: all 0.4s ease 0.2s;
+  opacity: 0;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.category-card:hover .category-name,
+.category-card:hover .category-description {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.fallback-icon-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease;
+}
+
+.category-card:hover .fallback-icon-container i {
+  transform: scale(1.2);
+  transition: transform 0.5s ease;
+}
+
+/* Add glowing shadow effect on hover */
+.category-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  background: linear-gradient(45deg, 
+    rgba(0, 123, 255, 0.2) 0%, 
+    rgba(0, 123, 255, 0) 50%,
+    rgba(0, 123, 255, 0.2) 100%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.category-card:hover::before {
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .category-image-container {
+    height: 220px;
+  }
+  
+  .category-overlay {
+    padding: 1rem;
+  }
+  
+  .category-name {
+    font-size: 1.25rem;
+  }
+  
+  .category-description {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .category-image-container {
+    height: 200px;
+  }
+  
+  .category-name {
+    font-size: 1.1rem;
+  }
+}
+
+  /* Responsive adjustments for banners */
+  @media (max-width: 768px) {
+    .banner-item {
+      height: 300px;
+    }
+    
+    .banner-content {
+      padding: 1rem;
+    }
+    
+    .banner-content h3 {
+      font-size: 1.25rem;
+    }
+    
+    .banner-content p {
+      font-size: 0.875rem;
+    }
+  }
+
+  /* Company Statistics Section */
+.company-stat-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  backdrop-filter: blur(10px);
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.company-stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.05) 0%, 
+    rgba(255, 255, 255, 0.02) 50%,
+    rgba(255, 255, 255, 0) 100%);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.company-stat-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(var(--primary-industrial-rgb), 0.3);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.company-stat-card:hover::before {
+  opacity: 1;
+}
+
+.stat-icon-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon-wrapper::after {
+  content: '';
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.1;
+  filter: blur(10px);
+  z-index: -1;
+  transition: all 0.4s ease;
+}
+
+.company-stat-card:hover .stat-icon-wrapper::after {
+  transform: scale(1.2);
+  opacity: 0.15;
+}
+
+.company-stat-card .display-3,
+.company-stat-card .display-4 {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.counter {
+  display: inline-block;
+}
+
+/* Progress Bar Styling */
+.company-stat-card .progress {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.company-stat-card .progress-bar {
+  border-radius: 10px;
+  transition: width 1.5s ease-in-out;
+}
+.bg-industrial-dark {
+  background-color: var(--bg-color); /* example dark color */
+}
+
+/* Certifications Badges */
+.cert-badge {
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.cert-badge:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-3px);
+  border-color: var(--primary-industrial);
+}
+
+/* Background Pattern */
+.pattern-dots {
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.1) 2px, transparent 2px),
+    radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 50px 50px, 25px 25px;
+  background-position: 0 0, 25px 25px;
+}
+
+/* Floating Shapes */
+.floating-shape {
+  position: absolute;
+  font-size: 2rem;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.floating-shape.shape-1 {
+  top: 20%;
+  left: 5%;
+  animation: float 8s ease-in-out infinite;
+}
+
+.floating-shape.shape-2 {
+  top: 60%;
+  right: 10%;
+  animation: float 10s ease-in-out infinite reverse;
+}
+
+.floating-shape.shape-3 {
+  bottom: 20%;
+  left: 15%;
+  animation: float 12s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-20px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(10px) rotate(240deg);
+  }
+}
+
+/* Text Accent Colors */
+.text-accent {
+  color: #00d4ff;
+}
+
+.bg-accent {
+  background-color: #00d4ff !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .company-stat-card {
+    padding: 1.5rem !important;
+  }
+  
+  .company-stat-card .display-3 {
+    font-size: 2.5rem;
+  }
+  
+  .company-stat-card .display-4 {
+    font-size: 2rem;
+  }
+  
+  .floating-shape {
+    display: none;
+  }
+  
+  .cert-badge {
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .company-stat-card {
+    padding: 1rem !important;
+  }
+  
+  .company-stat-card .display-3 {
+    font-size: 2rem;
+  }
+  
+  .stat-icon-wrapper i {
+    font-size: 2rem !important;
+  }
+}
+</style>
+<script>
+  // =========================
+  // Initialize AOS animations
+  // =========================
+  document.addEventListener('DOMContentLoaded', function() {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 100,
+    });
+
+    // =========================
+    // Fetch all home data from single API
+    // =========================
+    async function loadHomeData() {
+      console.log("Loading home data from single API...");
+      
+      try {
+        // Fetch all data from single endpoint
+        const response = await fetch("{% url 'api-home-data' %}");
+        console.log("Home data response status:", response.status);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log("Home data received:", data);
+        
+        if (!data.success) {
+          throw new Error(data.error || "Failed to load home data");
+        }
+        
+        // Update stats
+        if (data.stats) {
+          const totalProducts = document.getElementById('totalProducts');
+          const totalCategories = document.getElementById('totalCategories');
+          
+          if (totalProducts && data.stats.total_products) {
+            totalProducts.textContent = data.stats.total_products > 1000 
+              ? `${Math.round(data.stats.total_products/1000)}K+` 
+              : `${data.stats.total_products}+`;
+          }
+          
+          if (totalCategories && data.stats.total_categories) {
+            totalCategories.textContent = `${data.stats.total_categories}+`;
+          }
+        }
+        
+        // Load banners
+        loadBanners(data.banners || []);
+        
+        // Load brands
+        loadBrands(data.brands || []);
+        
+        // Load categories
+        loadCategories(data.categories || []);
+        
+        // Load popular categories
+        loadPopularCategories(data.popular_categories || []);
+        
+        // Load featured products
+        loadFeaturedProducts(data.featured_products || []);
+        
+      } catch (error) {
+        console.error("Error loading home data:", error);
+        showErrorMessages();
       }
-      return;
     }
 
-    // pass discountPercentage to addToCart
-    addToCart(productId, name, price, image, canOrder, 1, discountPercentage);
+    // =========================
+    // Load Banners
+    // =========================
+    function loadBanners(banners) {
+      const container = document.getElementById('bannerCarouselInner');
+      if (!container) return;
+      
+      if (!banners || banners.length === 0) {
+        // Fallback to default banner
+        container.innerHTML = `
+          <div class="carousel-item active">
+            <div class="banner-item">
+              <img src="{% static 'main/img/truck-hero.png' %}" alt="{% trans 'HeavyDuty Parts Hub' %}" 
+                   onerror="this.src='https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80'">
+              <div class="banner-content">
+                <h3 class="text-white">{% trans "Premium Truck Parts" %}</h3>
+                <p class="text-white opacity-75">{% trans "Quality parts for heavy-duty trucks" %}</p>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = '';
+      banners.forEach((banner, index) => {
+        const isActive = index === 0 ? 'active' : '';
+        const bannerHTML = `
+          <div class="carousel-item ${isActive}">
+            <div class="banner-item">
+              ${banner.image ? 
+                `<img src="${banner.image}" alt="${banner.title || 'Banner'}">` :
+                `<div class="bg-primary-industrial h-100 d-flex align-items-center justify-content-center">
+                   <h2 class="text-white">${banner.title || 'Premium Parts'}</h2>
+                 </div>`
+              }
+              <div class="banner-content" style="${banner.text_color ? `color: ${banner.text_color};` : ''}">
+                ${banner.title ? `<h3 class="fw-bold">${banner.title}</h3>` : ''}
+                ${banner.subtitle ? `<p class="mb-0 opacity-75">${banner.subtitle}</p>` : ''}
+                ${banner.button_text ? `
+                  <a href="${banner.button_link || '#'}" class="btn btn-industrial btn-light mt-3">
+                    ${banner.button_text}
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', bannerHTML);
+      });
+      
+      // Initialize carousel if more than one banner
+      if (banners.length > 1) {
+        const carousel = new bootstrap.Carousel(document.getElementById('homeBannerCarousel'));
+      }
+    }
 
-    const card = btn.closest(".product-card");
-    if (!card) return;
+    // =========================
+    // Load Brands
+    // =========================
+    function loadBrands(brands) {
+      const container = document.getElementById("brandsContainer");
+      if (!container) return;
+      
+      if (!brands || brands.length === 0) {
+        container.innerHTML = `
+          <div class="col-12 text-center py-4">
+            <p class="text-muted">{% trans "No brands available." %}</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = '';
+      brands.forEach((brand, index) => {
+        const delay = index * 50;
+        const brandHTML = `
+          <div class="col-lg-3 col-md-4 col-6" data-aos="fade-up" data-aos-delay="${delay}">
+            <div class="brand-card industrial-card text-center p-4">
+              <div class="brand-icon mb-3">
+                ${
+                  brand.image
+                    ? `<img src="${brand.image}" alt="${brand.name}" class="img-fluid" style="max-height: 60px; width: auto;">`
+                    : `<i class="fas fa-industry text-primary-industrial fa-3x"></i>`
+                }
+              </div>
+              <h5 class="fw-bold mb-0">${brand.name}</h5>
+              <small class="text-muted">${brand.description || ''}</small>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML("beforeend", brandHTML);
+      });
+    }
 
-    const actionRow = card.querySelector(".product-actions-row");
-    if (!actionRow) return;
-
-    const cartItem = cart.find((item) => item.id === productId);
-    const qtyInCart = cartItem ? cartItem.quantity : 1;
-
-    actionRow.innerHTML = `
-      <div class="cart-qty-control" data-product-id="${productId}"
-           style="display:flex;justify-content:center;align-items:center;gap:12px;margin-top:10px;width:100%;">
-        <button class="qty-btn minus"
-                style="background:#ff6b6b;color:white;border:none;border-radius:50%;width:36px;height:36px;font-weight:bold;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"
-                onclick="event.stopPropagation(); changeCartQuantity(${productId}, -1)">-</button>
-        <span style="font-weight:bold;font-size:1.1rem;min-width:30px;text-align:center;">${qtyInCart}</span>
-        <button class="qty-btn plus"
-                style="background:#4caf50;color:white;border:none;border-radius:50%;width:36px;height:36px;font-weight:bold;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"
-                onclick="event.stopPropagation(); changeCartQuantity(${productId}, 1)">+</button>
+    // =========================
+    // Load Categories
+  // =========================
+// Load Categories with hover effects
+// =========================
+function loadCategories(categories) {
+  const container = document.getElementById("categoriesContainer");
+  if (!container) return;
+  
+  if (!categories || categories.length === 0) {
+    container.innerHTML = `
+      <div class="col-12 text-center py-4">
+        <p class="text-muted">{% trans "No categories available." %}</p>
       </div>
     `;
+    return;
   }
-
-  // Increment / Decrement quantity from card controls
-  function changeCartQuantity(productId, change) {
-    const cartItem = cart.find((item) => item.id === productId);
-    if (!cartItem) {
-      // No item in cart -> nothing to change
-      return;
-    }
-
-    cartItem.quantity += change;
-    if (cartItem.quantity < 1) {
-      const index = cart.indexOf(cartItem);
-      if (index > -1) cart.splice(index, 1);
-    }
-
-    saveCart();
-    updateCartModal();
-    updateCartUI();
-
-    const card = document.querySelector(
-      `.product-card[data-product-id="${productId}"]`
-    );
-    if (!card) return;
-
-    const actionRow = card.querySelector(".product-actions-row");
-    if (!actionRow) return;
-
-    const updatedItem = cart.find((item) => item.id === productId);
-
-    if (updatedItem && updatedItem.quantity > 0) {
-      const qtySpan = actionRow.querySelector("span");
-      if (qtySpan) qtySpan.textContent = updatedItem.quantity;
-    } else {
-      // Revert to Add to Cart button using card data attributes
-      const name = card.dataset.productName || "";
-      const price = parseFloat(card.dataset.productPrice || "0");
-      const image = card.dataset.productImage || "";
-      const canOrder = card.dataset.productCanOrder === "1";
-      const discountPct = parseFloat(card.dataset.productDiscount || "0");
-
-      actionRow.innerHTML = `
-          <button class="add-to-cart-btn"
-                  style="display:block;margin:15px auto;padding:12px 24px;background:linear-gradient(135deg,#6a11cb,#2575fc);color:white;border:none;border-radius:25px;font-weight:bold;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.2);width:100%;"
-                  onclick="event.stopPropagation(); handleAddToCartFromCard(this, ${productId}, '${name}', ${price}, '${image}', ${canOrder}, ${discountPct})"
-                  ${!canOrder ? "disabled" : ""}>
-            <i class="fas fa-cart-plus me-2"></i>${
-              canOrder ? "Add to Cart" : "Cannot Order"
-            }
-          </button>
-        `;
-    }
-  }
-
-  // Star rating
-  function generateStars(rating) {
-    let stars = "";
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-
-    for (let i = 1; i <= 5; i++) {
-      if (i <= fullStars) {
-        stars += '<i class="fas fa-star"></i>';
-      } else if (i === fullStars + 1 && hasHalfStar) {
-        stars += '<i class="fas fa-star-half-alt"></i>';
-      } else {
-        stars += '<i class="far fa-star"></i>';
-      }
-    }
-
-    return stars;
-  }
-
-  // Quick view
-  async function showQuickView(productId) {
-    try {
-      const response = await fetch("/api/quick-view/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": getCSRFToken(),
-        },
-        body: JSON.stringify({ product_id: productId }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        const product = data.product;
-
-        const basePrice = Number(product.price) || 0;
-        const discountPct = Number(product.discount_percentage) || 0;
-
-        let priceHtml = "";
-        if (basePrice) {
-          let effectivePrice = basePrice;
-          if (discountPct > 0 && discountPct <= 100) {
-            effectivePrice = basePrice * (1 - discountPct / 100);
-          }
-          priceHtml += `<h3 class="text-primary">$${effectivePrice.toFixed(
-            2
-          )}</h3>`;
-          if (discountPct > 0 && discountPct <= 100) {
-            priceHtml += `
-              <p class="mb-1">
-                <span class="text-muted text-decoration-line-through me-2">
-                  $${basePrice.toFixed(2)}
-                </span>
-                <span class="badge bg-danger">-${discountPct}%</span>
-              </p>
-            `;
-          }
-        } else {
-          priceHtml = `<p class="text-muted">Price on request</p>`;
-        }
-
-        const modal = document.getElementById("quickViewModal");
-        const content = document.getElementById("quickViewContent");
-
-        const safeName = (product.name || "").replace(/'/g, "\\'");
-        const imageSrc =
-          product.image || "/static/main/img/product-default.jpg";
-
-        content.innerHTML = `
-            <button class="close-quick-view" onclick="closeQuickView()">
-              <i class="fas fa-times"></i>
-            </button>
-            <div class="row g-0">
-              <div class="col-md-6 p-4">
-                <img src="${imageSrc}"
-                     alt="${product.name || ""}"
-                     class="img-fluid rounded-3">
-              </div>
-              <div class="col-md-6 p-4">
-                <h2 class="mb-3">${product.name || ""}</h2>
-                <div class="mb-4">
-                  ${priceHtml}
-                  <p class="${
-                    product.in_stock ? "text-success" : "text-danger"
-                  }">
-                    <i class="fas fa-cube me-1"></i>
-                    ${
-                      product.in_stock
-                        ? `${product.stock} items available`
-                        : "Cannot Order"
-                    }
+  
+  container.innerHTML = '';
+  categories.forEach((category, index) => {
+    const delay = index * 100;
+    
+    // Use category image if available, otherwise use fallback based on index
+    const iconHTML = category.image
+      ? `<img src="${category.image}" alt="${category.name}" class="category-image">`
+      : getCategoryFallbackIcon(index);
+    
+    const categoryHTML = `
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="${delay}">
+        <div class="category-card-wrapper position-relative">
+          <a href="/products/?category=${category.id || category.slug}" class="category-card d-block text-decoration-none">
+            <div class="category-image-container position-relative overflow-hidden rounded-3 shadow-lg">
+              ${iconHTML}
+              <div class="category-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center">
+                <h4 class="category-name fw-bold text-white mb-2 text-center px-3">${category.name}</h4>
+                ${category.description ? `
+                  <p class="category-description text-white text-center px-3 mb-3 opacity-75">
+                    ${category.description.length > 80 ? category.description.substring(0, 80) + '...' : category.description}
                   </p>
-                </div>
-                <div class="mb-4">
-                  <h5>Description</h5>
-                  <p class="text-muted">${product.description || ""}</p>
-                </div>
-                <div class="d-grid gap-2">
-                  <button class="btn btn-primary btn-lg"
-                          onclick="window.addToCart(${
-                            product.id
-                          }, '${safeName}', ${basePrice}, '${imageSrc}', ${
-          product.can_order
-        }, 1, ${discountPct})"
-                          ${!product.can_order ? "disabled" : ""}>
-                    <i class="fas fa-cart-plus me-2"></i>
-                    ${product.can_order ? "Add to Cart" : "Cannot Order"}
-                  </button>
-                  <button class="btn btn-outline-primary" onclick="window.addToWishlist(${
-                    product.id
-                  })">
-                    <i class="far fa-heart me-2"></i>Add to Wishlist
-                  </button>
+                ` : ''}
+                ${category.product_count ? `
+                  <span class="badge bg-white text-primary-industrial px-3 py-2">
+                    <i class="fas fa-boxes me-1"></i> ${category.product_count} {% trans "parts" %}
+                  </span>
+                ` : ''}
+                <div class="mt-3">
+                  <span class="btn btn-outline-light btn-sm px-3">
+                    <i class="fas fa-arrow-right me-1"></i> {% trans "Browse" %}
+                  </span>
                 </div>
               </div>
             </div>
+          </a>
+        </div>
+      </div>
+    `;
+    container.insertAdjacentHTML("beforeend", categoryHTML);
+  });
+}
+
+// Helper function for fallback icons
+function getCategoryFallbackIcon(index) {
+  const icons = [
+    '<i class="fas fa-cogs fa-5x text-primary-industrial"></i>',
+    '<i class="fas fa-car-battery fa-5x text-success"></i>',
+    '<i class="fas fa-oil-can fa-5x text-warning"></i>',
+    '<i class="fas fa-tachometer-alt fa-5x text-danger"></i>',
+    '<i class="fas fa-braille fa-5x text-info"></i>',
+    '<i class="fas fa-tire fa-5x text-secondary"></i>',
+    '<i class="fas fa-trailer fa-5x text-purple"></i>',
+    '<i class="fas fa-toolbox fa-5x text-dark"></i>'
+  ];
+  
+  const colors = [
+    'bg-primary-industrial bg-opacity-10',
+    'bg-success bg-opacity-10',
+    'bg-warning bg-opacity-10',
+    'bg-danger bg-opacity-10',
+    'bg-info bg-opacity-10',
+    'bg-secondary bg-opacity-10',
+    'bg-purple bg-opacity-10',
+    'bg-dark bg-opacity-10'
+  ];
+  
+  const iconIndex = index % icons.length;
+  const colorClass = colors[iconIndex];
+  
+  return `
+    <div class="fallback-icon-container ${colorClass} w-100 h-100 d-flex align-items-center justify-content-center">
+      ${icons[iconIndex]}
+    </div>
+  `;
+}
+
+    // =========================
+    // Load Popular Categories
+    // =========================
+    function loadPopularCategories(popularCategories) {
+      const container = document.getElementById("popularCategoriesContainer");
+      if (!container) return;
+      
+      if (!popularCategories || popularCategories.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+      
+      const icons = [
+        'fas fa-fire text-danger',
+        'fas fa-star text-warning',
+        'fas fa-bolt text-primary-industrial',
+        'fas fa-chart-line text-success',
+        'fas fa-gem text-info',
+        'fas fa-crown text-warning',
+        'fas fa-rocket text-purple',
+        'fas fa-trophy text-warning'
+      ];
+      
+      container.innerHTML = '';
+      popularCategories.forEach((category, index) => {
+        const delay = index * 50;
+        const iconIndex = index % icons.length;
+        
+        const categoryHTML = `
+          <div class="col-lg-3 col-md-4 col-6" data-aos="fade-up" data-aos-delay="${delay}">
+            <a href="/products/?category=${category.slug}" class="category-card industrial-card h-100 text-center p-3 d-block text-decoration-none">
+              <div class="mb-3">
+                <i class="${category.icon || icons[iconIndex]} fa-2x"></i>
+              </div>
+              <h5 class="fw-bold mb-2">${category.name}</h5>
+              ${category.product_count ? `
+                <small class="text-muted">
+                  ${category.product_count} {% trans "products" %}
+                </small>
+              ` : ''}
+            </a>
+          </div>
+        `;
+        container.insertAdjacentHTML("beforeend", categoryHTML);
+      });
+    }
+
+    // =========================
+    // Load Featured Products
+    // =========================
+    function loadFeaturedProducts(products) {
+      const container = document.getElementById("featuredProductsContainer");
+      if (!container) return;
+      
+      if (!products || products.length === 0) {
+        container.innerHTML = `
+          <div class="col-12 text-center py-4">
+            <p class="text-muted">{% trans "No featured products available." %}</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = '';
+      products.forEach((product, index) => {
+        const delay = index * 50;
+        
+        // Calculate final price if discount exists
+        let priceDisplay = '';
+        if (product.show_price && product.price) {
+          const originalPrice = parseFloat(product.price);
+          const discount = product.discount_percentage || 0;
+          const finalPrice = discount > 0 ? originalPrice * (1 - discount/100) : originalPrice;
+          
+          priceDisplay = `
+            <div class="product-price">
+              ${discount > 0 ? `
+                <span class="text-danger">${finalPrice.toFixed(2)} AED</span>
+                <small class="text-muted text-decoration-line-through ms-2">${originalPrice.toFixed(2)} AED</small>
+              ` : `
+                <span>${originalPrice.toFixed(2)} AED</span>
+              `}
+            </div>
           `;
-
-        modal.classList.add("active");
-        document.body.style.overflow = "hidden";
-      }
-    } catch (error) {
-      console.error("Error in quick view:", error);
-      if (window.showNotification) {
-        window.showNotification("Error loading product details", "error");
-      }
+        }
+        
+        const productHTML = `
+          <div class="col-lg-3 col-md-4 col-6" data-aos="fade-up" data-aos-delay="${delay}">
+            <div class="product-card industrial-card p-3 position-relative">
+              ${product.discount_percentage > 0 ? `
+                <div class="discount-badge">
+                  -${product.discount_percentage}%
+                </div>
+              ` : ''}
+              
+              <a href="/products/${product.id}/" class="text-decoration-none text-dark">
+                <div class="product-image mb-3">
+                  ${product.image ? 
+                    `<img src="${product.image}" alt="${product.name}" class="img-fluid">` :
+                    `<i class="fas fa-box text-muted fa-4x"></i>`
+                  }
+                </div>
+                
+                <h6 class="fw-bold mb-2 text-truncate">${product.name}</h6>
+                
+                ${product.category ? `
+                  <div class="mb-2">
+                    <small class="badge bg-primary-industrial bg-opacity-10 text-primary-industrial">
+                      ${product.category}
+                    </small>
+                  </div>
+                ` : ''}
+                
+                ${product.description ? `
+                  <p class="text-muted small mb-2" style="font-size: 0.875rem;">
+                    ${product.description}
+                  </p>
+                ` : ''}
+                
+                ${priceDisplay}
+                
+                <div class="mt-3">
+                  ${product.in_stock ? `
+                    <span class="badge bg-success bg-opacity-10 text-success">
+                      <i class="fas fa-check-circle me-1"></i>{% trans "In Stock" %}
+                    </span>
+                  ` : product.can_order ? `
+                    <span class="badge bg-warning bg-opacity-10 text-warning">
+                      <i class="fas fa-clock me-1"></i>{% trans "Order Only" %}
+                    </span>
+                  ` : `
+                    <span class="badge bg-danger bg-opacity-10 text-danger">
+                      <i class="fas fa-times-circle me-1"></i>{% trans "Not Available" %}
+                    </span>
+                  `}
+                </div>
+              </a>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML("beforeend", productHTML);
+      });
     }
-  }
 
-  function closeQuickView() {
-    const modal = document.getElementById("quickViewModal");
-    if (!modal) return;
-    modal.classList.remove("active");
-    document.body.style.overflow = "auto";
-  }
-
-  // Filter by category
-  function filterByCategory(categorySlug) {
-    window.location.href = `/shop/?category=${encodeURIComponent(
-      categorySlug
-    )}`;
-  }
-
-  // Search
-  function performSearch() {
-    const input = document.getElementById("globalSearch");
-    const query = input ? input.value.trim() : "";
-    if (query) {
-      window.location.href = `/shop/?search=${encodeURIComponent(query)}`;
-    }
-  }
-
-  function getCSRFToken() {
-    const cookieValue = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("csrftoken="))
-      ?.split("=")[1];
-    return cookieValue || "";
-  }
-
-  function setupEventListeners() {
-    const searchInput = document.getElementById("globalSearch");
-    if (searchInput) {
-      searchInput.addEventListener("keypress", function (e) {
-        if (e.key === "Enter") {
-          performSearch();
+    // =========================
+    // Show Error Messages
+    // =========================
+    function showErrorMessages() {
+      const containers = [
+        'brandsContainer',
+        'categoriesContainer',
+        'popularCategoriesContainer',
+        'featuredProductsContainer'
+      ];
+      
+      containers.forEach(containerId => {
+        const container = document.getElementById(containerId);
+        if (container) {
+          container.innerHTML = `
+            <div class="col-12 text-center py-4">
+              <p class="text-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                {% trans "Failed to load content. Please try again later." %}
+              </p>
+            </div>
+          `;
         }
       });
     }
 
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") {
-        closeQuickView();
-      }
+    // =========================
+    // Counter animation for stats
+    // =========================
+    function animateCounters() {
+      const counters = document.querySelectorAll(".home-stats-section .display-4");
+      const speed = 200;
+
+      counters.forEach((counter) => {
+        const text = counter.innerText;
+        let target;
+
+        if (text.includes('K+')) {
+          target = parseFloat(text) * 1000;
+        } else if (text.includes('+')) {
+          target = parseInt(text.replace('+', ''));
+        } else if (text.includes('/')) {
+          return;
+        } else {
+          target = parseInt(text);
+        }
+
+        let count = 0;
+        const increment = target / speed;
+        const hasPlus = text.includes('+');
+        const hasK = text.includes('K');
+
+        const updateCount = () => {
+          if (count < target) {
+            count += increment;
+            const next = hasK ? Math.floor(count / 1000) : Math.floor(count);
+            counter.innerText =
+              next +
+              (hasK ? 'K' : '') +
+              (hasPlus ? '+' : '') +
+              (text === '24/7' ? '/7' : '');
+
+            if (count < target) {
+              setTimeout(updateCount, 10);
+            } else {
+              counter.innerText = text;
+            }
+          }
+        };
+        updateCount();
+      });
+    }
+
+    // Trigger counter animation when stats section is in view
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animateCounters();
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const statsSection = document.querySelector(".home-stats-section");
+    if (statsSection) {
+      observer.observe(statsSection);
+    }
+
+    // =========================
+    // Ripple effect on industrial buttons
+    // =========================
+    document.querySelectorAll('.btn-industrial').forEach(button => {
+      button.addEventListener('click', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+
+        ripple.style.cssText = `
+          position: absolute;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.6);
+          transform: scale(0);
+          animation: ripple 0.6s linear;
+          width: ${size}px;
+          height: ${size}px;
+          top: ${y}px;
+          left: ${x}px;
+          pointer-events: none;
+        `;
+
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
     });
 
-    const quickViewModal = document.getElementById("quickViewModal");
-    if (quickViewModal) {
-      quickViewModal.addEventListener("click", function (e) {
-        if (e.target === this) {
-          closeQuickView();
+    // Add CSS for ripple animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes ripple {
+        to {
+          transform: scale(4);
+          opacity: 0;
         }
-      });
-    }
-  }
+      }
+    `;
+    document.head.appendChild(style);
 
-  // Expose some functions globally
-  window.performSearch = performSearch;
-  window.goToBanner = goToBanner;
-  window.filterByCategory = filterByCategory;
-  window.showQuickView = showQuickView;
-  window.closeQuickView = closeQuickView;
-  window.handleAddToCartFromCard = handleAddToCartFromCard;
-  window.changeCartQuantity = changeCartQuantity;
+    // =========================
+    // Load all home data
+    // =========================
+    loadHomeData();
+  });
 </script>
+
 {% endblock %}

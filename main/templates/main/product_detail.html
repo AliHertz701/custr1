@@ -570,7 +570,7 @@
             style="display: none"
           >
             <source src="{{ product.video.url }}" type="video/mp4" />
-            Your browser does not support the video tag.
+            {% trans "Your browser does not support the video tag." %}
           </video>
 
           {% if product.image %}
@@ -592,24 +592,27 @@
           <button class="play-btn" id="playVideoBtn">
             <i class="fas fa-play"></i>
           </button>
-          <span class="media-badge">Video Available</span>
+          <span class="media-badge">{% trans "Video Available" %}</span>
         </div>
-        {% else %} {% if product.image %}
-        <img
-          src="{{ product.image.url }}"
-          alt="{{ product.name }}"
-          class="main-image"
-        />
-        {% else %}
-        <img
-          src="{% static 'main/img/product-default.jpg' %}"
-          alt="{{ product.name }}"
-          class="main-image"
-        />
-        {% endif %} {% endif %}
+        {% else %} 
+          {% if product.image %}
+          <img
+            src="{{ product.image.url }}"
+            alt="{{ product.name }}"
+            class="main-image"
+          />
+          {% else %}
+          <img
+            src="{% static 'main/img/product-default.jpg' %}"
+            alt="{{ product.name }}"
+            class="main-image"
+          />
+          {% endif %}
+        {% endif %}
       </div>
       <div class="thumbnails">
-        {# Main product image thumbnail (if exists) #} {% if product.image %}
+        {# Main product image thumbnail (if exists) #} 
+        {% if product.image %}
         <div
           class="thumbnail active"
           onclick="showImageFromThumb(this, '{{ product.image.url }}')"
@@ -617,7 +620,6 @@
           <img src="{{ product.image.url }}" alt="{{ product.name }}" />
         </div>
         {% else %}
-        <!-- prettier-ignore -->
         <div class="thumbnail active"
             onclick="showImageFromThumb(this, '{% static 'main/img/product-default.jpg' %}')">
           <img
@@ -625,14 +627,20 @@
             alt="{{ product.name }}"
           />
         </div>
-        {% endif %} {# Extra images thumbnails #} {% for img in extra_images %}
+        {% endif %} 
+
+        {# Extra images thumbnails #} 
+        {% for img in extra_images %}
         <div
           class="thumbnail"
           onclick="showImageFromThumb(this, '{{ img.image.url }}')"
         >
-          <img src="{{ img.image.url }}" alt="{{ product.name }} extra image" />
+          <img src="{{ img.image.url }}" alt="{% blocktrans %}{{ product.name }} extra image{% endblocktrans %}" />
         </div>
-        {% endfor %} {# Video thumb #} {% if product.video %}
+        {% endfor %} 
+
+        {# Video thumb #} 
+        {% if product.video %}
         <div class="thumbnail" onclick="showVideo()">
           <div
             style="
@@ -658,13 +666,11 @@
         <a
           href="{% url 'shop' %}?category={{ product.category.slug|default:'all' }}"
         >
-          {{ product.category.name|default:"Uncategorized" }}
+          {{ product.category.name|default:_("Uncategorized") }}
         </a>
       </div>
 
       <h1 class="product-title">{{ product.name }}</h1>
-
-      
 
       <div
         class="product-price"
@@ -676,7 +682,7 @@
         {% if product.show_price and product.price %}
         <span class="current-price">${{ product.price|floatformat:2 }}</span>
         {% else %}
-        <span class="price-hidden">Price on request</span>
+        <span class="price-hidden">{% trans "Price on request" %}</span>
         {% endif %}
       </div>
 
@@ -688,15 +694,16 @@
             class="fas {% if product.quantity_available > 0 %}fa-check{% else %}fa-times{% endif %}"
           ></i>
         </div>
-        <!-- prettier-ignore -->
         <span class="stock-text">
           {% if product.show_quantity %}
-          {% if product.quantity_available > 0 %}
-          {{ product.quantity_available }} items available
+            {% if product.quantity_available > 0 %}
+              {% blocktrans %}{{ product.quantity_available }} items available{% endblocktrans %}
+            {% else %}
+              {% trans "Out of stock" %}
+            {% endif %}
           {% else %}
-          Out of stock
+            {% trans "Stock information not available" %}
           {% endif %}
-          {% else %} Stock information not available {% endif %}
         </span>
       </div>
 
@@ -706,22 +713,20 @@
 
       <div class="product-actions">
         <div id="productCartActions" style="flex: 1 1 auto"></div>
-
-       
       </div>
 
       <div class="product-meta">
         <div class="meta-item">
           <i class="fas fa-shipping-fast"></i>
-          <span>Free shipping on orders over $50</span>
+          <span>{% trans "Fast shipping" %}</span>
         </div>
         <div class="meta-item">
           <i class="fas fa-undo"></i>
-          <span>30-day return policy</span>
+          <span>{% trans "2 days return policy" %}</span>
         </div>
         <div class="meta-item">
           <i class="fas fa-shield-alt"></i>
-          <span>Secure checkout</span>
+          <span>{% trans "High quality" %}</span>
         </div>
       </div>
     </div>
@@ -730,7 +735,7 @@
   <!-- Similar Products Section -->
   {% if similar_products %}
   <section class="similar-products-section">
-    <h2 class="section-title">Similar Products</h2>
+    <h2 class="section-title">{% trans "Similar Products" %}</h2>
     <div class="similar-products-grid">
       {% for similar in similar_products %}
       <a
@@ -767,7 +772,7 @@
             {% else %} ${{ similar.price|floatformat:2 }} {% endif %}
           </div>
           {% else %}
-          <div class="text-muted">Price on request</div>
+          <div class="text-muted">{% trans "Price on request" %}</div>
           {% endif %}
         </div>
       </a>
@@ -779,9 +784,10 @@
   <!-- Cart Sync Notification -->
   <div class="cart-sync-notification" id="cartSyncNotification">
     <i class="fas fa-check-circle"></i>
-    <span>Product added to cart!</span>
+    <span>{% trans "Product added to cart!" %}</span>
   </div>
 </div>
+
 {% endblock %} {% block extra_js %}
 <script>
   // ========= Product Detail JS (aligned with Shop page cart logic) =========

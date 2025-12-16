@@ -7,7 +7,7 @@
 
 {% block extra_css %}
 <style>
-  /* Add shop-specific CSS variables to your theme */
+  /* Shop CSS Variables */
   :root {
     --shop-primary: var(--primary);
     --shop-primary-dark: var(--primary-dark);
@@ -21,228 +21,364 @@
     --shop-card-bg: var(--card-bg);
     --shop-card-border: var(--card-border-color);
     --shop-border: rgba(148, 163, 184, 0.2);
+    --shop-radius: 16px;
+    --shop-radius-sm: 12px;
+    --shop-radius-xs: 8px;
   }
 
-  /* Dark theme overrides for shop */
+  /* Dark theme overrides */
   html[data-theme="dark"] {
-    --shop-primary: #fcca26ff; /* Keep shop primary yellow in dark mode */
+    --shop-primary: #fcca26ff;
     --shop-primary-dark: #fdda64;
     --shop-border: rgba(148, 163, 184, 0.3);
   }
 
-  /* Shop Layout */
+  /* ===== MOBILE-FIRST LAYOUT ===== */
   .shop-container {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 30px;
-    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0;
+    min-height: calc(100vh - 200px);
   }
 
-  /* Filter Sidebar */
-  .filter-sidebar {
-    background: var(--shop-card-bg);
-    border-radius: 16px;
-    padding: 25px;
-    height: fit-content;
+  /* Mobile Filter Header */
+  .mobile-filter-header {
     position: sticky;
-    top: 100px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid var(--shop-card-border);
-  }
-
-  .filter-section {
-    margin-bottom: 30px;
-    padding-bottom: 25px;
+    top: 0;
+    z-index: 100;
+    background: var(--shop-bg);
+    padding: 12px 16px;
     border-bottom: 1px solid var(--shop-border);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
   }
 
-  .filter-section:last-child {
-    border-bottom: none;
-    margin-bottom: 0;
-    padding-bottom: 0;
-  }
-
-  .filter-title {
-    font-size: 1.1rem;
+  .mobile-filter-header .shop-title {
+    font-size: 1.5rem;
     font-weight: 700;
     color: var(--shop-text);
-    margin-bottom: 20px;
+    margin: 0;
+    flex: 1;
+  }
+
+  .mobile-filter-actions {
     display: flex;
-    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .mobile-filter-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    border: 1.5px solid var(--shop-border);
+    background: var(--shop-card-bg);
+    display: flex;
     align-items: center;
+    justify-content: center;
+    color: var(--shop-text);
+    font-size: 1.1rem;
     cursor: pointer;
+    transition: all 0.2s ease;
   }
 
-  .filter-title:hover .collapse-icon {
+  .mobile-filter-btn:hover {
+    border-color: var(--shop-primary);
     color: var(--shop-primary);
+    transform: translateY(-1px);
   }
 
-  .collapse-icon {
-    transition: transform 0.3s ease;
-    color: var(--shop-secondary);
+  .mobile-filter-btn.active {
+    background: var(--shop-primary);
+    border-color: var(--shop-primary);
+    color: white;
   }
 
-  .collapse-icon.rotated {
-    transform: rotate(180deg);
-  }
-
-  .filter-content {
-    max-height: 1000px;
+  /* Flutter-style Filter Modal */
+  .flutter-filter-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--shop-bg);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     overflow: hidden;
-    transition: max-height 0.4s ease;
   }
 
-  .filter-content.collapsed {
-    max-height: 0;
+  .flutter-filter-modal.active {
+    display: flex;
+    transform: translateY(0);
   }
 
-  /* Category List */
-  .category-list {
-    list-style: none;
-    padding: 0;
+  .filter-modal-header {
+    padding: 20px 16px 16px;
+    border-bottom: 1px solid var(--shop-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--shop-card-bg);
+    flex-shrink: 0;
+  }
+
+  .filter-modal-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--shop-text);
     margin: 0;
   }
 
-  .category-item {
+  .filter-modal-close {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--shop-border);
+    border: none;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 10px 0;
+    justify-content: center;
+    color: var(--shop-text);
     cursor: pointer;
     transition: all 0.2s ease;
-    border-radius: 8px;
-    padding-inline: 10px;
   }
 
-  .category-item:hover {
-    background: rgba(252, 202, 38, 0.05);
-    color: var(--shop-primary);
-  }
-
-  .category-item.active {
-    background: rgba(252, 202, 38, 0.1);
-    color: var(--shop-primary);
-    font-weight: 600;
-  }
-
-  .category-name {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .category-count {
-    background: var(--shop-border);
-    color: var(--shop-secondary);
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    min-width: 30px;
-    text-align: center;
-  }
-
-  .category-item.active .category-count {
+  .filter-modal-close:hover {
     background: var(--shop-primary);
     color: white;
   }
 
-  /* Price Range Slider */
-  .price-range-container {
+  .filter-modal-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 16px;
+  }
+
+  .filter-modal-footer {
+    padding: 16px;
+    border-top: 1px solid var(--shop-border);
+    background: var(--shop-card-bg);
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .filter-btn {
+    flex: 1;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+
+  .filter-clear-btn {
+    background: var(--shop-card-bg);
+    border: 2px solid var(--shop-border);
+    color: var(--shop-text);
+  }
+
+  .filter-clear-btn:hover {
+    border-color: var(--shop-primary);
+    color: var(--shop-primary);
+  }
+
+  .filter-apply-btn {
+    background: var(--shop-primary);
+    color: white;
+    box-shadow: 0 4px 12px rgba(252, 202, 38, 0.3);
+  }
+
+  .filter-apply-btn:hover {
+    background: var(--shop-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(252, 202, 38, 0.4);
+  }
+
+  /* Flutter-style Filter Sections */
+  .flutter-filter-section {
+    background: var(--shop-card-bg);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid var(--shop-border);
+  }
+
+  .flutter-filter-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .filter-section-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--shop-text);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+  }
+
+  .filter-section-title .icon {
+    transition: transform 0.3s ease;
+    color: var(--shop-secondary);
+  }
+
+  .filter-section-title.active .icon {
+    transform: rotate(180deg);
+    color: var(--shop-primary);
+  }
+
+  .flutter-filter-content {
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  /* Category Chips - Flutter style */
+  .category-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .category-chip {
+    padding: 10px 16px;
+    background: var(--shop-card-bg);
+    border: 2px solid var(--shop-border);
+    border-radius: 24px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--shop-text);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+
+  .category-chip:hover {
+    border-color: var(--shop-primary);
+    color: var(--shop-primary);
+  }
+
+  .category-chip.active {
+    background: var(--shop-primary);
+    border-color: var(--shop-primary);
+    color: white;
+  }
+
+  .category-chip .count {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 10px;
+    min-width: 24px;
+    text-align: center;
+  }
+
+  .category-chip.active .count {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  /* Price Range - Flutter style */
+  .flutter-price-range {
     padding: 10px 0;
   }
 
-  .price-inputs {
+  .price-display {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .price-input {
-    flex: 1;
-    padding: 10px 15px;
-    border: 2px solid var(--shop-border);
-    border-radius: 8px;
-    font-size: 0.9rem;
-    transition: all 0.3s ease;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    font-size: 0.95rem;
     color: var(--shop-text);
-    background: var(--shop-card-bg);
   }
 
-  .price-input:focus {
-    outline: none;
-    border-color: var(--shop-primary);
+  .price-value {
+    font-weight: 600;
+    color: var(--shop-primary);
   }
 
-  .price-slider {
-    height: 6px;
+  .flutter-slider {
+    height: 4px;
     background: var(--shop-border);
-    border-radius: 3px;
+    border-radius: 2px;
     position: relative;
-    margin: 20px 0;
+    margin: 24px 0;
   }
 
-  .price-slider .track {
+  .flutter-slider .track {
     position: absolute;
     height: 100%;
     background: var(--shop-primary);
-    border-radius: 3px;
+    border-radius: 2px;
   }
 
-  .price-slider .thumb {
+  .flutter-slider .thumb {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     background: var(--shop-bg);
-    border: 2px solid var(--shop-primary);
+    border: 3px solid var(--shop-primary);
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     transition: all 0.2s ease;
   }
 
-  .price-slider .thumb:hover {
+  .flutter-slider .thumb:hover {
     transform: translateY(-50%) scale(1.1);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
-  /* Checkbox Styles */
-  .checkbox-item {
+  /* Checkbox - Flutter style */
+  .flutter-checkbox {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 8px 0;
+    gap: 12px;
+    padding: 12px 0;
     cursor: pointer;
     transition: all 0.2s ease;
     border-radius: 8px;
-    padding-left: 5px;
+    padding-left: 4px;
   }
 
-  .checkbox-item:hover {
+  .flutter-checkbox:hover {
     background: rgba(252, 202, 38, 0.05);
   }
 
-  .custom-checkbox {
-    width: 20px;
-    height: 20px;
+  .flutter-checkbox .checkbox {
+    width: 22px;
+    height: 22px;
     border: 2px solid var(--shop-border);
-    border-radius: 4px;
+    border-radius: 6px;
     position: relative;
     transition: all 0.2s ease;
     flex-shrink: 0;
   }
 
-  .checkbox-item input:checked + .custom-checkbox {
+  .flutter-checkbox input:checked + .checkbox {
     background: var(--shop-primary);
     border-color: var(--shop-primary);
   }
 
-  .custom-checkbox::after {
+  .flutter-checkbox .checkbox::after {
     content: "";
     position: absolute;
-    top: 2px;
-    left: 6px;
+    top: 4px;
+    left: 7px;
     width: 5px;
     height: 10px;
     border: solid white;
@@ -252,332 +388,218 @@
     transition: opacity 0.2s ease;
   }
 
-  .checkbox-item input:checked + .custom-checkbox::after {
+  .flutter-checkbox input:checked + .checkbox::after {
     opacity: 1;
   }
 
-  .checkbox-item input {
+  .flutter-checkbox input {
     display: none;
   }
 
-  .checkbox-label {
+  .flutter-checkbox .label {
     color: var(--shop-text);
     flex-grow: 1;
-  }
-
-  /* Shop Header */
-  .shop-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    padding: 20px;
-    background: var(--shop-card-bg);
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid var(--shop-card-border);
-  }
-
-  .results-info {
-    font-size: 1rem;
-    color: var(--shop-text);
-  }
-
-  .results-info strong {
-    color: var(--shop-primary);
-  }
-
-  .sort-select {
-    padding: 12px 20px;
-    border: 2px solid var(--shop-border);
-    background: var(--shop-card-bg);
-    color: var(--shop-text);
-    border-radius: 12px;
     font-size: 0.95rem;
-    min-width: 200px;
-    cursor: pointer;
-    transition: all 0.3s ease;
   }
 
-  .sort-select:focus {
-    outline: none;
-    border-color: var(--shop-primary);
-  }
-
-  /* =========================================== */
-  /* PRODUCT GRIDS - DIFFERENT FOR MOBILE & DESKTOP */
-  /* =========================================== */
-  
-  /* Desktop/Computer View - 3-4 column grid */
-  .product-grid {
+  /* ===== FLUTTER-STYLE PRODUCT GRID ===== */
+  .flutter-product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0px;
+    padding: 0px;
+    padding-bottom: 80px; /* Space for bottom navbar */
   }
 
-  .product-card {
+  /* Mobile-first product card */
+  .flutter-product-card {
     background: var(--shop-card-bg);
     border-radius: 16px;
     overflow: hidden;
     position: relative;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     border: 1px solid var(--shop-card-border);
     color: var(--shop-text);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
-  .product-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  .flutter-product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 
-  .product-media-container {
-    position: relative;
-    height: 320px;
-    overflow: hidden;
-    background: var(--shop-light);
-    cursor: pointer;
-  }
-
-  .media-slider {
+  /* Product image with aspect ratio */
+  .flutter-product-image {
     position: relative;
     width: 100%;
-    height: 100%;
+    padding-top: 100%; /* 1:1 Aspect Ratio */
+    overflow: hidden;
+    background: var(--shop-light);
   }
 
-  .media-item {
+  .flutter-product-image img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    opacity: 0;
-    transition: opacity 0.8s ease;
-  }
-
-  .media-item.active {
-    opacity: 1;
-    z-index: 1;
-  }
-
-  .media-item img,
-  .media-item video {
-    width: 100%;
-    height: 100%;
     object-fit: cover;
-    display: block;
+    transition: transform 0.5s ease;
   }
 
-  .media-item video {
-    background: #000;
+  .flutter-product-card:hover .flutter-product-image img {
+    transform: scale(1.05);
   }
 
-  .media-indicators {
+  /* Badge container */
+  .flutter-badge-container {
     position: absolute;
-    bottom: 15px;
-    left: 0;
-    right: 0;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    z-index: 2;
-  }
-
-  .media-indicator {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.5);
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
-    padding: 0;
-  }
-
-  .media-indicator.active {
-    background: white;
-    transform: scale(1.2);
-  }
-
-  .media-indicator:hover {
-    background: white;
-    transform: scale(1.3);
-  }
-
-  .media-controls {
-    position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 12px;
+    left: 12px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    opacity: 0;
-    transform: translateX(20px);
-    transition: all 0.4s ease;
+    gap: 4px;
     z-index: 2;
   }
 
-  .product-card:hover .media-controls {
-    opacity: 1;
-    transform: translateX(0);
-  }
-
-  .media-btn {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: white;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    color: #333;
-  }
-
-  .media-btn:hover {
-    background: var(--shop-primary);
-    color: white;
-    transform: scale(1.1);
-  }
-
-  .play-btn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: rgba(255, 56, 92, 0.9);
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 3;
-    transition: all 0.3s ease;
-    opacity: 0;
-  }
-
-  .media-item[data-type="video"]:hover .play-btn {
-    opacity: 1;
-  }
-
-  .play-btn i {
-    color: white;
-    font-size: 1.5rem;
-    margin-left: 4px;
-  }
-
-  .product-badges {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    z-index: 2;
-  }
-
-  .badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
+  .flutter-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.7rem;
     font-weight: 700;
     color: white;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
+    display: inline-block;
+    line-height: 1;
   }
 
   .badge-new {
-    background: #00c853;
+    background: linear-gradient(135deg, #00c853, #64dd17);
   }
 
   .badge-sale {
-    background: #ff385c;
+    background: linear-gradient(135deg, #ff5252, #ff4081);
   }
 
   .badge-video {
-    background: #8a2be2;
+    background: linear-gradient(135deg, #8a2be2, #6a11cb);
   }
 
-  .product-info {
-    padding: 20px;
+  .badge-out {
+    background: linear-gradient(135deg, #757575, #9e9e9e);
   }
 
-  .product-category {
-    font-size: 0.85rem;
-    color: var(--shop-text-light);
-    margin-bottom: 8px;
+  /* Wishlist button */
+  .flutter-wishlist-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ff4444;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .flutter-wishlist-btn:hover {
+    background: white;
+    color: #ff0000;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .flutter-wishlist-btn.active {
+    background: #ff4444;
+    color: white;
+  }
+
+  /* Product info */
+  .flutter-product-info {
+    padding: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .flutter-product-category {
+    font-size: 0.75rem;
+    color: var(--shop-secondary);
+    margin-bottom: 4px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    font-weight: 500;
   }
 
-  .product-title {
-    font-size: 1rem;
+  .flutter-product-title {
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--shop-text);
-    margin-bottom: 12px;
-    line-height: 1.4;
-    height: 2.8em;
+    margin-bottom: 8px;
+    line-height: 1.3;
+    height: 2.6em;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+    flex: 1;
   }
 
-  .product-rating {
+  /* Price container */
+  .flutter-price-container {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
   }
 
-  .stars {
-    color: #ffc107;
-    font-size: 0.9rem;
-  }
-
-  .rating-count {
-    font-size: 0.85rem;
-    color: var(--shop-text-light);
-  }
-
-  .product-price {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
-
-  .current-price {
-    font-size: 1.3rem;
+  .flutter-current-price {
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--shop-primary);
   }
 
-  .original-price {
-    font-size: 1rem;
-    color: var(--shop-text-light);
+  .flutter-original-price {
+    font-size: 0.85rem;
+    color: var(--shop-secondary);
     text-decoration: line-through;
   }
 
-  .price-hidden {
-    font-size: 1rem;
-    color: var(--shop-text-light);
+  .flutter-discount-badge {
+    background: linear-gradient(135deg, #ff5252, #ff4081);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .flutter-price-hidden {
+    font-size: 0.9rem;
+    color: var(--shop-secondary);
     font-style: italic;
   }
 
-  .product-stock {
-    font-size: 0.85rem;
-    margin-bottom: 15px;
+  /* Stock info */
+  .flutter-stock-info {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
+    margin-bottom: 12px;
+    font-size: 0.8rem;
   }
 
   .stock-in {
@@ -585,458 +607,400 @@
   }
 
   .stock-out {
-    color: #ff4444;
+    color: #ff5252;
   }
 
-  /* Product actions */
-  .product-actions {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 8px;
-    align-items: stretch;
-  }
-
-  .btn-add-cart {
-    flex: 1 1 auto;
+  /* Add to cart button - Flutter style */
+  .flutter-cart-btn {
+    width: 100%;
     padding: 10px;
     background: var(--shop-primary);
     color: white;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    white-space: normal;
+    gap: 6px;
+    margin-top: auto;
   }
 
-  .btn-add-cart:hover:not(:disabled) {
+  .flutter-cart-btn:hover:not(:disabled) {
     background: var(--shop-primary-dark);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(252, 202, 38, 0.3);
   }
 
-  .btn-add-cart:disabled {
+  .flutter-cart-btn:disabled {
     background: var(--shop-border);
+    color: var(--shop-secondary);
     cursor: not-allowed;
     transform: none;
   }
 
-  /* Quick view button */
-  .btn-quick-view {
-    flex: 0 0 38px;
-    background: var(--shop-text-light);
-    color: white;
+  /* Quantity controls - Flutter style (matches original logic) */
+  .flutter-quantity-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: auto;
+  }
+
+  .flutter-qty-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
     border: none;
-    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   }
 
-  .btn-quick-view:hover {
-    background: var(--shop-primary);
-    transform: translateY(-2px);
+  .flutter-qty-minus {
+    background: #ff6b6b;
+    color: white;
   }
 
-  /* Pagination */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin: 40px 0;
+  .flutter-qty-plus {
+    background: #4caf50;
+    color: white;
   }
 
-  .page-btn {
-    width: 40px;
-    height: 40px;
-    border: 2px solid var(--shop-border);
-    background: var(--shop-card-bg);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  .flutter-qty-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .flutter-qty-display {
+    font-weight: bold;
+    font-size: 1.1rem;
+    min-width: 30px;
+    text-align: center;
     color: var(--shop-text);
   }
 
-  .page-btn:hover:not(:disabled) {
-    border-color: var(--shop-primary);
-    color: var(--shop-primary);
-    transform: translateY(-2px);
+  /* ===== PAGINATION ===== */
+  .flutter-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 20px 16px;
+    background: var(--shop-bg);
+    position: sticky;
+    bottom: 60px; /* Above bottom navbar */
+    z-index: 90;
   }
 
-  .page-btn.active {
+  .pagination-btn {
+    min-width: 40px;
+    height: 40px;
+    border: 2px solid var(--shop-border);
+    background: var(--shop-card-bg);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--shop-text);
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .pagination-btn:hover:not(:disabled) {
+    border-color: var(--shop-primary);
+    color: var(--shop-primary);
+    transform: translateY(-1px);
+  }
+
+  .pagination-btn.active {
     background: var(--shop-primary);
     border-color: var(--shop-primary);
     color: white;
   }
 
-  .page-btn:disabled {
+  .pagination-btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
 
-  .page-dots {
-    color: var(--shop-text-light);
-    padding: 0 5px;
+  .pagination-dots {
+    color: var(--shop-secondary);
+    padding: 0 4px;
+    font-size: 0.9rem;
   }
 
-  /* Loading States */
-  .loading-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.9);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    backdrop-filter: blur(5px);
-  }
-
-  .loading-overlay.active {
+  /* Loading spinner */
+  .flutter-loading {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    grid-column: 1 / -1;
   }
 
-  .loading-spinner {
-    width: 50px;
-    height: 50px;
+  .flutter-spinner {
+    width: 40px;
+    height: 40px;
     border: 3px solid var(--shop-border);
     border-top-color: var(--shop-primary);
     border-radius: 50%;
-    animation: spin 1s linear infinite;
+    animation: flutter-spin 1s linear infinite;
   }
 
-  @keyframes spin {
+  @keyframes flutter-spin {
     to {
       transform: rotate(360deg);
     }
   }
 
-  /* Video Modal */
-  .video-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 9998;
-    padding: 20px;
-    backdrop-filter: blur(10px);
+  /* Empty state */
+  .flutter-empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
   }
 
-  .video-modal.active {
-    display: flex;
-    animation: fadeIn 0.3s ease;
+  .flutter-empty-icon {
+    font-size: 3rem;
+    color: var(--shop-border);
+    margin-bottom: 16px;
+    opacity: 0.5;
   }
 
-  .video-modal-content {
-    width: 90%;
-    max-width: 800px;
-    position: relative;
-  }
-
-  .video-modal-content video {
-    width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  }
-
-  .close-video {
-    position: absolute;
-    top: -40px;
-    right: 0;
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: white;
-    font-size: 1.5rem;
-    transition: all 0.3s ease;
-  }
-
-  .close-video:hover {
-    background: var(--shop-primary);
-    transform: rotate(90deg);
-  }
-
-  /* =========================================== */
-  /* MOBILE FILTER TOGGLE BUTTON */
-  /* =========================================== */
-  .filter-mobile-toggle {
-    display: none;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 20px;
-    background: var(--shop-card-bg);
-    border: 1px solid var(--shop-card-border);
-    border-radius: 12px;
-    margin-bottom: 15px;
-    cursor: pointer;
-    color: var(--shop-text);
+  .flutter-empty-title {
+    font-size: 1.2rem;
     font-weight: 600;
-    transition: all 0.3s ease;
+    color: var(--shop-text);
+    margin-bottom: 8px;
   }
 
-  .filter-mobile-toggle:hover {
-    border-color: var(--shop-primary);
-    color: var(--shop-primary);
+  .flutter-empty-subtitle {
+    font-size: 0.95rem;
+    color: var(--shop-secondary);
+    margin-bottom: 24px;
   }
 
-  .filter-mobile-toggle i {
-    font-size: 1.1rem;
-  }
-
-  /* =========================================== */
-  /* RESPONSIVE DESIGN - MOBILE & TABLET */
-  /* =========================================== */
-
-  /* Tablet View (1024px and below) */
-  @media (max-width: 1024px) {
+  /* ===== RESPONSIVE BREAKPOINTS ===== */
+  
+  /* Tablet (768px and up) */
+  @media (min-width: 768px) {
     .shop-container {
-      grid-template-columns: 1fr;
-      gap: 20px;
+      padding: 16px;
     }
 
-    .filter-sidebar {
-      position: static;
-      margin-bottom: 20px;
-      display: none; /* Hide by default on mobile */
+    .mobile-filter-header {
+      border-radius: 16px;
+      margin: 0 16px;
+      top: 16px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     }
 
-    .filter-sidebar.mobile-open {
-      display: block;
-      animation: slideDown 0.3s ease;
+    .flutter-product-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding: 0 16px 16px;
     }
 
-    .filter-mobile-toggle {
-      display: flex;
+    .flutter-product-image {
+      padding-top: 120%; /* Slightly taller for tablets */
     }
 
-    /* Tablet grid - 2-3 columns */
-    .product-grid {
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 20px;
+    .filter-modal-content {
+      padding: 24px;
     }
 
-    .product-media-container {
-      height: 250px;
+    .flutter-filter-section {
+      padding: 24px;
     }
 
-    .category-list {
-      max-height: 200px;
+    .flutter-pagination {
+      padding: 24px 16px;
+    }
+  }
+
+  /* Desktop (1024px and up) */
+  @media (min-width: 1024px) {
+    .shop-container {
+      flex-direction: row;
+      padding: 24px;
+      gap: 24px;
+    }
+
+    .mobile-filter-header {
+      display: none;
+    }
+
+    /* Desktop sidebar */
+    .flutter-filter-sidebar {
+      width: 280px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 100px;
+      height: fit-content;
+      background: var(--shop-card-bg);
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid var(--shop-border);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       overflow-y: auto;
+      max-height: calc(100vh - 140px);
+    }
+
+    /* Desktop product grid */
+    .shop-main-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .flutter-product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 20px;
+      padding: 0;
+      padding-bottom: 24px;
+    }
+
+    .flutter-product-image {
+      padding-top: 100%;
+    }
+
+    .flutter-filter-modal {
+      display: none !important;
+    }
+
+    .flutter-pagination {
+      position: relative;
+      bottom: auto;
+      background: transparent;
+      padding: 16px 0 24px;
     }
   }
 
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
+  /* Large Desktop (1280px and up) */
+  @media (min-width: 1280px) {
+    .flutter-product-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+
+    .flutter-filter-sidebar {
+      width: 300px;
     }
   }
 
-  /* Mobile/Phone View (768px and below) */
-  @media (max-width: 768px) {
-    .shop-header {
-      flex-direction: column;
-      gap: 15px;
-      align-items: stretch;
-      padding: 15px;
+  /* Extra Large Desktop (1536px and up) */
+  @media (min-width: 1536px) {
+    .flutter-product-grid {
+      grid-template-columns: repeat(5, 1fr);
     }
 
-    .sort-select {
-      width: 100%;
-      min-width: auto;
-    }
-
-    /* Mobile grid - 2 columns */
-    .product-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
-
-    .product-media-container {
-      height: 180px; /* Shorter on mobile */
-    }
-
-    .product-info {
-      padding: 15px;
-    }
-
-    .product-title {
-      font-size: 0.95rem;
-      height: 2.6em; /* Shorter title on mobile */
-    }
-
-    .current-price {
-      font-size: 1.1rem;
-    }
-
-    .product-actions {
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .btn-add-cart {
-      width: 100%;
-    }
-
-    .btn-quick-view {
-      width: 100%;
-      height: 38px;
-    }
-
-    /* Mobile pagination */
-    .pagination {
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .page-btn {
-      width: 36px;
-      height: 36px;
-      font-size: 0.9rem;
-    }
-
-    /* Mobile category list */
-    .category-list {
-      max-height: 250px;
-    }
-
-    .category-item {
-      padding: 8px 0;
-      font-size: 0.95rem;
-    }
-
-    /* Mobile price inputs */
-    .price-inputs {
-      flex-direction: column;
-    }
-
-    .price-slider {
-      margin: 15px 0;
+    .shop-container {
+      max-width: 1600px;
+      margin: 0 auto;
     }
   }
 
-  /* Small Mobile View (576px and below) */
-  @media (max-width: 576px) {
-    /* Mobile grid - Single column for very small screens */
-    .product-grid {
-      grid-template-columns: 1fr;
-      gap: 15px;
-    }
-
-    .product-media-container {
-      height: 220px; /* Taller for single column */
-    }
-
-    .product-info {
-      padding: 12px;
-    }
-
-    .product-title {
-      font-size: 0.9rem;
-      height: 2.4em;
-    }
-
-    .btn-add-cart {
-      font-size: 0.85rem;
-      padding: 8px;
-    }
-
-    .filter-sidebar {
-      padding: 20px;
-    }
-
-    /* Single column layout for product card */
-    .product-card {
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Adjust filter sections for small screens */
-    .filter-section {
-      margin-bottom: 20px;
-      padding-bottom: 20px;
-    }
-  }
-
-  /* Extra Small Mobile View (400px and below) */
-  @media (max-width: 400px) {
-    .product-grid {
+  /* Small Mobile (320px and below) */
+  @media (max-width: 320px) {
+    .flutter-product-grid {
       grid-template-columns: 1fr;
       gap: 12px;
     }
 
-    .product-media-container {
-      height: 200px;
+    .flutter-product-image {
+      padding-top: 100%;
     }
 
-    .price-inputs {
-      flex-direction: column;
+    .mobile-filter-btn {
+      width: 40px;
+      height: 40px;
     }
 
-    .product-actions {
-      flex-direction: column;
+    .flutter-pagination {
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .btn-add-cart,
-    .btn-quick-view {
-      width: 100%;
-    }
-
-    /* Adjust badge sizes for very small screens */
-    .badge {
-      padding: 4px 8px;
-      font-size: 0.7rem;
-    }
-
-    /* Smaller text for very small screens */
-    .product-category {
-      font-size: 0.75rem;
-    }
-
-    .product-stock {
-      font-size: 0.8rem;
+    .pagination-btn {
+      min-width: 36px;
+      height: 36px;
+      font-size: 0.85rem;
     }
   }
 
-  /* Landscape mobile optimization */
-  @media (max-height: 500px) and (orientation: landscape) {
-    .filter-sidebar {
-      position: relative;
-      top: auto;
-      max-height: 300px;
-      overflow-y: auto;
+  /* Landscape mobile */
+  @media (max-height: 600px) and (orientation: landscape) {
+    .flutter-filter-modal {
+      height: 80vh;
+      top: 20vh;
+      border-radius: 20px 20px 0 0;
     }
 
-    .product-media-container {
-      height: 150px;
+    .filter-modal-header {
+      padding: 16px;
     }
+
+    .filter-modal-content {
+      padding: 16px;
+    }
+  }
+
+  /* Dark mode optimizations */
+  html[data-theme="dark"] .flutter-product-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  html[data-theme="dark"] .flutter-product-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Animation for modal */
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .flutter-filter-modal.active {
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Smooth scrolling */
+  .filter-modal-content,
+  .flutter-filter-sidebar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--shop-border) transparent;
+  }
+
+  .filter-modal-content::-webkit-scrollbar,
+  .flutter-filter-sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .filter-modal-content::-webkit-scrollbar-track,
+  .flutter-filter-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .filter-modal-content::-webkit-scrollbar-thumb,
+  .flutter-filter-sidebar::-webkit-scrollbar-thumb {
+    background-color: var(--shop-border);
+    border-radius: 3px;
   }
 </style>
 {% endblock %}
@@ -1047,138 +1011,221 @@
   <div class="loading-spinner"></div>
 </div>
 
-<!-- Shop Container -->
-<div class="container-fluid px-3 px-md-4 py-4">
-  <div class="shop-container">
-    <!-- Filter Sidebar -->
-    <aside class="filter-sidebar" id="filterSidebar">
-      <div class="filter-section">
-        <div class="filter-title" onclick="toggleFilter('categories')">
-          <span>{% trans "Categories" %}</span>
-          <i class="fas fa-chevron-down collapse-icon" id="categoriesIcon"></i>
-        </div>
-        <div class="filter-content" id="categoriesContent">
-          <ul class="category-list" id="categoryList">
-            <!-- Categories will be loaded here -->
-          </ul>
-        </div>
-      </div>
-
-      <div class="filter-section">
-        <div class="filter-title" onclick="toggleFilter('price')">
-          <span>{% trans "Price Range" %}</span>
-          <i class="fas fa-chevron-down collapse-icon" id="priceIcon"></i>
-        </div>
-        <div class="filter-content" id="priceContent">
-          <div class="price-range-container">
-            <div class="price-inputs">
-              <input
-                type="number"
-                id="minPriceInput"
-                class="price-input"
-                placeholder="Min"
-                min="0"
-              />
-              <input
-                type="number"
-                id="maxPriceInput"
-                class="price-input"
-                placeholder="Max"
-              />
-            </div>
-            <div class="price-slider" id="priceSlider">
-              <div class="track" id="priceTrack"></div>
-              <div class="thumb" id="minThumb"></div>
-              <div class="thumb" id="maxThumb"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="filter-section">
-        <div class="filter-title" onclick="toggleFilter('availability')">
-          <span>{% trans "Availability" %}</span>
-          <i class="fas fa-chevron-down collapse-icon" id="availabilityIcon"></i>
-        </div>
-        <div class="filter-content" id="availabilityContent">
-          <label class="checkbox-item">
-            <input
-              type="checkbox"
-              id="inStockCheckbox"
-              onchange="applyFilters()"
-            />
-            <span class="custom-checkbox"></span>
-            <span class="checkbox-label">{% trans "In Stock Only" %}</span>
-          </label>
-        </div>
-      </div>
-
-      <button
-        class="btn-add-cart"
-        onclick="clearFilters()"
-        style="margin-top: 20px; width: 100%;"
-      >
-        <i class="fas fa-times"></i> {% trans "Clear All Filters" %}
+<!-- Flutter-style Shop Container -->
+<div class="shop-container">
+  <!-- Mobile Filter Header -->
+  <div class="mobile-filter-header" id="mobileFilterHeader">
+    <h1 class="shop-title">{% trans "Shop" %}</h1>
+    <div class="mobile-filter-actions">
+      <button class="mobile-filter-btn" id="sortBtn" onclick="toggleSortModal()">
+        <i class="fas fa-sort-amount-down"></i>
       </button>
-    </aside>
+      <button class="mobile-filter-btn" id="filterBtn" onclick="toggleFilterModal()">
+        <i class="fas fa-filter"></i>
+      </button>
+    </div>
+  </div>
 
-    <!-- Main Content -->
-    <main class="shop-main">
-      <!-- Mobile Filter Toggle Button (hidden on desktop) -->
-      <div id="mobileFilterToggleContainer"></div>
-      
-      <!-- Shop Header -->
-      <div class="shop-header">
-        <div class="results-info" id="resultsInfo">
-          {% trans "Loading products..." %}
+  <!-- Desktop Filter Sidebar -->
+  <aside class="flutter-filter-sidebar d-none d-lg-block" id="desktopFilterSidebar">
+    <!-- Categories Section -->
+    <div class="flutter-filter-section">
+      <h3 class="filter-section-title" onclick="toggleFilterSection('desktop-categories')">
+        <span>{% trans "Categories" %}</span>
+        <i class="fas fa-chevron-down icon"></i>
+      </h3>
+      <div class="flutter-filter-content" id="desktop-categories-content">
+        <div class="category-chips" id="desktopCategoryChips">
+          <!-- Categories will be loaded here -->
         </div>
-
-        <select class="sort-select" id="sortSelect" onchange="applyFilters()">
-          <option value="newest">{% trans "Newest First" %}</option>
-          <option value="price_low">{% trans "Price: Low to High" %}</option>
-          <option value="price_high">{% trans "Price: High to Low" %}</option>
-          <option value="name">{% trans "Name A-Z" %}</option>
-          <option value="popular">{% trans "Most Popular" %}</option>
-        </select>
       </div>
+    </div>
 
-      <!-- Products Grid -->
-      <div class="product-grid" id="productsGrid">
-        <!-- Products will be loaded here -->
-        <div class="loading-placeholder" style="text-align: center; padding: 50px; grid-column: 1 / -1;">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">{% trans "Loading..." %}</span>
+    <!-- Price Range Section -->
+    <div class="flutter-filter-section">
+      <h3 class="filter-section-title" onclick="toggleFilterSection('desktop-price')">
+        <span>{% trans "Price Range" %}</span>
+        <i class="fas fa-chevron-down icon"></i>
+      </h3>
+      <div class="flutter-filter-content" id="desktop-price-content">
+        <div class="flutter-price-range">
+          <div class="price-display">
+            <span>{% trans "From" %}</span>
+            <span class="price-value" id="desktopMinPriceValue">$0</span>
+            <span>{% trans "To" %}</span>
+            <span class="price-value" id="desktopMaxPriceValue">$1000</span>
+          </div>
+          <div class="flutter-slider" id="desktopPriceSlider">
+            <div class="track" id="desktopPriceTrack"></div>
+            <div class="thumb" id="desktopMinThumb"></div>
+            <div class="thumb" id="desktopMaxThumb"></div>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- Pagination -->
-      <div class="pagination" id="pagination">
-        <!-- Pagination will be loaded here -->
+    <!-- Availability Section -->
+    <div class="flutter-filter-section">
+      <h3 class="filter-section-title" onclick="toggleFilterSection('desktop-availability')">
+        <span>{% trans "Availability" %}</span>
+        <i class="fas fa-chevron-down icon"></i>
+      </h3>
+      <div class="flutter-filter-content" id="desktop-availability-content">
+        <label class="flutter-checkbox">
+<input type="checkbox" id="desktopInStockCheckbox" onchange="handleInStockChange('desktop')">
+          <span class="checkbox"></span>
+          <span class="label">{% trans "In Stock Only" %}</span>
+        </label>
       </div>
-    </main>
+    </div>
+
+    <!-- Clear Filters Button -->
+    <button class="flutter-cart-btn" onclick="clearFilters()" style="margin-top: 20px;">
+      <i class="fas fa-times"></i> {% trans "Clear Filters" %}
+    </button>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="shop-main-content">
+    <!-- Products Grid -->
+    <div class="flutter-product-grid" id="flutterProductsGrid">
+      <!-- Products will be loaded here -->
+      <div class="flutter-loading">
+        <div class="flutter-spinner"></div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="flutter-pagination" id="flutterPagination">
+      <!-- Pagination will be loaded here -->
+    </div>
+  </main>
+</div>
+
+<!-- Mobile Filter Modal -->
+<div class="flutter-filter-modal" id="filterModal">
+  <div class="filter-modal-header">
+    <h2 class="filter-modal-title">{% trans "Filters" %}</h2>
+    <button class="filter-modal-close" onclick="closeFilterModal()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+
+  <div class="filter-modal-content">
+    <!-- Categories Section -->
+    <div class="flutter-filter-section">
+      <h3 class="filter-section-title active" onclick="toggleFilterSection('mobile-categories')">
+        <span>{% trans "Categories" %}</span>
+        <i class="fas fa-chevron-down icon"></i>
+      </h3>
+      <div class="flutter-filter-content" id="mobile-categories-content">
+        <div class="category-chips" id="mobileCategoryChips">
+          <!-- Categories will be loaded here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Price Range Section -->
+    <div class="flutter-filter-section">
+      <h3 class="filter-section-title active" onclick="toggleFilterSection('mobile-price')">
+        <span>{% trans "Price Range" %}</span>
+        <i class="fas fa-chevron-down icon"></i>
+      </h3>
+      <div class="flutter-filter-content" id="mobile-price-content">
+        <div class="flutter-price-range">
+          <div class="price-display">
+            <span>{% trans "From" %}</span>
+            <span class="price-value" id="mobileMinPriceValue">$0</span>
+            <span>{% trans "To" %}</span>
+            <span class="price-value" id="mobileMaxPriceValue">$1000</span>
+          </div>
+          <div class="flutter-slider" id="mobilePriceSlider">
+            <div class="track" id="mobilePriceTrack"></div>
+            <div class="thumb" id="mobileMinThumb"></div>
+            <div class="thumb" id="mobileMaxThumb"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Availability Section -->
+    <div class="flutter-filter-section">
+      <h3 class="filter-section-title active" onclick="toggleFilterSection('mobile-availability')">
+        <span>{% trans "Availability" %}</span>
+        <i class="fas fa-chevron-down icon"></i>
+      </h3>
+      <div class="flutter-filter-content" id="mobile-availability-content">
+        <label class="flutter-checkbox">
+<input type="checkbox" id="mobileInStockCheckbox" onchange="handleInStockChange('mobile')">
+          <span class="checkbox"></span>
+          <span class="label">{% trans "In Stock Only" %}</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-modal-footer">
+    <button class="filter-btn filter-clear-btn" onclick="clearFilterModal()">
+      {% trans "Clear All" %}
+    </button>
+    <button class="filter-btn filter-apply-btn" onclick="applyFiltersFromModal()">
+      {% trans "Apply Filters" %}
+    </button>
   </div>
 </div>
 
-<!-- Video Modal -->
-<div class="video-modal" id="videoModal">
-  <div class="video-modal-content">
-    <button class="close-video" onclick="closeVideoModal()">
+<!-- Sort Modal -->
+<div class="flutter-filter-modal" id="sortModal">
+  <div class="filter-modal-header">
+    <h2 class="filter-modal-title">{% trans "Sort By" %}</h2>
+    <button class="filter-modal-close" onclick="closeSortModal()">
       <i class="fas fa-times"></i>
     </button>
-    <video controls id="productVideoPlayer">
-      {% trans "Your browser does not support the video tag." %}
-    </video>
+  </div>
+
+  <div class="filter-modal-content">
+    <div class="flutter-filter-section">
+      <div class="sort-options">
+        <label class="flutter-checkbox">
+          <input type="radio" name="sort" value="newest" checked onchange="handleSortChange('newest')">
+          <span class="checkbox" style="border-radius: 50%;"></span>
+          <span class="label">{% trans "Newest First" %}</span>
+        </label>
+        <label class="flutter-checkbox">
+          <input type="radio" name="sort" value="price_low" onchange="handleSortChange('price_low')">
+          <span class="checkbox" style="border-radius: 50%;"></span>
+          <span class="label">{% trans "Price: Low to High" %}</span>
+        </label>
+        <label class="flutter-checkbox">
+          <input type="radio" name="sort" value="price_high" onchange="handleSortChange('price_high')">
+          <span class="checkbox" style="border-radius: 50%;"></span>
+          <span class="label">{% trans "Price: High to Low" %}</span>
+        </label>
+        <label class="flutter-checkbox">
+          <input type="radio" name="sort" value="name" onchange="handleSortChange('name')">
+          <span class="checkbox" style="border-radius: 50%;"></span>
+          <span class="label">{% trans "Name A-Z" %}</span>
+        </label>
+        <label class="flutter-checkbox">
+          <input type="radio" name="sort" value="popular" onchange="handleSortChange('popular')">
+          <span class="checkbox" style="border-radius: 50%;"></span>
+          <span class="label">{% trans "Most Popular" %}</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-modal-footer">
+    <button class="filter-btn filter-apply-btn" onclick="closeSortModal()">
+      {% trans "Done" %}
+    </button>
   </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-  // Shop page specific JavaScript
-  // No cart functions here - they're in base.html
-
-  // Global State for shop page only
+  // Shop state
   let shopState = {
     products: [],
     categories: [],
@@ -1186,7 +1233,7 @@
       category: "all",
       minPrice: null,
       maxPrice: null,
-      inStock: null,
+      inStock: false,
       sortBy: "newest",
       search: "",
     },
@@ -1198,85 +1245,93 @@
     priceRange: {
       min: 0,
       max: 1000,
-    },
-    mediaTimers: {}, // Store timers for auto-scrolling galleries
-    mobileFiltersOpen: false, // Track mobile filter state
+    }
   };
 
   // Initialize on page load
   document.addEventListener("DOMContentLoaded", async function () {
+    // Initialize cart from base.html
+    if (typeof initCart === 'function') {
+      initCart();
+    }
+    initFiltersFromURL();
     await loadShopData();
     setupEventListeners();
-    setupMobileFilters();
+      initPriceSliders();
 
-    // Close modals with ESC
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") {
-        closeVideoModal();
-      }
+  });
+function initPriceSliders() {
+  const sliders = [
+    { minThumb: 'desktopMinThumb', maxThumb: 'desktopMaxThumb', minValueEl: 'desktopMinPriceValue', maxValueEl: 'desktopMaxPriceValue' },
+    { minThumb: 'mobileMinThumb', maxThumb: 'mobileMaxThumb', minValueEl: 'mobileMinPriceValue', maxValueEl: 'mobileMaxPriceValue' },
+  ];
+
+  sliders.forEach(slider => {
+    const minThumb = document.getElementById(slider.minThumb);
+    const maxThumb = document.getElementById(slider.maxThumb);
+    const minValueEl = document.getElementById(slider.minValueEl);
+    const maxValueEl = document.getElementById(slider.maxValueEl);
+
+    if (!minThumb || !maxThumb) return;
+
+    // Add drag/move listeners to update values live
+    [minThumb, maxThumb].forEach(thumb => {
+      thumb.addEventListener('mousemove', () => updatePriceFromSlider(slider));
+      thumb.addEventListener('touchmove', () => updatePriceFromSlider(slider));
+
+      // Also update on mouseup/touchend to ensure final value
+      thumb.addEventListener('mouseup', () => updatePriceFromSlider(slider));
+      thumb.addEventListener('touchend', () => updatePriceFromSlider(slider));
     });
   });
+}
 
-  // Setup mobile filters toggle
-  function setupMobileFilters() {
-    if (window.innerWidth <= 1024) {
-      const toggleContainer = document.getElementById('mobileFilterToggleContainer');
-      const filterToggleBtn = document.createElement('button');
-      filterToggleBtn.className = 'filter-mobile-toggle';
-      filterToggleBtn.id = 'mobileFilterToggle';
-      filterToggleBtn.innerHTML = `
-        <span>{% trans "Filters" %}</span>
-        <i class="fas fa-filter"></i>
-      `;
-      filterToggleBtn.onclick = toggleMobileFilters;
-      
-      toggleContainer.appendChild(filterToggleBtn);
-      
-      // Initially hide filters on mobile
-      document.getElementById('filterSidebar').style.display = 'none';
-    }
+function updatePriceFromSlider(slider) {
+  const minValueEl = document.getElementById(slider.minValueEl);
+  const maxValueEl = document.getElementById(slider.maxValueEl);
+
+  const min = Number(minValueEl.textContent.replace('$','')) || shopState.priceRange.min;
+  const max = Number(maxValueEl.textContent.replace('$','')) || shopState.priceRange.max;
+
+  shopState.filters.minPrice = min;
+  shopState.filters.maxPrice = max;
+
+  applyFilters(); // Apply immediately
+}
+
+
+function updatePriceFromSlider(slider) {
+  const minValueEl = document.getElementById(slider.minValueEl);
+  const maxValueEl = document.getElementById(slider.maxValueEl);
+
+  // Get numbers from displayed values (strip $)
+  const min = Number(minValueEl.textContent.replace('$','')) || shopState.priceRange.min;
+  const max = Number(maxValueEl.textContent.replace('$','')) || shopState.priceRange.max;
+
+  shopState.filters.minPrice = min;
+  shopState.filters.maxPrice = max;
+
+  applyFilters(); // Automatically apply filters
+}
+
+  function handleInStockChange(type) {
+  const desktopCheckbox = document.getElementById('desktopInStockCheckbox');
+  const mobileCheckbox = document.getElementById('mobileInStockCheckbox');
+
+  // Update shopState.filters based on which checkbox changed
+  if (type === 'desktop') {
+    shopState.filters.inStock = desktopCheckbox.checked;
+  } else if (type === 'mobile') {
+    shopState.filters.inStock = mobileCheckbox.checked;
   }
 
-  // Toggle mobile filters
-  function toggleMobileFilters() {
-    const filterSidebar = document.getElementById('filterSidebar');
-    const toggleBtn = document.getElementById('mobileFilterToggle');
-    
-    shopState.mobileFiltersOpen = !shopState.mobileFiltersOpen;
-    
-    if (shopState.mobileFiltersOpen) {
-      filterSidebar.classList.add('mobile-open');
-      filterSidebar.style.display = 'block';
-      toggleBtn.innerHTML = `
-        <span>{% trans "Hide Filters" %}</span>
-        <i class="fas fa-times"></i>
-      `;
-      
-      // Scroll to filters
-      filterSidebar.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-      filterSidebar.classList.remove('mobile-open');
-      filterSidebar.style.display = 'none';
-      toggleBtn.innerHTML = `
-        <span>{% trans "Filters" %}</span>
-        <i class="fas fa-filter"></i>
-      `;
-    }
-  }
+  // Sync both checkboxes
+  desktopCheckbox.checked = shopState.filters.inStock;
+  mobileCheckbox.checked = shopState.filters.inStock;
 
-  // Handle window resize
-  window.addEventListener('resize', function() {
-    if (window.innerWidth > 1024) {
-      // On desktop, always show filters
-      document.getElementById('filterSidebar').style.display = 'block';
-      shopState.mobileFiltersOpen = false;
-    } else {
-      // On mobile, hide filters if they were open
-      if (!shopState.mobileFiltersOpen) {
-        document.getElementById('filterSidebar').style.display = 'none';
-      }
-    }
-  });
+  applyFilters();
+}
+
 
   // Load shop data
   async function loadShopData() {
@@ -1299,7 +1354,20 @@
       if (search) {
         apiUrl += `&search=${encodeURIComponent(search)}`;
         shopState.filters.search = search;
-        document.getElementById("globalSearch").value = search;
+      }
+
+      // Add current filters
+      if (shopState.filters.minPrice !== null) {
+        apiUrl += `&min_price=${shopState.filters.minPrice}`;
+      }
+      if (shopState.filters.maxPrice !== null) {
+        apiUrl += `&max_price=${shopState.filters.maxPrice}`;
+      }
+      if (shopState.filters.inStock) {
+        apiUrl += `&in_stock=true`;
+      }
+      if (shopState.filters.sortBy) {
+        apiUrl += `&sort_by=${shopState.filters.sortBy}`;
       }
 
       const response = await fetch(apiUrl);
@@ -1309,34 +1377,20 @@
         shopState.products = data.products;
         shopState.categories = data.filters.categories;
         shopState.pagination = {
-          currentPage:
-            data.pagination.current_page ||
-            data.pagination.currentPage ||
-            shopState.pagination.currentPage ||
-            1,
-          totalPages:
-            data.pagination.total_pages ||
-            data.pagination.totalPages ||
-            shopState.pagination.totalPages ||
-            1,
-          totalItems:
-            data.pagination.total_items ??
-            data.pagination.totalItems ??
-            data.pagination.count ??
-            shopState.products.length,
+          currentPage: data.pagination.current_page || 1,
+          totalPages: data.pagination.total_pages || 1,
+          totalItems: data.stats.total_products || 0,
         };
-        shopState.priceRange = data.filters.price_range;
+        shopState.priceRange = data.filters.price_range || { min: 0, max: 1000 };
 
         // Update UI
         updateCategories();
         updateProducts();
         updatePagination();
-        updateResultsInfo();
-        updatePriceSlider();
-
-        // Set sort select
-        document.getElementById("sortSelect").value =
-          data.filters.current.sort_by || "newest";
+        updatePriceSliders();
+        
+        // Set active sort radio button
+        document.querySelector(`input[name="sort"][value="${shopState.filters.sortBy}"]`).checked = true;
       }
     } catch (error) {
       console.error("Error loading shop data:", error);
@@ -1346,67 +1400,64 @@
     showLoading(false);
   }
 
-  // Update categories in sidebar
+  // Update categories
   function updateCategories() {
-    const container = document.getElementById("categoryList");
-    let html = "";
-
-    // Add "All Categories" option
-    const isAllActive =
-      shopState.filters.category === "all" || !shopState.filters.category;
-    const totalCount =
-      shopState.pagination.totalItems ??
-      shopState.pagination.total_items ??
-      shopState.products.length;
-
-    html += `
-    <li class="category-item ${isAllActive ? "active" : ""}"
-        onclick="filterByCategory('all'); closeMobileFiltersIfOpen();">
-        <span class="category-name">
-            <i class="fas fa-boxes"></i>
-            {% trans "All Categories" %}
-        </span>
-        <span class="category-count">${totalCount}</span>
-    </li>
-  `;
-
-    // Add actual categories
-    shopState.categories.forEach((category) => {
-      const isActive = shopState.filters.category === category.slug;
-      html += `
-                  <li class="category-item ${isActive ? "active" : ""}"
-                      onclick="filterByCategory('${category.slug}'); closeMobileFiltersIfOpen();">
-                      <span class="category-name">
-                          <i class="fas fa-folder"></i>
-                          ${category.name}
-                      </span>
-                      <span class="category-count">${category.count}</span>
-                  </li>
-              `;
-    });
-
-    container.innerHTML = html;
-  }
-
-  // Close mobile filters after selecting a category (mobile only)
-  function closeMobileFiltersIfOpen() {
-    if (window.innerWidth <= 1024 && shopState.mobileFiltersOpen) {
-      toggleMobileFilters();
+    const totalCount = shopState.pagination.totalItems;
+    
+    // Update desktop categories
+    const desktopChips = document.getElementById('desktopCategoryChips');
+    if (desktopChips) {
+      desktopChips.innerHTML = createCategoryChipsHTML('desktop');
+    }
+    
+    // Update mobile categories
+    const mobileChips = document.getElementById('mobileCategoryChips');
+    if (mobileChips) {
+      mobileChips.innerHTML = createCategoryChipsHTML('mobile');
     }
   }
 
-  // Update products grid - uses base.html's cart functions
+  function createCategoryChipsHTML(type) {
+    const isAllActive = shopState.filters.category === "all" || !shopState.filters.category;
+    
+    let html = `
+      <button class="category-chip ${isAllActive ? 'active' : ''}"
+              onclick="filterByCategory('all', '${type}')">
+        <i class="fas fa-boxes"></i>
+        <span>{% trans "All" %}</span>
+        <span class="count">${shopState.pagination.totalItems}</span>
+      </button>
+    `;
+
+    shopState.categories.forEach((category) => {
+      const isActive = shopState.filters.category === category.slug;
+      html += `
+        <button class="category-chip ${isActive ? 'active' : ''}"
+                onclick="filterByCategory('${category.slug}', '${type}')">
+          <i class="fas fa-folder"></i>
+          <span>${category.name}</span>
+          <span class="count">${category.count}</span>
+        </button>
+      `;
+    });
+
+    return html;
+  }
+
+  // Update products - USING THE ORIGINAL CART LOGIC
   function updateProducts() {
-    const container = document.getElementById("productsGrid");
+    const container = document.getElementById("flutterProductsGrid");
 
     if (!shopState.products.length) {
       container.innerHTML = `
-        <div class="no-products" style="grid-column: 1 / -1; text-align: center; padding: 60px;">
-          <i class="fas fa-search fa-3x text-muted mb-3"></i>
-          <h4>{% trans "No products found" %}</h4>
-          <p class="text-muted mb-4">{% trans "Try adjusting your filters or search terms" %}</p>
-          <button class="btn-add-cart" onclick="clearFilters()">
-            <i class="fas fa-times"></i> {% trans "Clear All Filters" %}
+        <div class="flutter-empty-state">
+          <div class="flutter-empty-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3 class="flutter-empty-title">{% trans "No products found" %}</h3>
+          <p class="flutter-empty-subtitle">{% trans "Try adjusting your filters or search terms" %}</p>
+          <button class="flutter-cart-btn" onclick="clearFilters()" style="max-width: 200px; margin: 0 auto;">
+            <i class="fas fa-times"></i> {% trans "Clear Filters" %}
           </button>
         </div>
       `;
@@ -1418,250 +1469,135 @@
     shopState.products.forEach((product) => {
       const inStock = product.in_stock;
       const canOrder = product.can_order;
-
-      // === NEW: discount-aware pricing (same logic as home.html) ===
       const basePrice = Number(product.price) || 0;
       const discountPct = Number(product.discount_percentage) || 0;
+      
+      let effectivePrice = basePrice;
+      if (discountPct > 0 && discountPct <= 100) {
+        effectivePrice = basePrice * (1 - discountPct / 100);
+      }
 
+      // Price HTML
       let priceHtml = "";
       if (basePrice) {
-        let effectivePrice = basePrice;
-        if (discountPct > 0 && discountPct <= 100) {
-          effectivePrice = basePrice * (1 - discountPct / 100);
-        }
-
-        priceHtml += `
-          <span class="current-price">
-            $${effectivePrice.toFixed(2)}
-          </span>
-        `;
-
+        priceHtml += `<span class="flutter-current-price">د.ل${effectivePrice.toFixed(2)}</span>`;
+        
         if (discountPct > 0 && discountPct <= 100) {
           priceHtml += `
-            <span class="original-price">
-              $${basePrice.toFixed(2)}
-            </span>
-            <span style="margin-left:6px;font-size:0.8rem;color:#ff5252;font-weight:bold;">
-              -${discountPct}%
-            </span>
+            <span class="flutter-original-price">د.ل${basePrice.toFixed(2)}</span>
+            <span class="flutter-discount-badge">-${discountPct}%</span>
           `;
         }
       } else {
-        priceHtml = `
-          <span class="price-hidden">
-            {% trans "Price on request" %}
-          </span>
-        `;
+        priceHtml = `<span class="flutter-price-hidden">{% trans "Price on request" %}</span>`;
       }
-      // ============================================================
 
+      // Stock HTML
+      const stockHtml = `
+        <div class="flutter-stock-info ${inStock ? 'stock-in' : 'stock-out'}">
+          <i class="fas ${inStock ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+          <span>
+            ${inStock 
+              ? (product.show_quantity 
+                  ? `${product.quantity_available || 0} {% trans "in stock" %}`
+                  : '{% trans "In stock" %}')
+              : '{% trans "Cannot Order" %}'}
+          </span>
+        </div>
+      `;
 
-      const hasVideo =
-        product.media_items &&
-        product.media_items.some((item) => item.type === "video");
+      // Badges HTML
+      let badgesHtml = "";
+      if (product.is_new) {
+        badgesHtml += '<span class="flutter-badge badge-new">{% trans "New" %}</span>';
+      }
+      if (product.video_url) {
+        badgesHtml += '<span class="flutter-badge badge-video">{% trans "Video" %}</span>';
+      }
+      if (!inStock) {
+        badgesHtml += '<span class="flutter-badge badge-out">{% trans "Out of stock" %}</span>';
+      }
 
-      const cartItem = cart.find((item) => item.id === product.id);
-      const qtyInCart = cartItem ? cartItem.quantity : 0;
+      // Main image
+      const mainImage = product.image_url || product.media_items?.[0]?.url || '/static/main/img/product-default.jpg';
+
+      // Check if product is in cart
+      const cartItem = cart.find(item => item.id === product.id);
+      const quantityInCart = cartItem ? cartItem.quantity : 0;
       const safeName = (product.name || "").replace(/'/g, "\\'");
 
-      // Main image for card & cart
-      const mainImage =
-        product.media_items && product.media_items[0]
-          ? product.media_items[0].url
-          : "/static/main/img/product-default.jpg";
-
+      // Action buttons HTML - USING ORIGINAL LOGIC
       let actionHtml = "";
-      if (qtyInCart > 0) {
+      if (quantityInCart > 0) {
         actionHtml = `
-          <div class="cart-qty-control" data-product-id="${product.id}"
-               style="display:flex;justify-content:center;align-items:center;gap:12px;margin-top:10px;width:100%;">
-            <button class="qty-btn minus"
-                    style="background:#ff6b6b;color:white;border:none;border-radius:50%;width:36px;height:36px;font-weight:bold;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"
-                    onclick="event.stopPropagation(); changeCartQuantity(${product.id}, -1)">-</button>
-            <span class="qty-display" style="font-weight:bold;font-size:1.1rem;min-width:30px;text-align:center;">${qtyInCart}</span>
-            <button class="qty-btn plus"
-                    style="background:#4caf50;color:white;border:none;border-radius:50%;width:36px;height:36px;font-weight:bold;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"
-                    onclick="event.stopPropagation(); changeCartQuantity(${product.id}, 1)">+</button>
+          <div class="flutter-quantity-controls" data-product-id="${product.id}">
+            <button class="flutter-qty-btn flutter-qty-minus"
+                    onclick="event.stopPropagation(); changeCartQuantity(${product.id}, -1)">
+              <i class="fas fa-minus"></i>
+            </button>
+            <span class="flutter-qty-display">${quantityInCart}</span>
+            <button class="flutter-qty-btn flutter-qty-plus"
+                    onclick="event.stopPropagation(); changeCartQuantity(${product.id}, 1)">
+              <i class="fas fa-plus"></i>
+            </button>
           </div>
         `;
       } else {
-        // NOTE: pass basePrice & discountPct to handleAddToCart
         actionHtml = `
-          <button class="btn-add-cart"
-                  onclick="event.stopPropagation(); handleAddToCart(
-                    ${product.id},
-                    '${safeName}',
-                    ${basePrice},
-                    '${mainImage}',
-                    ${canOrder},
-                    ${discountPct}
-                  )"
-                  ${!canOrder ? "disabled" : ""}
-                  style="display:block;margin:15px auto;padding:12px 24px;background:linear-gradient(135deg,#6a11cb,#2575fc);color:white;border:none;border-radius:25px;font-weight:bold;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.2);width:100%;">
+          <button class="flutter-cart-btn" onclick="event.stopPropagation(); handleAddToCart(
+            ${product.id},
+            '${safeName}',
+            ${basePrice},
+            '${mainImage}',
+            ${canOrder},
+            ${discountPct}
+          )" ${!canOrder ? 'disabled' : ''}>
             <i class="fas fa-cart-plus"></i>
-            ${
-              canOrder
-                ? '{% trans "Add to Cart" %}'
-                : '{% trans "Cannot Order" %}'
-            }
+            ${canOrder ? '{% trans "Add to Cart" %}' : '{% trans "Cannot Order" %}'}
           </button>
         `;
       }
 
       html += `
-        <div class="product-card"
+        <div class="flutter-product-card"
              data-product-id="${product.id}"
              data-product-name="${safeName}"
              data-product-price="${basePrice}"
              data-product-discount="${discountPct}"
              data-product-image="${mainImage}"
-             data-product-can-order="${canOrder ? "1" : "0"}">
+             data-product-can-order="${canOrder ? '1' : '0'}"
+             onclick="window.location.href='/product/${product.id}/'"
+>
 
-          <!-- Media / link -->
-          <a href="/product/${product.id}/" class="product-media-container"
-             onmouseenter="startMediaSlider(${product.id})"
-             onmouseleave="stopMediaSlider(${product.id})"
-             style="display:block;text-decoration:none;color:inherit;">
-            <div class="media-slider" id="mediaSlider-${product.id}">
-              ${
-                product.media_items && product.media_items.length > 0
-                  ? product.media_items
-                      .map(
-                        (media, index) => `
-                        <div class="media-item ${index === 0 ? "active" : ""}"
-                             data-type="${media.type}"
-                             data-index="${index}">
-                          ${
-                            media.type === "video"
-                              ? `
-                              <video muted loop playsinline>
-                                <source src="${media.url}" type="video/mp4">
-                              </video>
-                              <button class="play-btn" onclick="event.stopPropagation(); playProductVideo('${media.url}', '${safeName}')">
-                                <i class="fas fa-play"></i>
-                              </button>
-                            `
-                              : `
-                              <img src="${media.url}" alt="${safeName}" loading="lazy" onerror="this.src='/static/main/img/product-default.jpg'">
-                            `
-                          }
-                        </div>
-                      `
-                      )
-                      .join("")
-                  : `<div class="media-item active">
-                      <img src="/static/main/img/product-default.jpg" alt="${safeName}" loading="lazy">
-                    </div>`
-              }
+          <div class="flutter-product-image">
+            <img src="${mainImage}" alt="${product.name}" loading="lazy" 
+                 onerror="this.src='/static/main/img/product-default.jpg'">
+            
+            <div class="flutter-badge-container">
+              ${badgesHtml}
             </div>
-
-            ${
-              product.media_items && product.media_items.length > 1
-                ? `
-                <div class="media-indicators" id="indicators-${product.id}">
-                  ${product.media_items
-                    .map(
-                      (_, index) => `
-                      <button class="media-indicator ${
-                        index === 0 ? "active" : ""
-                      }"
-                              data-index="${index}"
-                              onclick="event.stopPropagation(); goToMedia(${
-                                product.id
-                              }, ${index})"></button>
-                    `
-                    )
-                    .join("")}
-                </div>
-              `
-                : ""
-            }
-
-            <div class="media-controls">
-              <button class="media-btn" title="Add to wishlist" onclick="event.stopPropagation(); window.addToWishlist(${
-                product.id
-              })">
-                <i class="far fa-heart"></i>
-              </button>
-              <button class="media-btn" title="Quick view" onclick="event.stopPropagation(); showQuickView(${
-                product.id
-              })">
-                <i class="far fa-eye"></i>
-              </button>
-              <button class="media-btn" title="Compare" onclick="event.stopPropagation(); window.compareProduct(${
-                product.id
-              })">
-                <i class="fas fa-exchange-alt"></i>
-              </button>
-            </div>
-
-            <div class="product-badges">
-              ${
-                hasVideo
-                  ? '<span class="badge badge-video">{% trans "Video" %}</span>'
-                  : ""
-              }
-              ${
-                product.is_new
-                  ? '<span class="badge badge-new">{% trans "New" %}</span>'
-                  : ""
-              }
-              ${
-                !inStock
-                  ? '<span class="badge badge-sale">{% trans "Cannot Order" %}</span>'
-                  : ""
-              }
-            </div>
-          </a>
-
-          <div class="product-info">
-            <a href="/product/${
-              product.id
-            }/" style="text-decoration:none;color:inherit;">
-              <div class="product-category">${
-                product.category?.name || '{% trans "Uncategorized" %}'
-              }</div>
-              <h3 class="product-title">${product.name}</h3>
-            </a>
-
-
-
-            <div class="product-price">
+          </div>
+          
+          <div class="flutter-product-info">
+            <div class="flutter-product-category">${product.category?.name || '{% trans "Uncategorized" %}'}</div>
+            <h3 class="flutter-product-title">${product.name}</h3>
+            
+            <div class="flutter-price-container">
               ${priceHtml}
             </div>
-
-            <div class="product-stock ${inStock ? "stock-in" : "stock-out"}">
-  <i class="fas ${inStock ? "fa-check-circle" : "fa-times-circle"}"></i>
-  ${
-    inStock
-      ? `${
-          product.show_quantity
-            ? `${product.quantity_available || 0} {% trans "in stock" %}`
-            : `{% trans "In stock" %}`
-        }`
-      : '{% trans "Cannot Order" %}'
-  }
-</div>
-
-
-            <div class="product-actions">
-              ${actionHtml}
-            </div>
+            
+            ${stockHtml}
+            
+            ${actionHtml}
           </div>
         </div>
       `;
     });
 
     container.innerHTML = html;
-
-    shopState.products.forEach((product) => {
-      if (product.media_items && product.media_items.length > 1) {
-        initializeMediaSlider(product.id);
-      }
-    });
   }
 
-  // Handle add to cart - calls base.html function
+  // Handle add to cart - USING ORIGINAL LOGIC
   function handleAddToCart(
     productId,
     productName,
@@ -1675,7 +1611,7 @@
       return;
     }
 
-    // Now match home.html signature: addToCart(id, name, basePrice, image, canOrder, qty, discount%)
+    // Call base.html function with correct parameters
     window.addToCart(
       productId,
       productName,
@@ -1687,38 +1623,39 @@
     );
 
     const card = document.querySelector(
-      `.product-card[data-product-id="${productId}"]`
+      `.flutter-product-card[data-product-id="${productId}"]`
     );
     if (!card) return;
 
-    const actionRow = card.querySelector(".product-actions");
-    if (!actionRow) return;
+    const actionContainer = card.querySelector('.flutter-product-info > :last-child');
+    if (!actionContainer) return;
 
     const cartItem = cart.find((item) => item.id === productId);
     const qtyInCart = cartItem ? cartItem.quantity : 1;
 
-    actionRow.innerHTML = `
-      <div class="cart-qty-control" data-product-id="${productId}"
-           style="display:flex;justify-content:center;align-items:center;gap:12px;margin-top:10px;width:100%;">
-        <button class="qty-btn minus"
-                    style="background:#ff6b6b;color:white;border:none;border-radius:50%;width:36px;height:36px;font-weight:bold;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"
-                    onclick="event.stopPropagation(); changeCartQuantity(${productId}, -1)">-</button>
-        <span class="qty-display" style="font-weight:bold;font-size:1.1rem;min-width:30px;text-align:center;">${qtyInCart}</span>
-        <button class="qty-btn plus"
-                    style="background:#4caf50;color:white;border:none;border-radius:50%;width:36px;height:36px;font-weight:bold;font-size:1.2rem;cursor:pointer;box-shadow:0 2px 5px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;"
-                    onclick="event.stopPropagation(); changeCartQuantity(${productId}, 1)">+</button>
+    actionContainer.innerHTML = `
+      <div class="flutter-quantity-controls" data-product-id="${productId}">
+        <button class="flutter-qty-btn flutter-qty-minus"
+                onclick="event.stopPropagation(); changeCartQuantity(${productId}, -1)">
+          <i class="fas fa-minus"></i>
+        </button>
+        <span class="flutter-qty-display">${qtyInCart}</span>
+        <button class="flutter-qty-btn flutter-qty-plus"
+                onclick="event.stopPropagation(); changeCartQuantity(${productId}, 1)">
+          <i class="fas fa-plus"></i>
+        </button>
       </div>
     `;
   }
 
-  // Increment / Decrement quantity
+  // Change cart quantity - USING ORIGINAL LOGIC
   function changeCartQuantity(productId, change) {
     let cartItem = cart.find((item) => item.id === productId);
 
     // If not in cart and user clicked +, add 1 item using data-* from card
     if (!cartItem && change > 0) {
       const card = document.querySelector(
-        `.product-card[data-product-id="${productId}"]`
+        `.flutter-product-card[data-product-id="${productId}"]`
       );
       if (!card) return;
 
@@ -1742,17 +1679,17 @@
     }
 
     const card = document.querySelector(
-      `.product-card[data-product-id="${productId}"]`
+      `.flutter-product-card[data-product-id="${productId}"]`
     );
     if (!card) return;
 
-    const actionRow = card.querySelector(".product-actions");
-    if (!actionRow) return;
+    const actionContainer = card.querySelector('.flutter-product-info > :last-child');
+    if (!actionContainer) return;
 
     const updatedItem = cart.find((item) => item.id === productId);
 
     if (updatedItem && updatedItem.quantity > 0) {
-      const qtyDisplay = actionRow.querySelector(".qty-display");
+      const qtyDisplay = actionContainer.querySelector(".flutter-qty-display");
       if (qtyDisplay) {
         qtyDisplay.textContent = updatedItem.quantity;
       }
@@ -1764,489 +1701,333 @@
       const canOrder = card.dataset.productCanOrder === "1";
       const discountPct = parseFloat(card.dataset.productDiscount || "0");
 
-      actionRow.innerHTML = `
-        <button class="btn-add-cart"
-                onclick="event.stopPropagation(); handleAddToCart(
-                  ${productId},
-                  '${name}',
-                  ${price},
-                  '${image}',
-                  ${canOrder},
-                  ${discountPct}
-                )"
-                ${!canOrder ? "disabled" : ""}
-                style="display:block;margin:15px auto;padding:12px 24px;background:linear-gradient(135deg,#6a11cb,#2575fc);color:white;border:none;border-radius:25px;font-weight:bold;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.2);width:100%;">
+      actionContainer.innerHTML = `
+        <button class="flutter-cart-btn" onclick="event.stopPropagation(); handleAddToCart(
+          ${productId},
+          '${name}',
+          ${price},
+          '${image}',
+          ${canOrder},
+          ${discountPct}
+        )" ${!canOrder ? 'disabled' : ''}>
           <i class="fas fa-cart-plus"></i>
-          ${
-            canOrder
-              ? '{% trans "Add to Cart" %}'
-              : '{% trans "Cannot Order" %}'
-          }
+          ${canOrder ? '{% trans "Add to Cart" %}' : '{% trans "Cannot Order" %}'}
         </button>
       `;
     }
   }
+// ==============================
+// Filter by category
+// ==============================
+function filterByCategory(categorySlug, type) {
+  shopState.filters.category = categorySlug;
+  shopState.pagination.currentPage = 1;
 
-  // Initialize auto-scrolling media slider
-  function initializeMediaSlider(productId) {
-    const mediaItems = document.querySelectorAll(
-      `#mediaSlider-${productId} .media-item`
-    );
-    const indicators = document.querySelectorAll(
-      `#indicators-${productId} .media-indicator`
-    );
-
-    if (mediaItems.length <= 1) return;
-
-    // Store current index for this product
-    if (!shopState.mediaTimers[productId]) {
-      shopState.mediaTimers[productId] = {
-        currentIndex: 0,
-        timer: null,
-      };
-    }
+  if (type === 'mobile') {
+    closeFilterModal();
   }
 
-  function openProduct(id, event) {
-    // Don't trigger when clicking on interactive elements
-    if (
-      event.target.closest(
-        "button, .btn, input, select, textarea, .media-indicator"
-      )
-    ) {
-      return;
-    }
+  applyFilters();
+}
 
-    window.location.href = `/product/${id}/`;
+// ==============================
+// Apply filters
+// ==============================
+async function applyFilters() {
+  showLoading(true);
+
+  // Sync desktop checkbox
+  const desktopCheckbox = document.getElementById('desktopInStockCheckbox');
+  if (desktopCheckbox) {
+    desktopCheckbox.checked = shopState.filters.inStock;
   }
 
-  // Start auto-scrolling for a product's media gallery
-  function startMediaSlider(productId) {
-    if (!shopState.mediaTimers[productId]) return;
-
-    const items = document.querySelectorAll(
-      `#mediaSlider-${productId} .media-item`
-    );
-    const indicators = document.querySelectorAll(
-      `#indicators-${productId} .media-indicator`
-    );
-
-    if (items.length <= 1) return;
-
-    // Clear any existing timer
-    if (shopState.mediaTimers[productId].timer) {
-      clearInterval(shopState.mediaTimers[productId].timer);
-    }
-
-    // Start new timer
-    shopState.mediaTimers[productId].timer = setInterval(() => {
-      const currentIndex = shopState.mediaTimers[productId].currentIndex;
-      const nextIndex = (currentIndex + 1) % items.length;
-
-      // Update media
-      updateMediaDisplay(productId, nextIndex);
-      shopState.mediaTimers[productId].currentIndex = nextIndex;
-    }, 3000); // Change every 3 seconds
+  // Sync mobile checkbox if exists
+  const mobileCheckbox = document.getElementById('mobileInStockCheckbox');
+  if (mobileCheckbox) {
+    mobileCheckbox.checked = shopState.filters.inStock;
   }
 
-  // Stop auto-scrolling
-  function stopMediaSlider(productId) {
-    if (
-      shopState.mediaTimers[productId] &&
-      shopState.mediaTimers[productId].timer
-    ) {
-      clearInterval(shopState.mediaTimers[productId].timer);
-      shopState.mediaTimers[productId].timer = null;
-    }
+  await loadShopData();
+  updateURL();
+}
+
+// ==============================
+// Apply filters from modal (mobile)
+// ==============================
+function applyFiltersFromModal() {
+  const mobileCheckbox = document.getElementById('mobileInStockCheckbox');
+  if (mobileCheckbox) {
+    shopState.filters.inStock = mobileCheckbox.checked;
   }
 
-  // Go to specific media item
-  function goToMedia(productId, index) {
-    if (shopState.mediaTimers[productId]) {
-      shopState.mediaTimers[productId].currentIndex = index;
-      updateMediaDisplay(productId, index);
+  closeFilterModal();
+  applyFilters();
+}
 
-      // Reset timer
-      if (shopState.mediaTimers[productId].timer) {
-        clearInterval(shopState.mediaTimers[productId].timer);
-        shopState.mediaTimers[productId].timer = null;
-        startMediaSlider(productId);
-      }
-    }
+// ==============================
+// Clear all filters
+// ==============================
+function clearFilters() {
+  shopState.filters = {
+    category: "all",
+    minPrice: shopState.priceRange.min,
+    maxPrice: shopState.priceRange.max,
+    inStock: false,
+    sortBy: "newest",
+    search: "",
+  };
+
+  shopState.pagination.currentPage = 1;
+
+  // Reset UI checkboxes
+  const mobileCheckbox = document.getElementById('mobileInStockCheckbox');
+  const desktopCheckbox = document.getElementById('desktopInStockCheckbox');
+  if (mobileCheckbox) mobileCheckbox.checked = false;
+  if (desktopCheckbox) desktopCheckbox.checked = false;
+
+  // Reset price sliders
+  updatePriceSliders();
+
+  applyFilters();
+}
+
+// ==============================
+// Clear filter modal (mobile only)
+// ==============================
+function clearFilterModal() {
+  const mobileCheckbox = document.getElementById('mobileInStockCheckbox');
+  if (mobileCheckbox) mobileCheckbox.checked = false;
+
+  shopState.filters.minPrice = shopState.priceRange.min;
+  shopState.filters.maxPrice = shopState.priceRange.max;
+
+  updatePriceSliders();
+}
+
+// ==============================
+// Update URL based on current filters
+// ==============================
+function updateURL() {
+  const params = new URLSearchParams();
+
+  if (shopState.filters.category && shopState.filters.category !== "all") {
+    params.set("category", shopState.filters.category);
   }
 
-  // Update media display
-  function updateMediaDisplay(productId, index) {
-    const items = document.querySelectorAll(
-      `#mediaSlider-${productId} .media-item`
-    );
-    const indicators = document.querySelectorAll(
-      `#indicators-${productId} .media-indicator`
-    );
-
-    // Remove active class from all items and indicators
-    items.forEach((item) => item.classList.remove("active"));
-    indicators.forEach((indicator) => indicator.classList.remove("active"));
-
-    // Add active class to current item and indicator
-    if (items[index]) {
-      items[index].classList.add("active");
-
-      // If it's a video, play it
-      if (items[index].dataset.type === "video") {
-        const video = items[index].querySelector("video");
-        if (video) {
-          video.currentTime = 0;
-          video.play().catch((e) => console.log("Autoplay prevented"));
-        }
-      }
-
-      // Pause other videos
-      items.forEach((item, i) => {
-        if (i !== index && item.dataset.type === "video") {
-          const video = item.querySelector("video");
-          if (video) {
-            video.pause();
-            video.currentTime = 0;
-          }
-        }
-      });
-    }
-
-    if (indicators[index]) {
-      indicators[index].classList.add("active");
-    }
+  if (shopState.filters.search) {
+    params.set("search", shopState.filters.search);
   }
 
-  // Play product video in modal
-  function playProductVideo(videoUrl, productName) {
-    const modal = document.getElementById("videoModal");
-    const videoPlayer = document.getElementById("productVideoPlayer");
-
-    videoPlayer.src = videoUrl;
-    videoPlayer.load();
-
-    modal.classList.add("active");
-    document.body.style.overflow = "hidden";
-
-    // Play the video
-    videoPlayer.play().catch((e) => {
-      console.log("Video autoplay prevented");
-    });
+  if (shopState.filters.minPrice !== null && shopState.filters.minPrice > shopState.priceRange.min) {
+    params.set("min_price", shopState.filters.minPrice);
   }
 
-  // Close video modal
-  function closeVideoModal() {
-    const modal = document.getElementById("videoModal");
-    const videoPlayer = document.getElementById("productVideoPlayer");
-
-    videoPlayer.pause();
-    videoPlayer.src = "";
-    modal.classList.remove("active");
-    document.body.style.overflow = "auto";
+  if (shopState.filters.maxPrice !== null && shopState.filters.maxPrice < shopState.priceRange.max) {
+    params.set("max_price", shopState.filters.maxPrice);
   }
 
-  // Filter by category
-  function filterByCategory(categorySlug) {
-    shopState.filters.category = categorySlug;
-    shopState.pagination.currentPage = 1;
-    applyFilters();
+  // Handle inStock properly
+  if (shopState.filters.inStock) {
+    params.set("in_stock", "true");
+  } else {
+    params.delete("in_stock");
   }
 
-  // Apply all filters
-  async function applyFilters() {
-    showLoading(true);
+  if (shopState.filters.sortBy && shopState.filters.sortBy !== "newest") {
+    params.set("sort_by", shopState.filters.sortBy);
+  }
 
-    // Get current filter values
-    shopState.filters.sortBy = document.getElementById("sortSelect").value;
-    shopState.filters.inStock = document.getElementById("inStockCheckbox")
-      .checked
-      ? "true"
-      : null;
-    shopState.filters.minPrice =
-      document.getElementById("minPriceInput").value || null;
-    shopState.filters.maxPrice =
-      document.getElementById("maxPriceInput").value || null;
+  const newUrl = `${window.location.pathname}${params.toString() ? "?" + params.toString() : ""}`;
+  window.history.pushState({}, "", newUrl);
+}
 
-    // Build API URL with filters
+// ==============================
+// Pagination update
+// ==============================
+function updatePagination() {
+  const container = document.getElementById("flutterPagination");
+  const { currentPage, totalPages } = shopState.pagination;
+
+  if (totalPages <= 1) {
+    container.innerHTML = "";
+    return;
+  }
+
+  let html = "";
+
+  // Previous button
+  html += `
+    <button class="pagination-btn" ${currentPage === 1 ? "disabled" : ""} onclick="goToPage(${currentPage - 1})">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+  `;
+
+  const maxVisible = window.innerWidth < 768 ? 3 : 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+  let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+
+  if (endPage - startPage + 1 < maxVisible) {
+    startPage = Math.max(1, endPage - maxVisible + 1);
+  }
+
+  // First page
+  if (startPage > 1) {
+    html += `<button class="pagination-btn" onclick="goToPage(1)">1</button>`;
+    if (startPage > 2) html += `<span class="pagination-dots">...</span>`;
+  }
+
+  // Visible pages
+  for (let i = startPage; i <= endPage; i++) {
+    html += `
+      <button class="pagination-btn ${i === currentPage ? "active" : ""}" onclick="goToPage(${i})">
+        ${i}
+      </button>
+    `;
+  }
+
+  // Last page
+  if (endPage < totalPages) {
+    if (endPage < totalPages - 1) html += `<span class="pagination-dots">...</span>`;
+    html += `<button class="pagination-btn" onclick="goToPage(${totalPages})">${totalPages}</button>`;
+  }
+
+  // Next button
+  html += `
+    <button class="pagination-btn" ${currentPage === totalPages ? "disabled" : ""} onclick="goToPage(${currentPage + 1})">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  `;
+
+  container.innerHTML = html;
+}
+
+// ==============================
+// Go to page
+// ==============================
+function goToPage(page) {
+  if (page < 1 || page > shopState.pagination.totalPages) return;
+
+  shopState.pagination.currentPage = page;
+  applyFilters();
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ==============================
+// Load shop data
+// ==============================
+async function loadShopData() {
+  showLoading(true);
+
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get("category") || "all";
+    const search = urlParams.get("search") || "";
+
     let apiUrl = `/api/shop-page-data/?page=${shopState.pagination.currentPage}`;
 
-    // Add filters to URL
     if (shopState.filters.category && shopState.filters.category !== "all") {
-      apiUrl += `&category=${shopState.filters.category}`;
+  apiUrl += `&category=${shopState.filters.category}`;
+}
+
+
+    if (search) {
+      apiUrl += `&search=${encodeURIComponent(search)}`;
+      shopState.filters.search = search;
     }
 
-    if (shopState.filters.search) {
-      apiUrl += `&search=${encodeURIComponent(shopState.filters.search)}`;
+    // Filters
+    if (shopState.filters.minPrice !== null) apiUrl += `&min_price=${shopState.filters.minPrice}`;
+    if (shopState.filters.maxPrice !== null) apiUrl += `&max_price=${shopState.filters.maxPrice}`;
+    if (shopState.filters.inStock) apiUrl += `&in_stock=true`;
+    if (shopState.filters.sortBy) apiUrl += `&sort_by=${shopState.filters.sortBy}`;
+
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    if (data.success) {
+      shopState.products = data.products;
+      shopState.categories = data.filters.categories;
+      shopState.pagination = {
+        currentPage: data.pagination.current_page || 1,
+        totalPages: data.pagination.total_pages || 1,
+        totalItems: data.stats.total_products || 0,
+      };
+      shopState.priceRange = data.filters.price_range || { min: 0, max: 1000 };
+
+      updateCategories();
+      updateProducts();
+      updatePagination();
+      updatePriceSliders();
+
+      const sortRadio = document.querySelector(`input[name="sort"][value="${shopState.filters.sortBy}"]`);
+      if (sortRadio) sortRadio.checked = true;
     }
-
-    if (shopState.filters.minPrice) {
-      apiUrl += `&min_price=${shopState.filters.minPrice}`;
-    }
-
-    if (shopState.filters.maxPrice) {
-      apiUrl += `&max_price=${shopState.filters.maxPrice}`;
-    }
-
-    if (shopState.filters.inStock) {
-      apiUrl += `&in_stock=${shopState.filters.inStock}`;
-    }
-
-    if (shopState.filters.sortBy) {
-      apiUrl += `&sort_by=${shopState.filters.sortBy}`;
-    }
-
-    try {
-      const response = await fetch(apiUrl);
-      const data = await response.json();
-
-      if (data.success) {
-        shopState.products = data.products;
-        shopState.pagination = {
-          currentPage:
-            data.pagination.current_page ||
-            data.pagination.currentPage ||
-            shopState.pagination.currentPage ||
-            1,
-          totalPages:
-            data.pagination.total_pages ||
-            data.pagination.totalPages ||
-            shopState.pagination.totalPages ||
-            1,
-          totalItems:
-            data.pagination.total_items ??
-            data.pagination.totalItems ??
-            data.pagination.count ??
-            shopState.products.length,
-        };
-
-        // Update URL without reloading page
-        updateURL();
-
-        // Update UI
-        updateProducts();
-        updatePagination();
-        updateResultsInfo();
-        updateCategories();
-        
-        // Close mobile filters if open
-        if (window.innerWidth <= 1024 && shopState.mobileFiltersOpen) {
-          toggleMobileFilters();
-        }
-      }
-    } catch (error) {
-      console.error("Error applying filters:", error);
-      // Use base.html notification if available
-      if (window.showNotification) {
-        window.showNotification("Error applying filters", "error");
-      }
-    }
-
-    showLoading(false);
+  } catch (error) {
+    console.error("Error loading shop data:", error);
+    showNotification("Error loading products", "error");
   }
 
-  // Clear all filters
-  function clearFilters() {
-    shopState.filters = {
-      category: "all",
-      minPrice: null,
-      maxPrice: null,
-      inStock: null,
-      sortBy: "newest",
-      search: "",
-    };
+  showLoading(false);
+}
+function initFiltersFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
 
-    shopState.pagination.currentPage = 1;
+  shopState.filters.category = urlParams.get("category") || "all";
+  shopState.filters.search = urlParams.get("search") || "";
+  shopState.filters.minPrice = urlParams.get("min_price") 
+    ? Number(urlParams.get("min_price")) 
+    : shopState.priceRange.min;
+  shopState.filters.maxPrice = urlParams.get("max_price") 
+    ? Number(urlParams.get("max_price")) 
+    : shopState.priceRange.max;
+  shopState.filters.inStock = urlParams.get("in_stock") === "true";
+  shopState.filters.sortBy = urlParams.get("sort_by") || "newest";
+}
 
-    // Reset UI elements
-    document.getElementById("sortSelect").value = "newest";
-    document.getElementById("inStockCheckbox").checked = false;
-    document.getElementById("minPriceInput").value = "";
-    document.getElementById("maxPriceInput").value = "";
-
-    // Update price slider
-    updatePriceSlider();
-
-    // Apply cleared filters
-    applyFilters();
-  }
-
-  // Update URL with current filters
-  function updateURL() {
-    const params = new URLSearchParams();
-
-    if (shopState.filters.category && shopState.filters.category !== "all") {
-      params.set("category", shopState.filters.category);
-    }
-
-    if (shopState.filters.search) {
-      params.set("search", shopState.filters.search);
-    }
-
-    if (shopState.filters.minPrice) {
-      params.set("min_price", shopState.filters.minPrice);
-    }
-
-    if (shopState.filters.maxPrice) {
-      params.set("max_price", shopState.filters.maxPrice);
-    }
-
-    if (shopState.filters.inStock) {
-      params.set("in_stock", shopState.filters.inStock);
-    }
-
-    if (shopState.filters.sortBy && shopState.filters.sortBy !== "newest") {
-      params.set("sort_by", shopState.filters.sortBy);
-    }
-
-    // Update URL without page reload
-    const newUrl = `${window.location.pathname}${
-      params.toString() ? "?" + params.toString() : ""
-    }`;
-    window.history.pushState({}, "", newUrl);
-  }
-
-  // Update pagination
-  function updatePagination() {
-    const container = document.getElementById("pagination");
-    const { currentPage, totalPages } = shopState.pagination;
-
-    if (totalPages <= 1) {
-      container.innerHTML = "";
-      return;
-    }
-
-    let html = "";
-
-    // Previous button
-    html += `
-              <button class="page-btn" ${
-                currentPage === 1 ? "disabled" : ""
-              } onclick="goToPage(${currentPage - 1})">
-                  <i class="fas fa-chevron-left"></i>
-              </button>
-          `;
-
-    // Page numbers
-    const maxVisible = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-    let endPage = Math.min(totalPages, startPage + maxVisible - 1);
-
-    if (endPage - startPage + 1 < maxVisible) {
-      startPage = Math.max(1, endPage - maxVisible + 1);
-    }
-
-    // First page
-    if (startPage > 1) {
-      html += `<button class="page-btn" onclick="goToPage(1)">1</button>`;
-      if (startPage > 2) {
-        html += `<span class="page-dots">...</span>`;
-      }
-    }
-
-    // Visible pages
-    for (let i = startPage; i <= endPage; i++) {
-      html += `
-                  <button class="page-btn ${
-                    i === currentPage ? "active" : ""
-                  }" onclick="goToPage(${i})">
-                      ${i}
-                  </button>
-              `;
-    }
-
-    // Last page
-    if (endPage < totalPages) {
-      if (endPage < totalPages - 1) {
-        html += `<span class="page-dots">...</span>`;
-      }
-      html += `<button class="page-btn" onclick="goToPage(${totalPages})">${totalPages}</button>`;
-    }
-
-    // Next button
-    html += `
-              <button class="page-btn" ${
-                currentPage === totalPages ? "disabled" : ""
-              } onclick="goToPage(${currentPage + 1})">
-                  <i class="fas fa-chevron-right"></i>
-              </button>
-          `;
-
-    container.innerHTML = html;
-  }
-
-  // Go to specific page
-  function goToPage(page) {
-    if (page < 1 || page > shopState.pagination.totalPages) return;
-
-    shopState.pagination.currentPage = page;
-    applyFilters();
-
-    // Scroll to top of products
-    document
-      .getElementById("productsGrid")
-      .scrollIntoView({ behavior: "smooth" });
-  }
-
-  // Update results info
-  function updateResultsInfo() {
-    const totalItems = shopState.pagination.totalItems || 0;
-    const currentPage = shopState.pagination.currentPage || 1;
-    const itemsPerPage = 20;
-
-    const start = (currentPage - 1) * itemsPerPage + 1;
-    const end = Math.min(start + itemsPerPage - 1, totalItems);
-
-    const text =
-      totalItems === 0
-        ? '{% trans "No products found" %}'
-        : `{% trans "Showing" %} ${start}-${end} {% trans "of" %} ${totalItems} {% trans "products" %}`;
-
-    document.getElementById(
-      "resultsInfo"
-    ).innerHTML = `<strong>${text}</strong>`;
-  }
-
-  // Update price slider
-  function updatePriceSlider() {
+  // Update price sliders
+  function updatePriceSliders() {
     const { min, max } = shopState.priceRange;
-    const minPrice = shopState.filters.minPrice || min;
-    const maxPrice = shopState.filters.maxPrice || max;
+    const minPrice = shopState.filters.minPrice !== null ? shopState.filters.minPrice : min;
+    const maxPrice = shopState.filters.maxPrice !== null ? shopState.filters.maxPrice : max;
 
-    // Update inputs
-    document.getElementById("minPriceInput").value =
-      minPrice === min ? "" : minPrice;
-    document.getElementById("minPriceInput").placeholder = `Min: $${min}`;
+    // Update desktop slider
+    updateSlider('desktop', minPrice, maxPrice, min, max);
+    
+    // Update mobile slider
+    updateSlider('mobile', minPrice, maxPrice, min, max);
+  }
 
-    document.getElementById("maxPriceInput").value =
-      maxPrice === max ? "" : maxPrice;
-    document.getElementById("maxPriceInput").placeholder = `Max: $${max}`;
+  function updateSlider(type, minPrice, maxPrice, minRange, maxRange) {
+    const minValue = document.getElementById(`${type}MinPriceValue`);
+    const maxValue = document.getElementById(`${type}MaxPriceValue`);
+    const track = document.getElementById(`${type}PriceTrack`);
+    const minThumb = document.getElementById(`${type}MinThumb`);
+    const maxThumb = document.getElementById(`${type}MaxThumb`);
 
-    // Update slider track
-    const slider = document.getElementById("priceSlider");
-    const track = document.getElementById("priceTrack");
-    const minThumb = document.getElementById("minThumb");
-    const maxThumb = document.getElementById("maxThumb");
+    if (minValue && maxValue && track && minThumb && maxThumb) {
+      minValue.textContent = `$${minPrice}`;
+      maxValue.textContent = `$${maxPrice}`;
 
-    const range = max - min;
-    const minPercent = ((minPrice - min) / range) * 100;
-    const maxPercent = ((maxPrice - min) / range) * 100;
+      const range = maxRange - minRange;
+      const minPercent = ((minPrice - minRange) / range) * 100;
+      const maxPercent = ((maxPrice - minRange) / range) * 100;
 
-    track.style.left = `${minPercent}%`;
-    track.style.width = `${maxPercent - minPercent}%`;
+      track.style.left = `${minPercent}%`;
+      track.style.width = `${maxPercent - minPercent}%`;
 
-    minThumb.style.left = `${minPercent}%`;
-    maxThumb.style.left = `${maxPercent}%`;
+      minThumb.style.left = `${minPercent}%`;
+      maxThumb.style.left = `${maxPercent}%`;
+    }
   }
 
   // Setup price slider interaction
-  function setupPriceSlider() {
-    const slider = document.getElementById("priceSlider");
-    const minThumb = document.getElementById("minThumb");
-    const maxThumb = document.getElementById("maxThumb");
-    const track = document.getElementById("priceTrack");
-    const minInput = document.getElementById("minPriceInput");
-    const maxInput = document.getElementById("maxPriceInput");
+  function setupPriceSlider(type) {
+    const slider = document.getElementById(`${type}PriceSlider`);
+    const minThumb = document.getElementById(`${type}MinThumb`);
+    const maxThumb = document.getElementById(`${type}MaxThumb`);
+    const track = document.getElementById(`${type}PriceTrack`);
 
     const { min, max } = shopState.priceRange;
     const range = max - min;
@@ -2257,24 +2038,21 @@
       let percent = (clientX - rect.left) / rect.width;
       percent = Math.max(0, Math.min(1, percent));
 
-      const value = min + percent * range;
-      const roundedValue = Math.round(value);
+      const value = Math.round(min + percent * range);
+      const step = 10;
+      const roundedValue = Math.round(value / step) * step;
 
       if (thumb === minThumb) {
-        const maxValue = shopState.filters.maxPrice || max;
+        const maxValue = shopState.filters.maxPrice !== null ? shopState.filters.maxPrice : max;
         if (roundedValue >= maxValue) return;
-
         shopState.filters.minPrice = roundedValue;
-        minInput.value = roundedValue === min ? "" : roundedValue;
       } else {
-        const minValue = shopState.filters.minPrice || min;
+        const minValue = shopState.filters.minPrice !== null ? shopState.filters.minPrice : min;
         if (roundedValue <= minValue) return;
-
         shopState.filters.maxPrice = roundedValue;
-        maxInput.value = roundedValue === max ? "" : roundedValue;
       }
 
-      updatePriceSlider();
+      updatePriceSliders();
     }
 
     function handleMouseDown(e) {
@@ -2293,268 +2071,128 @@
       activeThumb = null;
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
-
-      // Apply filters after a short delay
-      setTimeout(() => applyFilters(), 300);
     }
 
     // Add event listeners
     minThumb.addEventListener("mousedown", handleMouseDown);
     maxThumb.addEventListener("mousedown", handleMouseDown);
-
-    // Update on input change
-    minInput.addEventListener("change", () => {
-      let value = parseFloat(minInput.value);
-      if (isNaN(value)) value = min;
-      value = Math.max(min, Math.min(value, max));
-
-      const maxValue = shopState.filters.maxPrice || max;
-      if (value >= maxValue) {
-        value = maxValue - 1;
-        minInput.value = value;
-      }
-
-      shopState.filters.minPrice = value === min ? null : value;
-      updatePriceSlider();
-      applyFilters();
-    });
-
-    maxInput.addEventListener("change", () => {
-      let value = parseFloat(maxInput.value);
-      if (isNaN(value)) value = max;
-      value = Math.max(min, Math.min(value, max));
-
-      const minValue = shopState.filters.minPrice || min;
-      if (value <= minValue) {
-        value = minValue + 1;
-        maxInput.value = value;
-      }
-
-      shopState.filters.maxPrice = value === max ? null : value;
-      updatePriceSlider();
-      applyFilters();
-    });
   }
 
   // Toggle filter section
-  function toggleFilter(section) {
-    const content = document.getElementById(`${section}Content`);
-    const icon = document.getElementById(`${section}Icon`);
-
-    content.classList.toggle("collapsed");
-    icon.classList.toggle("rotated");
-  }
-
-  // Show loading overlay
-  function showLoading(show) {
-    const overlay = document.getElementById("loadingOverlay");
-    overlay.classList.toggle("active", show);
-  }
-
-  // Quick view function
-  async function showQuickView(productId) {
-    try {
-      const response = await fetch(`/api/get-product/${productId}/`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-
-      if (!data.success || !data.product) {
-        if (window.showNotification) {
-          window.showNotification(
-            "{% trans 'Unable to load product details' %}",
-            "error"
-          );
-        }
-        return;
-      }
-
-      const product = data.product;
-
-      // --- Price & discount logic ---
-      const basePrice = Number(product.price) || 0;
-      const discountPct = Number(product.discount_percentage) || 0;
-
-      let priceBlock = "";
-      if (basePrice) {
-        let effectivePrice = basePrice;
-        if (discountPct > 0 && discountPct <= 100) {
-          effectivePrice = basePrice * (1 - discountPct / 100);
-        }
-
-        priceBlock += `<h5 class="mb-1">$${effectivePrice.toFixed(2)}</h5>`;
-
-        if (discountPct > 0 && discountPct <= 100) {
-          priceBlock += `
-          <p class="mb-1">
-            <span class="text-muted text-decoration-line-through me-2">
-              $${basePrice.toFixed(2)}
-            </span>
-            <span class="badge bg-danger">-${discountPct}%</span>
-          </p>
-        `;
-        }
+  function toggleFilterSection(sectionId) {
+    const content = document.getElementById(`${sectionId}-content`);
+    const title = document.querySelector(`[onclick="toggleFilterSection('${sectionId}')"]`);
+    
+    if (content && title) {
+      content.classList.toggle('collapsed');
+      title.classList.toggle('active');
+      
+      if (content.classList.contains('collapsed')) {
+        content.style.maxHeight = '0';
       } else {
-        priceBlock = `<p class="text-muted">{% trans "Price on request" %}</p>`;
-      }
-      // -------------------------------
-
-      const safeName = (product.name || "").replace(/'/g, "\\'");
-
-      const modalHTML = `
-      <div class="modal fade" id="quickViewModal-${productId}" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-          <div class="modal-content modern-card">
-            <div class="modal-header bg-primary text-white">
-              <h5 class="modal-title">${product.name || ""}</h5>
-              <button type="button"
-                      class="btn-close btn-close-white"
-                      data-bs-dismiss="modal"
-                      aria-label="{% trans "Close" %}"></button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-6">
-                  ${
-                    product.image_url
-                      ? `<img src="${product.image_url}"
-                               class="img-fluid rounded-3 mb-3"
-                               alt="${safeName}"
-                               style="max-height: 300px; width: 100%; object-fit: cover;">`
-                      : `<div class="bg-light rounded-3 d-flex align-items-center justify-content-center"
-                               style="height: 300px;">
-                           <i class="fas fa-box fa-3x text-muted"></i>
-                         </div>`
-                  }
-                  ${
-                    product.video_url
-                      ? `<div class="mt-3">
-                           <video controls class="w-100 rounded-3" style="max-height: 200px;">
-                             <source src="${product.video_url}" type="video/mp4">
-                             {% trans "Your browser does not support the video tag." %}
-                           </video>
-                         </div>`
-                      : ""
-                  }
-                </div>
-                <div class="col-md-6">
-                  <p><strong>{% trans "Description" %}:</strong>
-                    ${
-                      product.description ||
-                      "{% trans 'No description available' %}"
-                    }
-                  </p>
-                  <p><strong>{% trans "Category" %}:</strong>
-                    ${
-                      (product.category && product.category.name) ||
-                      "{% trans 'Uncategorized' %}"
-                    }
-                  </p>
-                  <p><strong>{% trans "Available" %}:</strong>
-                    ${
-                      product.quantity_available !== null &&
-                      product.quantity_available !== undefined
-                        ? product.quantity_available
-                        : "N/A"
-                    }
-                  </p>
-
-                  ${priceBlock}
-
-                  <div class="d-grid gap-2 mt-4">
-                    <button class="btn btn-primary"
-                            onclick="handleAddToCart(
-                              ${product.id},
-                              '${safeName}',
-                              ${basePrice},
-                              '${product.image_url || ""}',
-                              ${product.can_order ? "true" : "false"},
-                              ${discountPct}
-                            )"
-                            ${product.can_order ? "" : "disabled"}>
-                      <i class="fas fa-cart-plus me-2"></i>
-                      ${
-                        product.can_order
-                          ? '{% trans "Add to Cart" %}'
-                          : '{% trans "Cannot Order" %}'
-                      }
-                    </button>
-                    <button class="btn btn-outline-primary"
-                            onclick="window.addToWishlist(${product.id})">
-                      <i class="far fa-heart me-2"></i>{% trans "Add to Wishlist" %}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-
-      const modalContainer = document.createElement("div");
-      modalContainer.innerHTML = modalHTML;
-      document.body.appendChild(modalContainer);
-
-      const modalElement = document.getElementById(
-        `quickViewModal-${productId}`
-      );
-      const modal = new bootstrap.Modal(modalElement);
-      modal.show();
-
-      modalElement.addEventListener("hidden.bs.modal", function () {
-        modalElement.remove();
-      });
-    } catch (error) {
-      console.error("Error in quick view:", error);
-      if (window.showNotification) {
-        window.showNotification(
-          "{% trans 'Error loading product details' %}",
-          "error"
-        );
+        content.style.maxHeight = content.scrollHeight + 'px';
       }
     }
   }
 
-  // Helper function for star rating
-  
+  // Modal functions
+  function toggleFilterModal() {
+    const modal = document.getElementById('filterModal');
+    modal.classList.toggle('active');
+    document.body.style.overflow = modal.classList.contains('active') ? 'hidden' : 'auto';
+  }
+
+  function closeFilterModal() {
+    const modal = document.getElementById('filterModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+
+  function toggleSortModal() {
+    const modal = document.getElementById('sortModal');
+    modal.classList.toggle('active');
+    document.body.style.overflow = modal.classList.contains('active') ? 'hidden' : 'auto';
+  }
+
+  function closeSortModal() {
+    const modal = document.getElementById('sortModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+  }
+
+  function handleSortChange(sortBy) {
+    shopState.filters.sortBy = sortBy;
+    shopState.pagination.currentPage = 1;
+    applyFilters();
+    closeSortModal();
+  }
+
+  // Show loading
+  function showLoading(show) {
+    const overlay = document.getElementById("loadingOverlay");
+    if (overlay) {
+      overlay.classList.toggle("active", show);
+    }
+  }
 
   // Setup event listeners
   function setupEventListeners() {
-    setupPriceSlider();
-
-    // Close modals when clicking outside
-    const videoModal = document.getElementById("videoModal");
-    if (videoModal) {
-      videoModal.addEventListener("click", function (e) {
-        if (e.target === this) closeVideoModal();
-      });
-    }
-
-    // Handle browser back/forward buttons
-    window.addEventListener("popstate", function () {
+    // Setup price sliders
+    setupPriceSlider('desktop');
+    setupPriceSlider('mobile');
+    
+    // Close modals on outside click
+    const modals = ['filterModal', 'sortModal'];
+    modals.forEach(modalId => {
+      const modal = document.getElementById(modalId);
+      if (modal) {
+        modal.addEventListener('click', function(e) {
+          if (e.target === this) {
+            this.classList.remove('active');
+            document.body.style.overflow = 'auto';
+          }
+        });
+      }
+    });
+    
+    // Close modals with ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeFilterModal();
+        closeSortModal();
+      }
+    });
+    
+    // Handle browser back/forward
+    window.addEventListener('popstate', function() {
       loadShopData();
+    });
+    
+    // Initialize filter sections
+    const sections = ['desktop-categories', 'desktop-price', 'desktop-availability', 
+                     'mobile-categories', 'mobile-price', 'mobile-availability'];
+    sections.forEach(section => {
+      const content = document.getElementById(`${section}-content`);
+      if (content) {
+        content.style.maxHeight = content.scrollHeight + 'px';
+      }
     });
   }
 
-  // Expose shop functions to window
+  // Expose functions to window
   window.filterByCategory = filterByCategory;
   window.applyFilters = applyFilters;
   window.clearFilters = clearFilters;
   window.goToPage = goToPage;
-  window.toggleFilter = toggleFilter;
-  window.showQuickView = showQuickView;
-  window.playProductVideo = playProductVideo;
-  window.closeVideoModal = closeVideoModal;
+  window.toggleFilterSection = toggleFilterSection;
+  window.toggleFilterModal = toggleFilterModal;
+  window.closeFilterModal = closeFilterModal;
+  window.toggleSortModal = toggleSortModal;
+  window.closeSortModal = closeSortModal;
+  window.handleSortChange = handleSortChange;
   window.handleAddToCart = handleAddToCart;
-  window.startMediaSlider = startMediaSlider;
-  window.stopMediaSlider = stopMediaSlider;
-  window.goToMedia = goToMedia;
-  window.openProduct = openProduct;
   window.changeCartQuantity = changeCartQuantity;
-  window.toggleMobileFilters = toggleMobileFilters;
-  window.closeMobileFiltersIfOpen = closeMobileFiltersIfOpen;
+  window.clearFilterModal = clearFilterModal;
+  window.applyFiltersFromModal = applyFiltersFromModal;
 </script>
 {% endblock %}
